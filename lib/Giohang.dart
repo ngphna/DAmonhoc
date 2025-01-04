@@ -1,32 +1,26 @@
+import 'package:doan_hk2/trangchu.dart';
 import 'package:flutter/material.dart';
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: HomePage(),
-    );
-  }
-}
-
-class HomePage extends StatelessWidget {
+class Giohang extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.lightGreen, // Màu nền thanh AppBar
         elevation: 0, // Xóa bóng của AppBar
-        title: Text(
-          'Fruit Paradise',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-          ),
+        title: GestureDetector(
+    onTap: () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Trangchu(),
         ),
+      );
+    },
+    child: Text(
+      "Fruit Paradise",
+      style: TextStyle(color: Colors.black),
+    ),
+  ),
         centerTitle: false, // Canh trái tiêu đề
       ),
       body: Padding(

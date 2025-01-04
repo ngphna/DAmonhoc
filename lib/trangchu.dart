@@ -1,3 +1,5 @@
+import 'package:doan_hk2/Giohang.dart';
+import 'package:doan_hk2/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -24,10 +26,11 @@ class _TrangchuState extends State<Trangchu> {
     },
     child: Text(
       "Fruit Paradise",
-      style: TextStyle(color: Colors.white),
+      style: TextStyle(color: Colors.black),
     ),
   ),
-  backgroundColor: Colors.green,
+  backgroundColor: Colors.lightGreen,
+    elevation: 0,
       ),
        body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -40,7 +43,14 @@ class _TrangchuState extends State<Trangchu> {
                 IconButton(
                   icon: Icon(Icons.menu, color: Colors.lightGreen),
                   onPressed: () {
-                    // Hành động khi nhấn menu
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+                    ),
+                    builder: (context) => buildMenu(),
+                  );
                   },
                 ),
                 Expanded(
@@ -74,7 +84,11 @@ class _TrangchuState extends State<Trangchu> {
                     IconButton(
                       icon: Icon(Icons.shopping_cart_outlined, color: Colors.lightGreen),
                       onPressed: () {
-                        // Hành động khi nhấn giỏ hàng
+                        Navigator.pushReplacement(context,
+                          MaterialPageRoute(
+                            builder: (context) => Giohang(),
+                          ),
+                        );
                       },
                     ),
                     // Huy hiệu số lượng sản phẩm

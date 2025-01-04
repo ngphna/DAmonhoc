@@ -1,3 +1,4 @@
+import 'package:doan_hk2/trangchu.dart';
 import 'package:flutter/material.dart';
 
 class DangNhap extends StatefulWidget {
@@ -49,13 +50,20 @@ class DangNhapState extends State<DangNhap> {
               
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                  builder: (context) => Trangchu(),
+                  ),
+                );
+                  },
                   child: const Text("Đăng nhập"),
                 ),
                 const SizedBox(height: 20,),
                 TextButton(
                   onPressed: (){
-
+                    
                   }, 
                   child: Text("Quên mật khẩu ?")
                   ),
