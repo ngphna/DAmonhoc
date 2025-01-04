@@ -129,6 +129,29 @@ class _TrangchuState extends State<Trangchu> {
                         );
                       },
                     ),
+<<<<<<< HEAD
+=======
+                    
+                    // Huy hiệu số lượng sản phẩm
+                    // Positioned(
+                    //   right: 6,
+                    //   top: 6,
+                    //   child: Container(
+                    //     padding: EdgeInsets.all(4),
+                    //     decoration: BoxDecoration(
+                    //       color: Colors.red,
+                    //       shape: BoxShape.circle,
+                    //     ),
+                    //     child: Text(
+                    //       '1', // Số lượng sản phẩm
+                    //       style: TextStyle(
+                    //         color: Colors.white,
+                    //         fontSize: 12,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+>>>>>>> 0c2793f (item)
                   ],
                 ),
               ],

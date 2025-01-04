@@ -1,40 +1,22 @@
-import 'package:doan_hk2/itemdamua.dart';
+import 'package:doan_hk2/itemthanhtoan.dart';
+import 'package:doan_hk2/trangchu.dart';
 import 'package:flutter/material.dart';
 
-import 'itemthanhtoan.dart'; // Đảm bảo bạn đã import đúng file ProductItem
-import 'trangchu.dart';
-class Giohang extends StatefulWidget {
-  @override
-  _GiohangState createState() => _GiohangState();
-}
-
-class _GiohangState extends State<Giohang> {
-  List<ProductItem> productsInCart = [
-    ProductItem(imageUrl: 'https://via.placeholder.com/150', productName: "Cam Sieu Ngot", price: 1, onQuantityChanged: (quantity) {}),
-    ProductItem(imageUrl: 'https://via.placeholder.com/150', productName: "Táo Đỏ", price: 2, onQuantityChanged: (quantity) {}),
-    ProductItem(imageUrl: 'https://via.placeholder.com/150', productName: "Chuối", price: 1, onQuantityChanged: (quantity) {}),
-  ];
-
-  void _removeProduct(int index) {
-    setState(() {
-      productsInCart.removeAt(index);
-    });
-  }
-
+class Giohang extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2, // Số lượng tab
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.lightGreen,
-          elevation: 0,
+          backgroundColor: Colors.lightGreen, // Màu nền thanh AppBar
+          elevation: 0, // Xóa bóng của AppBar
           title: GestureDetector(
             onTap: () {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => Trangchu(), // Bạn có thể thay Trangchu bằng widget khác
+                  builder: (context) => Trangchu(),
                 ),
               );
             },
@@ -43,13 +25,14 @@ class _GiohangState extends State<Giohang> {
               style: TextStyle(color: Colors.black),
             ),
           ),
-          centerTitle: false,
+          centerTitle: false, // Canh trái tiêu đề
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-               Row(
+              // Thanh tìm kiếm
+              Row(
                 children: [
                   // Icon menu
                   IconButton(
@@ -94,8 +77,8 @@ class _GiohangState extends State<Giohang> {
                       ),
                       // Huy hiệu số lượng sản phẩm
                       Positioned(
-                        right: 0,
-                        top: -2,
+                        right: 6,
+                        top: 6,
                         child: Container(
                           padding: EdgeInsets.all(4),
                           decoration: BoxDecoration(
@@ -103,7 +86,7 @@ class _GiohangState extends State<Giohang> {
                             shape: BoxShape.circle,
                           ),
                           child: Text(
-                            productsInCart.length.toString(), // Số lượng sản phẩm
+                            '1', // Số lượng sản phẩm
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 12,
@@ -115,54 +98,57 @@ class _GiohangState extends State<Giohang> {
                   ),
                 ],
               ),
+              SizedBox(height: 15),
               // TabBar
               Container(
-                color: Colors.white,
+                color: Colors.white, // Màu nền cho TabBar
                 child: TabBar(
-                  labelColor: Colors.orange,
-                  unselectedLabelColor: Colors.black,
-                  indicatorColor: Colors.orange,
+                  labelColor: Colors.orange, // Màu chữ tab được chọn
+                  unselectedLabelColor: Colors.black, // Màu chữ tab không được chọn
+                  indicatorColor: Colors.orange, // Màu chỉ báo dưới tab
                   tabs: [
                     Tab(text: 'Chờ Thanh Toán'),
                     Tab(text: 'Đã Mua'),
                   ],
                 ),
               ),
+              // TabBarView hiển thị nội dung của từng tab
               Expanded(
                 child: TabBarView(
                   children: [
                     // Tab "Chờ Thanh Toán"
-                    ListView.builder(
-                      itemCount: productsInCart.length,
-                      itemBuilder: (context, index) {
-                        return Dismissible(
-                          key: Key(productsInCart[index].productName),
-                          direction: DismissDirection.endToStart,
-                          onDismissed: (direction) {
-                            _removeProduct(index);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Đã xóa ${productsInCart[index].productName}')),
-                            );
-                          },
-                          background: Container(
-                            
-                            color: Colors.red,
-                            alignment: Alignment.centerRight,
-                            child: Padding(
-                              padding: const EdgeInsets.only(right: 16.0),
-                              child: Icon(Icons.delete, color: Colors.white),
-                            ),
-                          ),
-                          child: productsInCart[index],
-                        );
-                      },
+                    ListView(
+                      children: [
+                       ProductItem(imageUrl: 'https://via.placeholder.com/150', productName: "Cam sieu ngot", price: 1, onQuantityChanged: (quantity) {} ),
+                       ProductItem(imageUrl: 'https://via.placeholder.com/150', productName: "táo đỏ", price: 2, onQuantityChanged: (quantity) {} ),
+                        ProductItem(imageUrl: 'https://via.placeholder.com/150', productName: "Cam sieu ngot", price: 1, onQuantityChanged: (quantity) {} ),
+                       ProductItem(imageUrl: 'https://via.placeholder.com/150', productName: "táo đỏ", price: 2, onQuantityChanged: (quantity) {} ),
+                        ProductItem(imageUrl: 'https://via.placeholder.com/150', productName: "Cam sieu ngot", price: 1, onQuantityChanged: (quantity) {} ),
+                       ProductItem(imageUrl: 'https://via.placeholder.com/150', productName: "táo đỏ", price: 2, onQuantityChanged: (quantity) {} ),
+                        ProductItem(imageUrl: 'https://via.placeholder.com/150', productName: "Cam sieu ngot", price: 1, onQuantityChanged: (quantity) {} ),
+                       ProductItem(imageUrl: 'https://via.placeholder.com/150', productName: "táo đỏ", price: 2, onQuantityChanged: (quantity) {} ),
+                        ProductItem(imageUrl: 'https://via.placeholder.com/150', productName: "Cam sieu ngot", price: 1, onQuantityChanged: (quantity) {} ),
+                       ProductItem(imageUrl: 'https://via.placeholder.com/150', productName: "táo đỏ", price: 2, onQuantityChanged: (quantity) {} ),
+                        ProductItem(imageUrl: 'https://via.placeholder.com/150', productName: "Cam sieu ngot", price: 1, onQuantityChanged: (quantity) {} ),
+                       ProductItem(imageUrl: 'https://via.placeholder.com/150', productName: "táo đỏ", price: 2, onQuantityChanged: (quantity) {} ),
+                       
+                      ],
                     ),
                     // Tab "Đã Mua"
                     ListView(
                       children: [
-                       ProductItemds(imageUrl: 'https://via.placeholder.com/150', productName: "Cam Sieu ngot", price: 1),
-                        ProductItemds(imageUrl: 'https://via.placeholder.com/150', productName: "Cam Sieu ngot", price: 2)
-                      
+                        ListTile(
+                          leading: Icon(Icons.shopping_cart),
+                          title: Text('Sản phẩm 3'),
+                          subtitle: Text('Giá: 1200đ'),
+                          trailing: Icon(Icons.check_box),
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.shopping_cart),
+                          title: Text('Sản phẩm 4'),
+                          subtitle: Text('Giá: 2000đ'),
+                          trailing: Icon(Icons.check_box),
+                        ),
                       ],
                     ),
                   ],
@@ -171,9 +157,8 @@ class _GiohangState extends State<Giohang> {
             ],
           ),
         ),
-         backgroundColor: Colors.white,
+        backgroundColor: Colors.white, // Màu nền toàn bộ màn hình
       ),
-       
     );
   }
 }
