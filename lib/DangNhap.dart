@@ -20,7 +20,7 @@ class DangNhapState extends State<DangNhap> {
         ),
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.all(30.0), // Padding xung quanh toàn bộ Column
+            padding: const EdgeInsets.all(20.0), // Padding xung quanh toàn bộ Column
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -60,14 +60,14 @@ class DangNhapState extends State<DangNhap> {
                   },
                   child: const Text("Đăng nhập"),
                 ),
-                const SizedBox(height: 20,),
+                const SizedBox(height: 10,),
                 TextButton(
                   onPressed: (){
                     
                   }, 
                   child: Text("Quên mật khẩu ?")
                   ),
-                  const SizedBox(height: 20,),
+                  const SizedBox(height: 10,),
                 TextButton(
                   onPressed: (){
                     Navigator.pushNamed(context, '/DangKy');

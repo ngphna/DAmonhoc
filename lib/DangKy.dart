@@ -58,7 +58,7 @@ class DangKyState extends State<DangKy>
               onPressed: (){}, 
               child: const Text("Đăng ký")
               ),
-            const SizedBox(height: 20,),
+            const SizedBox(height: 10,),
                 TextButton(
                   onPressed: (){
                     Navigator.pushNamed(context, '/DangNhap');

@@ -1,3 +1,4 @@
+import 'package:doan_hk2/DangNhap.dart';
 import 'package:doan_hk2/Giohang.dart';
 import 'package:doan_hk2/menu.dart';
 import 'package:flutter/material.dart';
@@ -16,30 +17,66 @@ class _TrangchuState extends State<Trangchu> {
     return Scaffold(
       appBar: AppBar(
         title: GestureDetector(
-    onTap: () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => Trangchu(),
+          onTap: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Trangchu(),
+              ),
+            );
+          },
+          child: Text(
+            "Fruit Paradise",
+            style: TextStyle(color: Colors.black),
+          ),
         ),
-      );
-    },
-    child: Text(
-      "Fruit Paradise",
-      style: TextStyle(color: Colors.black),
-    ),
-  ),
-  backgroundColor: Colors.lightGreen,
-    elevation: 0,
+        backgroundColor: Colors.lightGreen,
+        elevation: 0,
+        actions: [
+          // Thêm PopupMenuButton bên phải AppBar
+          PopupMenuButton<String>(
+            icon: Icon(Icons.settings, color: Colors.white),
+            onSelected: (value) {
+              // Xử lý khi chọn menu
+              if (value == "Dangxuat") {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+                  ),
+                  builder: (context) => DangNhap(),
+                );
+              } else if (value == "cart") {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Giohang(),
+                  ),
+                );
+              }
+            },
+            itemBuilder: (BuildContext context) => [
+              PopupMenuItem(
+                value: "Dangxuat",
+                child: Text("Đăng xuất"),
+              ),
+              PopupMenuItem(
+                value: "cart",
+                child: Text("Giỏ hàng"),
+              ),
+            ],
+          ),
+        ],
       ),
-       body: Padding(
+      body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             // Thanh tìm kiếm
             Row(
               children: [
-                // Icon menu
+                // Icon menu bên trái
                 IconButton(
                   icon: Icon(Icons.menu, color: Colors.lightGreen),
                   onPressed: () {
@@ -47,10 +84,10 @@ class _TrangchuState extends State<Trangchu> {
                       context: context,
                       isScrollControlled: true,
                       shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-                    ),
-                    builder: (context) => buildMenu(),
-                  );
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+                      ),
+                      builder: (context) => buildMenu(),
+                    );
                   },
                 ),
                 Expanded(
@@ -84,37 +121,18 @@ class _TrangchuState extends State<Trangchu> {
                     IconButton(
                       icon: Icon(Icons.shopping_cart_outlined, color: Colors.lightGreen),
                       onPressed: () {
-                        Navigator.pushReplacement(context,
+                        Navigator.pushReplacement(
+                          context,
                           MaterialPageRoute(
                             builder: (context) => Giohang(),
                           ),
                         );
                       },
                     ),
-                    // Huy hiệu số lượng sản phẩm
-                    // Positioned(
-                    //   right: 6,
-                    //   top: 6,
-                    //   child: Container(
-                    //     padding: EdgeInsets.all(4),
-                    //     decoration: BoxDecoration(
-                    //       color: Colors.red,
-                    //       shape: BoxShape.circle,
-                    //     ),
-                    //     child: Text(
-                    //       '1', // Số lượng sản phẩm
-                    //       style: TextStyle(
-                    //         color: Colors.white,
-                    //         fontSize: 12,
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
                   ],
                 ),
               ],
             ),
-
           ],
         ),
       ),
