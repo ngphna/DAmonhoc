@@ -32,30 +32,40 @@ class DangNhapState extends State<DangNhap> {
                   ),
                 ),
                 const SizedBox(height: 50),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8.0), // Padding cho TextField
-                  child: TextField(
+                TextField(
                     decoration: InputDecoration(
                       labelText: "Email",
                       border: OutlineInputBorder(),
                     ),
-                  ),
+                
                 ),
                 const SizedBox(height: 20),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8.0), // Padding cho TextField
-                  child: TextField(
+                TextField(
                     decoration: InputDecoration(
                       labelText: "Mật khẩu",
                       border: OutlineInputBorder(),
                     ),
                   ),
-                ),
+              
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {},
                   child: const Text("Đăng nhập"),
                 ),
+                const SizedBox(height: 20,),
+                TextButton(
+                  onPressed: (){
+
+                  }, 
+                  child: Text("Quên mật khẩu ?")
+                  ),
+                  const SizedBox(height: 20,),
+                TextButton(
+                  onPressed: (){
+                    Navigator.pushNamed(context, '/DangKy');
+                  }, 
+                  child: Text("Bạn chưa có tài khoản đăng ký tại đây ")
+                  ),
               ],
             ),
           ),

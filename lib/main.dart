@@ -1,3 +1,4 @@
+import 'package:doan_hk2/DangKy.dart';
 import 'package:doan_hk2/DangNhap.dart';
 import 'package:flutter/material.dart';
 
@@ -11,9 +12,10 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/',
+      initialRoute: '/DangNhap',
       routes: {
-        '/':(context)=> DangNhap(),
+        '/DangNhap':(context)=> DangNhap(),
+        '/DangKy':(context)=>DangKy()
       },
     );
   }
