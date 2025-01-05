@@ -1,8 +1,10 @@
 import 'package:doan_hk2/itemdamua.dart';
+import 'nutmau.dart';
 import 'package:flutter/material.dart';
-
-import 'itemthanhtoan.dart'; // Đảm bảo bạn đã import đúng file ProductItem
+import 'itemthanhtoan.dart'; 
 import 'trangchu.dart';
+import 'hopghichu.dart';
+
 class Giohang extends StatefulWidget {
   @override
   _GiohangState createState() => _GiohangState();
@@ -10,9 +12,22 @@ class Giohang extends StatefulWidget {
 
 class _GiohangState extends State<Giohang> {
   List<ProductItem> productsInCart = [
-    ProductItem(imageUrl: 'https://via.placeholder.com/150', productName: "Cam Sieu Ngot", price: 1, onQuantityChanged: (quantity) {}),
-    ProductItem(imageUrl: 'https://via.placeholder.com/150', productName: "Táo Đỏ", price: 2, onQuantityChanged: (quantity) {}),
-    ProductItem(imageUrl: 'https://via.placeholder.com/150', productName: "Chuối", price: 1, onQuantityChanged: (quantity) {}),
+    ProductItem(
+        imageUrl: 'https://via.placeholder.com/150',
+        productName: "Cam Sieu Ngot",
+        price: 1,
+        onQuantityChanged: (quantity,totalPrice) {}),
+    ProductItem(
+        imageUrl: 'https://via.placeholder.com/150',
+        productName: "Táo Đỏ",
+        price: 2,
+        onQuantityChanged: (quantity,totalPrice) {}),
+        
+    ProductItem(
+        imageUrl: 'https://via.placeholder.com/150',
+        productName: "Chuối",
+        price: 1,
+        onQuantityChanged: (quantity,totalPrice) {}),
   ];
 
   void _removeProduct(int index) {
@@ -34,7 +49,7 @@ class _GiohangState extends State<Giohang> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => Trangchu(), // Bạn có thể thay Trangchu bằng widget khác
+                  builder: (context) => Trangchu(),
                 ),
               );
             },
@@ -49,9 +64,8 @@ class _GiohangState extends State<Giohang> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-               Row(
+              Row(
                 children: [
-                  // Icon menu
                   IconButton(
                     icon: Icon(Icons.menu, color: Colors.lightGreen),
                     onPressed: () {
@@ -83,7 +97,6 @@ class _GiohangState extends State<Giohang> {
                       ),
                     ),
                   ),
-                  // Icon giỏ hàng
                   Stack(
                     children: [
                       IconButton(
@@ -92,7 +105,6 @@ class _GiohangState extends State<Giohang> {
                           // Hành động khi nhấn giỏ hàng
                         },
                       ),
-                      // Huy hiệu số lượng sản phẩm
                       Positioned(
                         right: 0,
                         top: -2,
@@ -103,7 +115,7 @@ class _GiohangState extends State<Giohang> {
                             shape: BoxShape.circle,
                           ),
                           child: Text(
-                            productsInCart.length.toString(), // Số lượng sản phẩm
+                            productsInCart.length.toString(),
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 12,
@@ -115,7 +127,6 @@ class _GiohangState extends State<Giohang> {
                   ),
                 ],
               ),
-              // TabBar
               Container(
                 color: Colors.white,
                 child: TabBar(
@@ -131,38 +142,91 @@ class _GiohangState extends State<Giohang> {
               Expanded(
                 child: TabBarView(
                   children: [
-                    // Tab "Chờ Thanh Toán"
-                    ListView.builder(
-                      itemCount: productsInCart.length,
-                      itemBuilder: (context, index) {
-                        return Dismissible(
-                          key: Key(productsInCart[index].productName),
-                          direction: DismissDirection.endToStart,
-                          onDismissed: (direction) {
-                            _removeProduct(index);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Đã xóa ${productsInCart[index].productName}')),
-                            );
-                          },
-                          background: Container(
-                            
-                            color: Colors.red,
-                            alignment: Alignment.centerRight,
-                            child: Padding(
-                              padding: const EdgeInsets.only(right: 16.0),
-                              child: Icon(Icons.delete, color: Colors.white),
-                            ),
+                    Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                             
+                            ],
                           ),
-                          child: productsInCart[index],
-                        );
-                      },
+                        ),
+                        SizedBox(height: 8),
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: productsInCart.length,
+                            itemBuilder: (context, index) {
+                              return Dismissible(
+                                key: Key(productsInCart[index].productName),
+                                direction: DismissDirection.endToStart,
+                                onDismissed: (direction) {
+                                  _removeProduct(index);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content: Text(
+                                            'Đã xóa ${productsInCart[index].productName}')),
+                                  );
+                                },
+                                background: Container(
+                                  color: Colors.red,
+                                  alignment: Alignment.centerRight,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 16.0),
+                                    child: Icon(Icons.delete, color: Colors.white),
+                                  ),
+                                ),
+                                child: productsInCart[index],
+                              );
+                            },
+                          ),
+                        ),
+                          Container(
+                          padding: const EdgeInsets.all(16.0),
+                          child:   NoteBox(
+              hintText: "Nhập nội dung ghi chú...",
+              onSaved: (text) {
+                print("Nội dung ghi chú: $text");
+              },
+            ),
+                        ),Row(children: [
+                         Text(
+                                'Tổng cộng:',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
+                                    selectionColor: Colors.black,
+                              ), SizedBox(width: 5,),
+                              Text(
+                                '${productsInCart.fold(0, (sum, item) => sum + item.price)}đ',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.red,
+                                ),
+                              ),],),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              CustomButton(text: "Mua Tiếp",onPressed: () {},),
+                              CustomButton(text: "Thanh toán",onPressed: () {},),
+                          ],)
+                        ),
+                      
+                      ],
                     ),
-                    // Tab "Đã Mua"
                     ListView(
                       children: [
-                       ProductItemds(imageUrl: 'https://via.placeholder.com/150', productName: "Cam Sieu ngot", price: 1),
-                        ProductItemds(imageUrl: 'https://via.placeholder.com/150', productName: "Cam Sieu ngot", price: 2)
-                      
+                        ProductItemds(
+                            imageUrl: 'https://via.placeholder.com/150',
+                            productName: "Cam Sieu ngot",
+                            price: 1),
+                        ProductItemds(
+                            imageUrl: 'https://via.placeholder.com/150',
+                            productName: "Cam Sieu ngot",
+                            price: 2)
                       ],
                     ),
                   ],
@@ -171,9 +235,8 @@ class _GiohangState extends State<Giohang> {
             ],
           ),
         ),
-         backgroundColor: Colors.white,
+        backgroundColor: Colors.white,
       ),
-       
     );
   }
 }

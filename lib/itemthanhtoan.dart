@@ -4,7 +4,7 @@ class ProductItem extends StatefulWidget {
   final String imageUrl;
   final String productName;
   final int price;
-  final Function(int quantity) onQuantityChanged;
+  final Function(int quantity, int totalPrice) onQuantityChanged;
 
   const ProductItem({
     Key? key,
@@ -19,22 +19,27 @@ class ProductItem extends StatefulWidget {
 }
 
 class _ProductItemState extends State<ProductItem> {
-  int _quantity = 1;
+  int _quantity = 1; // Số lượng mặc định ban đầu là 1
 
   void _increaseQuantity() {
     setState(() {
       _quantity++;
     });
-    widget.onQuantityChanged(_quantity); // Gọi callback để cập nhật giỏ hàng
+    _updateTotalPrice();
   }
 
   void _decreaseQuantity() {
-    if (_quantity > 0) {
+    if (_quantity > 1) {
       setState(() {
         _quantity--;
       });
-      widget.onQuantityChanged(_quantity); // Gọi callback để cập nhật giỏ hàng
+      _updateTotalPrice();
     }
+  }
+
+  void _updateTotalPrice() {
+    int totalPrice = _quantity * widget.price;
+    widget.onQuantityChanged(_quantity, totalPrice); // Gọi callback với số lượng và tổng tiền
   }
 
   @override
@@ -43,10 +48,10 @@ class _ProductItemState extends State<ProductItem> {
       color: Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
-         side: BorderSide(
-      color: Colors.black, // Màu viền
-      width: 0.5, // Độ dày viền
-    ),
+        side: BorderSide(
+          color: Colors.black.withOpacity(0.2), 
+          width: 0.5, 
+        ),
       ),
       elevation: 2,
       child: Padding(
