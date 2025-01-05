@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:doan_hk2/DangNhap.dart';
 import 'package:doan_hk2/Giohang.dart';
 import 'package:doan_hk2/menu.dart';
@@ -12,6 +14,40 @@ class Trangchu extends StatefulWidget {
 }
 
 class _TrangchuState extends State<Trangchu> {
+
+  final PageController _pageController = PageController();
+  int _currentPage = 0;
+  late Timer _timer;
+
+  @override
+  void dispose() {
+    _timer.cancel(); // Hủy Timer khi không cần thiết
+    _pageController.dispose(); // Hủy controller để giải phóng bộ nhớ
+    super.dispose();
+  }
+
+  void _startAutoScroll() {
+    _timer = Timer.periodic(Duration(seconds: 4), (timer) {
+      if (_currentPage < 2) {
+        _currentPage++;
+      } else {
+        _currentPage = 0; // Quay lại trang đầu tiên
+      }
+      _pageController.animateToPage(
+        _currentPage,
+        duration: Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _startAutoScroll();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,6 +75,7 @@ class _TrangchuState extends State<Trangchu> {
             onSelected: (value) {
               // Xử lý khi chọn menu
               if (value == "Dangxuat") {
+                Navigator.of(context, rootNavigator: true).pop();// đóng các modalbottomsheet để trách việc có nhiều modalbottomsheet mở cùng lúc
                 showModalBottomSheet(
                   context: context,
                   isScrollControlled: true,
@@ -133,6 +170,54 @@ class _TrangchuState extends State<Trangchu> {
                 ),
               ],
             ),
+            SizedBox(height: 10,),
+            Container(
+              height: 150,
+              child: PageView(
+                controller: _pageController,
+                onPageChanged: (index){
+                  setState(() {
+                    _currentPage = index;
+                  });
+                },
+                children: [
+                  Image.asset('assets/0106_hinh-nen-4k-may-tinh33.jpg', fit: BoxFit.cover),
+                  Image.asset('assets/anime-girl-windows-11-4k-wallpaper-uhdpaper.com-320@2@b.jpg', fit: BoxFit.cover),
+                  Image.asset('assets/anime-one-piece-monkey-d-luffy-wallpaper-preview.jpg', fit: BoxFit.cover),
+                ],
+              ),
+            ),
+            Row(
+              children: [
+                //Spacer(),
+                ElevatedButton(
+                  onPressed: () {
+                    // Xử lý lọc
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.lightGreen,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  child: Text("Lọc"),
+                ),
+                SizedBox(width: 8),
+                ElevatedButton(
+                  onPressed: () {
+                    // Xử lý sắp xếp
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.lightGreen,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  child: Text("Sắp xếp"),
+                ),
+              ],
+            ),
+            SizedBox(height: 16),
           ],
         ),
       ),
