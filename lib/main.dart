@@ -1,7 +1,7 @@
 import 'package:doan_hk2/DangKy.dart';
 import 'package:doan_hk2/DangNhap.dart';
 import 'package:flutter/material.dart';
-
+import 'package:doan_hk2/text.dart';
 void main() {
   runApp(const MainApp());
 }
@@ -16,7 +16,8 @@ class MainApp extends StatelessWidget {
       initialRoute: '/DangNhap',
       routes: {
         '/DangNhap':(context)=> DangNhap(),
-        '/DangKy':(context)=>DangKy()
+        '/DangKy':(context)=>DangKy(),
+        '/Thanhtoan':(context)=>Thanhtoan()
       },
     );
   }

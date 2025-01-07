@@ -1,9 +1,10 @@
 import 'package:doan_hk2/itemdamua.dart';
 import 'nutmau.dart';
 import 'package:flutter/material.dart';
-import 'itemthanhtoan.dart'; 
+import 'itemthanhtoan.dart';
 import 'trangchu.dart';
 import 'hopghichu.dart';
+import 'text.dart';
 
 class Giohang extends StatefulWidget {
   @override
@@ -16,18 +17,17 @@ class _GiohangState extends State<Giohang> {
         imageUrl: 'https://via.placeholder.com/150',
         productName: "Cam Sieu Ngot",
         price: 1,
-        onQuantityChanged: (quantity,totalPrice) {}),
+        onQuantityChanged: (quantity, totalPrice) {}),
     ProductItem(
         imageUrl: 'https://via.placeholder.com/150',
         productName: "Táo Đỏ",
         price: 2,
-        onQuantityChanged: (quantity,totalPrice) {}),
-        
+        onQuantityChanged: (quantity, totalPrice) {}),
     ProductItem(
         imageUrl: 'https://via.placeholder.com/150',
         productName: "Chuối",
         price: 1,
-        onQuantityChanged: (quantity,totalPrice) {}),
+        onQuantityChanged: (quantity, totalPrice) {}),
   ];
 
   void _removeProduct(int index) {
@@ -82,7 +82,8 @@ class _GiohangState extends State<Giohang> {
                       child: Row(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 12.0),
                             child: Icon(Icons.search, color: Colors.lightGreen),
                           ),
                           Expanded(
@@ -100,7 +101,8 @@ class _GiohangState extends State<Giohang> {
                   Stack(
                     children: [
                       IconButton(
-                        icon: Icon(Icons.shopping_cart_outlined, color: Colors.lightGreen),
+                        icon: Icon(Icons.shopping_cart_outlined,
+                            color: Colors.lightGreen),
                         onPressed: () {
                           // Hành động khi nhấn giỏ hàng
                         },
@@ -148,9 +150,7 @@ class _GiohangState extends State<Giohang> {
                           padding: const EdgeInsets.all(8.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                             
-                            ],
+                            children: [],
                           ),
                         ),
                         SizedBox(height: 8),
@@ -174,7 +174,8 @@ class _GiohangState extends State<Giohang> {
                                   alignment: Alignment.centerRight,
                                   child: Padding(
                                     padding: const EdgeInsets.only(right: 16.0),
-                                    child: Icon(Icons.delete, color: Colors.white),
+                                    child:
+                                        Icon(Icons.delete, color: Colors.white),
                                   ),
                                 ),
                                 child: productsInCart[index],
@@ -182,39 +183,53 @@ class _GiohangState extends State<Giohang> {
                             },
                           ),
                         ),
-                          Container(
+                        Container(
                           padding: const EdgeInsets.all(16.0),
-                          child:   NoteBox(
-              hintText: "Nhập nội dung ghi chú...",
-              onSaved: (text) {
-                print("Nội dung ghi chú: $text");
-              },
-            ),
-                        ),Row(children: [
-                         Text(
-                                'Tổng cộng:',
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
-                                    selectionColor: Colors.black,
-                              ), SizedBox(width: 5,),
-                              Text(
-                                '${productsInCart.fold(0, (sum, item) => sum + item.price)}đ',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.red,
-                                ),
-                              ),],),
-                        Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              CustomButton(text: "Mua Tiếp",onPressed: () {},),
-                              CustomButton(text: "Thanh toán",onPressed: () {},),
-                          ],)
+                          child: NoteBox(
+                            hintText: "Nhập nội dung ghi chú...",
+                            onSaved: (text) {
+                              print("Nội dung ghi chú: $text");
+                            },
+                          ),
                         ),
-                      
+                        Row(
+                          children: [
+                            Text(
+                              'Tổng cộng:',
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                              selectionColor: Colors.black,
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              '${productsInCart.fold(0, (sum, item) => sum + item.price)}đ',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.normal,
+                                color: Colors.red,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                CustomButton(
+                                  text: "Mua Tiếp",
+                                  onPressed: () {},
+                                ),
+                                CustomButton(
+                                  text: "Thanh toán",
+                                  onPressed: () {
+                                    Navigator.pushNamed(context, '/Thanhtoan');
+                                  },
+                                ),
+                              ],
+                            )),
                       ],
                     ),
                     ListView(
