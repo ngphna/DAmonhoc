@@ -13,12 +13,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner:  false,
-      initialRoute: '/DangNhap',
-      routes: {
-        '/DangNhap':(context)=> DangNhap(),
-        '/DangKy':(context)=>DangKy(),
-        '/Thanhtoan':(context)=>Thanhtoan()
-      },
+      home: DangNhap(),
     );
   }
 }

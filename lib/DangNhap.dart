@@ -1,3 +1,5 @@
+import 'package:doan_hk2/DangKy.dart';
+import 'package:doan_hk2/QuenMatKhau.dart';
 import 'package:doan_hk2/trangchu.dart';
 import 'package:flutter/material.dart';
 
@@ -32,7 +34,7 @@ class DangNhapState extends State<DangNhap> {
                     color: Colors.green, // Màu chữ trắng để nổi bật trên nền
                   ),
                 ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 30),
                 TextField(
                     decoration: InputDecoration(
                       labelText: "Email",
@@ -60,17 +62,27 @@ class DangNhapState extends State<DangNhap> {
                   },
                   child: const Text("Đăng nhập"),
                 ),
-                const SizedBox(height: 10,),
+
                 TextButton(
                   onPressed: (){
-                    
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Quenmatkhau()
+                      ),
+                    );
                   }, 
                   child: Text("Quên mật khẩu ?")
                   ),
-                  const SizedBox(height: 10,),
+
                 TextButton(
                   onPressed: (){
-                    Navigator.pushNamed(context, '/DangKy');
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                        builder: (context) => DangKy()
+                        ),
+                    );
                   }, 
                   child: Text("Bạn chưa có tài khoản đăng ký tại đây ")
                   ),

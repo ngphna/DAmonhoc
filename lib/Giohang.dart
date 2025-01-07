@@ -220,12 +220,24 @@ class _GiohangState extends State<Giohang> {
                               children: [
                                 CustomButton(
                                   text: "Mua Tiếp",
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Trangchu()
+                                      ),
+                                    );
+                                  },
                                 ),
                                 CustomButton(
                                   text: "Thanh toán",
                                   onPressed: () {
-                                    Navigator.pushNamed(context, '/Thanhtoan');
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Thanhtoan()
+                                      ),
+                                    );
                                   },
                                 ),
                               ],

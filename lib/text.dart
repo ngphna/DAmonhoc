@@ -1,3 +1,4 @@
+import 'package:doan_hk2/Giohang.dart';
 import 'package:flutter/material.dart';
 
 class Thanhtoan extends StatefulWidget {
@@ -13,8 +14,22 @@ class ThanhtoanSate extends State<Thanhtoan> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.lightGreen,
-        title: Text('Fruit Paradise', style: TextStyle(color: Colors.black)),
+
         elevation: 0,
+        title: GestureDetector(
+          onTap: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Giohang(),
+              ),
+            );
+          },
+          child: Text(
+            "Fruit Paradise",
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),

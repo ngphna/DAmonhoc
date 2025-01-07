@@ -1,3 +1,4 @@
+import 'package:doan_hk2/DangNhap.dart';
 import 'package:flutter/material.dart';
 
 class DangKy extends StatefulWidget
@@ -32,7 +33,7 @@ class DangKyState extends State<DangKy>
                     color: Colors.green, // Màu chữ trắng để nổi bật trên nền
                   ),
               ),
-            const SizedBox(height: 20,),
+            const SizedBox(height: 30,),
             const TextField(
               decoration: InputDecoration(
                 labelText: "Email",
@@ -55,13 +56,25 @@ class DangKyState extends State<DangKy>
             ),
             const SizedBox(height: 20,),
             ElevatedButton(
-              onPressed: (){}, 
+              onPressed: (){
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => DangNhap()
+                  ),
+                );
+              },
               child: const Text("Đăng ký")
               ),
-            const SizedBox(height: 10,),
+
                 TextButton(
                   onPressed: (){
-                    Navigator.pushNamed(context, '/DangNhap');
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => DangNhap()
+                      ),
+                    );
                   }, 
                   child: Text("Bạn đã có tài khoản ?")
                   ),
