@@ -5,6 +5,7 @@ import 'package:doan_hk2/Giohang.dart';
 import 'package:doan_hk2/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'danhsachtraicay.dart';
 
 class Trangchu extends StatefulWidget {
   const Trangchu({super.key});
@@ -27,7 +28,7 @@ class _TrangchuState extends State<Trangchu> {
   }
 
   void _startAutoScroll() {
-    _timer = Timer.periodic(Duration(seconds: 4), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 4), (timer) {
       if (_currentPage < 2) {
         _currentPage++;
       } else {
@@ -35,7 +36,7 @@ class _TrangchuState extends State<Trangchu> {
       }
       _pageController.animateToPage(
         _currentPage,
-        duration: Duration(milliseconds: 500),
+        duration: const Duration(milliseconds: 500),
         curve: Curves.easeInOut,
       );
     });
@@ -61,7 +62,7 @@ class _TrangchuState extends State<Trangchu> {
               ),
             );
           },
-          child: Text(
+          child: const Text(
             "Fruit Paradise",
             style: TextStyle(color: Colors.black),
           ),
@@ -71,7 +72,7 @@ class _TrangchuState extends State<Trangchu> {
         actions: [
           // Thêm PopupMenuButton bên phải AppBar
           PopupMenuButton<String>(
-            icon: Icon(Icons.settings, color: Colors.white),
+            icon: const Icon(Icons.settings, color: Colors.white),
             onSelected: (value) {
               // Xử lý khi chọn menu
               if (value == "Dangxuat") {
@@ -79,7 +80,7 @@ class _TrangchuState extends State<Trangchu> {
                 showModalBottomSheet(
                   context: context,
                   isScrollControlled: true,
-                  shape: RoundedRectangleBorder(
+                  shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
                   ),
                   builder: (context) => DangNhap(),
@@ -94,11 +95,11 @@ class _TrangchuState extends State<Trangchu> {
               }
             },
             itemBuilder: (BuildContext context) => [
-              PopupMenuItem(
+              const PopupMenuItem(
                 value: "Dangxuat",
                 child: Text("Đăng xuất"),
               ),
-              PopupMenuItem(
+              const PopupMenuItem(
                 value: "cart",
                 child: Text("Giỏ hàng"),
               ),
@@ -115,12 +116,12 @@ class _TrangchuState extends State<Trangchu> {
               children: [
                 // Icon menu bên trái
                 IconButton(
-                  icon: Icon(Icons.menu, color: Colors.lightGreen),
+                  icon: const Icon(Icons.menu, color: Colors.lightGreen),
                   onPressed: () {
                     showModalBottomSheet(
                       context: context,
                       isScrollControlled: true,
-                      shape: RoundedRectangleBorder(
+                      shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
                       ),
                       builder: (context) => buildMenu(),
@@ -134,10 +135,10 @@ class _TrangchuState extends State<Trangchu> {
                       borderRadius: BorderRadius.circular(30),
                       border: Border.all(color: Colors.lightGreen),
                     ),
-                    child: Row(
+                    child: const Row(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                          padding: EdgeInsets.symmetric(horizontal: 12.0),
                           child: Icon(Icons.search, color: Colors.lightGreen),
                         ),
                         Expanded(
@@ -156,7 +157,7 @@ class _TrangchuState extends State<Trangchu> {
                 Stack(
                   children: [
                     IconButton(
-                      icon: Icon(Icons.shopping_cart_outlined, color: Colors.lightGreen),
+                      icon: const Icon(Icons.shopping_cart_outlined, color: Colors.lightGreen),
                       onPressed: () {
                         Navigator.pushReplacement(
                           context,
@@ -170,9 +171,9 @@ class _TrangchuState extends State<Trangchu> {
                 ),
               ],
             ),
-            SizedBox(height: 10,),
+            const SizedBox(height: 10,),
             Container(
-              height: 150,
+              height: 200,
               child: PageView(
                 controller: _pageController,
                 onPageChanged: (index){
@@ -181,9 +182,12 @@ class _TrangchuState extends State<Trangchu> {
                   });
                 },
                 children: [
-                  Image.asset('assets/0106_hinh-nen-4k-may-tinh33.jpg', fit: BoxFit.cover),
-                  Image.asset('assets/anime-girl-windows-11-4k-wallpaper-uhdpaper.com-320@2@b.jpg', fit: BoxFit.cover),
-                  Image.asset('assets/anime-one-piece-monkey-d-luffy-wallpaper-preview.jpg', fit: BoxFit.cover),
+                  // Image.asset('assets/0106_hinh-nen-4k-may-tinh33.jpg', fit: BoxFit.cover),
+                  // Image.asset('assets/anime-girl-windows-11-4k-wallpaper-uhdpaper.com-320@2@b.jpg', fit: BoxFit.cover),
+                  // Image.asset('assets/anime-one-piece-monkey-d-luffy-wallpaper-preview.jpg', fit: BoxFit.cover),
+                  Image.asset('assets/tải xuống.jpg', fit: BoxFit.cover),
+                  Image.asset('assets/tải xuống (3).jpg', fit: BoxFit.cover),
+                  Image.asset('assets/tải xuống (1).jpg', fit: BoxFit.cover),
                 ],
               ),
             ),
@@ -218,9 +222,11 @@ class _TrangchuState extends State<Trangchu> {
               ],
             ),
             SizedBox(height: 16),
+            ProductList(),
           ],
         ),
       ),
+      
       backgroundColor: Colors.white, // Màu nền toàn bộ màn hình
     );
   }
