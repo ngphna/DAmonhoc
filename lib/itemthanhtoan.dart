@@ -4,13 +4,15 @@ class ProductItem extends StatefulWidget {
   final String imageUrl;
   final String productName;
   final int price;
-  final Function(int quantity, int totalPrice) onQuantityChanged;
+  int quantity;
+  final ValueChanged<int> onQuantityChanged;
 
-  const ProductItem({
+  ProductItem({
     Key? key,
     required this.imageUrl,
     required this.productName,
     required this.price,
+    this.quantity = 1,
     required this.onQuantityChanged,
   }) : super(key: key);
 
@@ -19,27 +21,20 @@ class ProductItem extends StatefulWidget {
 }
 
 class _ProductItemState extends State<ProductItem> {
-  int _quantity = 1; // Số lượng mặc định ban đầu là 1
-
   void _increaseQuantity() {
     setState(() {
-      _quantity++;
+      widget.quantity++;
+      widget.onQuantityChanged(widget.quantity);
     });
-    _updateTotalPrice();
   }
 
   void _decreaseQuantity() {
-    if (_quantity > 1) {
+    if (widget.quantity > 1) {
       setState(() {
-        _quantity--;
+        widget.quantity--;
+        widget.onQuantityChanged(widget.quantity);
       });
-      _updateTotalPrice();
     }
-  }
-
-  void _updateTotalPrice() {
-    int totalPrice = _quantity * widget.price;
-    widget.onQuantityChanged(_quantity, totalPrice); // Gọi callback với số lượng và tổng tiền
   }
 
   @override
@@ -49,8 +44,8 @@ class _ProductItemState extends State<ProductItem> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
         side: BorderSide(
-          color: Colors.black.withOpacity(0.2), 
-          width: 0.5, 
+          color: Colors.black.withOpacity(0.2),
+          width: 0.5,
         ),
       ),
       elevation: 2,
@@ -98,7 +93,7 @@ class _ProductItemState extends State<ProductItem> {
                   icon: Icon(Icons.remove),
                 ),
                 Text(
-                  '$_quantity',
+                  '${widget.quantity}',
                   style: TextStyle(fontSize: 16),
                 ),
                 IconButton(

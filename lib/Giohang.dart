@@ -1,10 +1,10 @@
 import 'package:doan_hk2/itemdamua.dart';
+import 'package:doan_hk2/text.dart';
 import 'nutmau.dart';
 import 'package:flutter/material.dart';
 import 'itemthanhtoan.dart';
 import 'trangchu.dart';
 import 'hopghichu.dart';
-import 'text.dart';
 
 class Giohang extends StatefulWidget {
   @override
@@ -14,20 +14,23 @@ class Giohang extends StatefulWidget {
 class _GiohangState extends State<Giohang> {
   List<ProductItem> productsInCart = [
     ProductItem(
-        imageUrl: 'https://via.placeholder.com/150',
-        productName: "Cam Sieu Ngot",
-        price: 1,
-        onQuantityChanged: (quantity, totalPrice) {}),
+      imageUrl: 'https://via.placeholder.com/150',
+      productName: "Cam Siêu Ngọt",
+      price: 10000,
+      onQuantityChanged: (quantity) {},
+    ),
     ProductItem(
-        imageUrl: 'https://via.placeholder.com/150',
-        productName: "Táo Đỏ",
-        price: 2,
-        onQuantityChanged: (quantity, totalPrice) {}),
+      imageUrl: 'https://via.placeholder.com/150',
+      productName: "Táo Đỏ",
+      price: 20000,
+      onQuantityChanged: (quantity) {},
+    ),
     ProductItem(
-        imageUrl: 'https://via.placeholder.com/150',
-        productName: "Chuối",
-        price: 1,
-        onQuantityChanged: (quantity, totalPrice) {}),
+      imageUrl: 'https://via.placeholder.com/150',
+      productName: "Chuối",
+      price: 15000,
+      onQuantityChanged: (quantity) {},
+    ),
   ];
 
   void _removeProduct(int index) {
@@ -39,7 +42,7 @@ class _GiohangState extends State<Giohang> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2, // Số lượng tab
+      length: 4, // Số lượng tab
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.lightGreen,
@@ -117,7 +120,7 @@ class _GiohangState extends State<Giohang> {
                             shape: BoxShape.circle,
                           ),
                           child: Text(
-                            productsInCart.length.toString(),
+                            '${productsInCart.fold(0, (sum, item) => sum + (item.quantity))}',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 12,
@@ -137,6 +140,8 @@ class _GiohangState extends State<Giohang> {
                   indicatorColor: Colors.orange,
                   tabs: [
                     Tab(text: 'Chờ Thanh Toán'),
+                    Tab(text: 'Chờ Duyệt'),
+                    Tab(text: 'Đang Giao'),
                     Tab(text: 'Đã Mua'),
                   ],
                 ),
@@ -146,13 +151,6 @@ class _GiohangState extends State<Giohang> {
                   children: [
                     Column(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [],
-                          ),
-                        ),
                         SizedBox(height: 8),
                         Expanded(
                           child: ListView.builder(
@@ -161,24 +159,60 @@ class _GiohangState extends State<Giohang> {
                               return Dismissible(
                                 key: Key(productsInCart[index].productName),
                                 direction: DismissDirection.endToStart,
+                                confirmDismiss: (direction) async {
+                                  
+                                  return await showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text("Xác nhận"),
+                                        content: Text(
+                                            "Bạn có chắc chắn muốn xóa sản phẩm này?"),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop(false);
+                                            },
+                                            child: Text("Hủy"),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop(true);
+                                            },
+                                            child: Text("Xóa"),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
                                 onDismissed: (direction) {
                                   _removeProduct(index);
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content: Text(
-                                            'Đã xóa ${productsInCart[index].productName}')),
-                                  );
+                                  
                                 },
                                 background: Container(
                                   color: Colors.red,
                                   alignment: Alignment.centerRight,
                                   child: Padding(
-                                    padding: const EdgeInsets.only(right: 16.0),
-                                    child:
-                                        Icon(Icons.delete, color: Colors.white),
+                                    padding:
+                                        const EdgeInsets.only(right: 16.0),
+                                    child: Icon(Icons.delete,
+                                        color: Colors.white),
                                   ),
                                 ),
-                                child: productsInCart[index],
+                                child: ProductItem(
+                                  imageUrl: productsInCart[index].imageUrl,
+                                  productName:
+                                      productsInCart[index].productName,
+                                  price: productsInCart[index].price,
+                                  quantity: productsInCart[index].quantity,
+                                  onQuantityChanged: (newQuantity) {
+                                    setState(() {
+                                      productsInCart[index].quantity =
+                                          newQuantity;
+                                    });
+                                  },
+                                ),
                               );
                             },
                           ),
@@ -186,7 +220,7 @@ class _GiohangState extends State<Giohang> {
                         Container(
                           padding: const EdgeInsets.all(16.0),
                           child: NoteBox(
-                            hintText: "Nhập nội dung ghi chú...",
+                            hintText: "Ghi chú đơn hàng ...",
                             onSaved: (text) {
                               print("Nội dung ghi chú: $text");
                             },
@@ -198,13 +232,10 @@ class _GiohangState extends State<Giohang> {
                               'Tổng cộng:',
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.bold),
-                              selectionColor: Colors.black,
                             ),
-                            SizedBox(
-                              width: 5,
-                            ),
+                            SizedBox(width: 5),
                             Text(
-                              '${productsInCart.fold(0, (sum, item) => sum + item.price)}đ',
+                              '${productsInCart.fold(0, (sum, item) => sum + (item.price * item.quantity))}đ',
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.normal,
@@ -214,34 +245,45 @@ class _GiohangState extends State<Giohang> {
                           ],
                         ),
                         Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                CustomButton(
-                                  text: "Mua Tiếp",
-                                  onPressed: () {
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => Trangchu()
-                                      ),
-                                    );
-                                  },
-                                ),
-                                CustomButton(
-                                  text: "Thanh toán",
-                                  onPressed: () {
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => Thanhtoan()
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ],
-                            )),
+                          padding: const EdgeInsets.all(10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              CustomButton(
+                                text: "Mua Tiếp",
+                                onPressed: () {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => Trangchu(),
+                                    ),
+                                  );
+                                },
+                              ),
+                              CustomButton(
+                                text: "Thanh toán",
+                                onPressed: () {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => Thanhtoan(),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    ListView(
+                      children: [
+                        Text("Chờ Duyệt"),
+                      ],
+                    ),
+                    ListView(
+                      children: [
+                        Text("Chờ Giao"),
                       ],
                     ),
                     ListView(
@@ -253,7 +295,7 @@ class _GiohangState extends State<Giohang> {
                         ProductItemds(
                             imageUrl: 'https://via.placeholder.com/150',
                             productName: "Cam Sieu ngot",
-                            price: 2)
+                            price: 2),
                       ],
                     ),
                   ],

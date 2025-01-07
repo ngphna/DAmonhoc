@@ -1,6 +1,6 @@
 import 'package:doan_hk2/Giohang.dart';
 import 'package:flutter/material.dart';
-
+import 'nutmau.dart';
 class Thanhtoan extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => ThanhtoanSate();
@@ -99,14 +99,9 @@ class ThanhtoanSate extends State<Thanhtoan> {
             ),
             SizedBox(height: 20),
             Center(
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.lightGreen,
-                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                ),
-                child: Text('Thanh Toán', style: TextStyle(fontSize: 18)),
-              ),
+              child: CustomButton(
+                                  text: "Thanh toán",
+                                  onPressed: () {}),
             ),
           ],
         ),
