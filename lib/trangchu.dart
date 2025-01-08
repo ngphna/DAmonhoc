@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:doan_hk2/DangNhap.dart';
 import 'package:doan_hk2/Giohang.dart';
+import 'package:doan_hk2/Thongtincanhan.dart';
 import 'package:doan_hk2/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -22,8 +23,8 @@ class _TrangchuState extends State<Trangchu> {
 
   @override
   void dispose() {
-    _timer.cancel(); // Hủy Timer khi không cần thiết
-    _pageController.dispose(); // Hủy controller để giải phóng bộ nhớ
+    _timer.cancel();
+    _pageController.dispose();
     super.dispose();
   }
 
@@ -32,7 +33,7 @@ class _TrangchuState extends State<Trangchu> {
       if (_currentPage < 2) {
         _currentPage++;
       } else {
-        _currentPage = 0; // Quay lại trang đầu tiên
+        _currentPage = 0;
       }
       _pageController.animateToPage(
         _currentPage,
@@ -70,13 +71,13 @@ class _TrangchuState extends State<Trangchu> {
         backgroundColor: Colors.lightGreen,
         elevation: 0,
         actions: [
-          // Thêm PopupMenuButton bên phải AppBar
+          
           PopupMenuButton<String>(
             icon: const Icon(Icons.settings, color: Colors.white),
             onSelected: (value) {
               // Xử lý khi chọn menu
               if (value == "Dangxuat") {
-                Navigator.of(context, rootNavigator: true).pop();// đóng các modalbottomsheet để trách việc có nhiều modalbottomsheet mở cùng lúc
+                Navigator.of(context, rootNavigator: true).pop();
                 showModalBottomSheet(
                   context: context,
                   isScrollControlled: true,
@@ -85,11 +86,11 @@ class _TrangchuState extends State<Trangchu> {
                   ),
                   builder: (context) => DangNhap(),
                 );
-              } else if (value == "cart") {
+              } else if (value == "Thongtin") {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Giohang(),
+                    builder: (context) => Thongtincanhan(),
                   ),
                 );
               }
@@ -100,8 +101,8 @@ class _TrangchuState extends State<Trangchu> {
                 child: Text("Đăng xuất"),
               ),
               const PopupMenuItem(
-                value: "cart",
-                child: Text("Giỏ hàng"),
+                value: "Thongtin",
+                child: Text("Thông tin cá nhân"),
               ),
             ],
           ),
@@ -111,10 +112,8 @@ class _TrangchuState extends State<Trangchu> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Thanh tìm kiếm
             Row(
               children: [
-                // Icon menu bên trái
                 IconButton(
                   icon: const Icon(Icons.menu, color: Colors.lightGreen),
                   onPressed: () {
@@ -153,7 +152,6 @@ class _TrangchuState extends State<Trangchu> {
                     ),
                   ),
                 ),
-                // Icon giỏ hàng
                 Stack(
                   children: [
                     IconButton(
@@ -182,18 +180,15 @@ class _TrangchuState extends State<Trangchu> {
                   });
                 },
                 children: [
-                  // Image.asset('assets/0106_hinh-nen-4k-may-tinh33.jpg', fit: BoxFit.cover),
-                  // Image.asset('assets/anime-girl-windows-11-4k-wallpaper-uhdpaper.com-320@2@b.jpg', fit: BoxFit.cover),
-                  // Image.asset('assets/anime-one-piece-monkey-d-luffy-wallpaper-preview.jpg', fit: BoxFit.cover),
                   Image.asset('assets/tải xuống.jpg', fit: BoxFit.cover),
                   Image.asset('assets/tải xuống (3).jpg', fit: BoxFit.cover),
                   Image.asset('assets/tải xuống (1).jpg', fit: BoxFit.cover),
                 ],
               ),
             ),
+            SizedBox(height: 10,),
             Row(
               children: [
-                //Spacer(),
                 ElevatedButton(
                   onPressed: () {
                     // Xử lý lọc
@@ -227,7 +222,7 @@ class _TrangchuState extends State<Trangchu> {
         ),
       ),
       
-      backgroundColor: Colors.white, // Màu nền toàn bộ màn hình
+      backgroundColor: Colors.white,
     );
   }
 }
