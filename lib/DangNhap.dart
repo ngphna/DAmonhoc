@@ -52,22 +52,10 @@ class DangNhapState extends State<DangNhap> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/nen.jpg'),
-            fit: BoxFit.cover,
-          ),
-        ),
+       
         child:
-        Column(children: [
-           Text(
-                    "Đăng nhập",
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.normal,
-                      color: Colors.green,
-                    ),
-                  ),
+       
+         
         Expanded(child:
          Center(
           child: Padding(
@@ -77,7 +65,14 @@ class DangNhapState extends State<DangNhap> {
                 mainAxisAlignment: MainAxisAlignment.center,
               
                 children: [
-                  
+                    Text(
+                    "Đăng nhập",
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.normal,
+                      color: Colors.green,
+                    ),
+                  ),
                   const SizedBox(height: 30),
                   TextField(
                     controller: _usernameController,
@@ -124,7 +119,7 @@ class DangNhapState extends State<DangNhap> {
               ),
             ),
           ),
-       ), ),],)
+       ), ),
       ),
     );
   }

@@ -23,13 +23,10 @@ class _ProductListState extends State<ProductList> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 8.0,
-          mainAxisSpacing: 8.0,
-          childAspectRatio: 0.75,
-        ),
+      child: ListView.builder(
+          scrollDirection: Axis.horizontal, 
+       
+        
         itemCount: products.length,
         itemBuilder: (context, index) {
           final product = products[index];

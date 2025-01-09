@@ -14,26 +14,7 @@ class Giohang extends StatefulWidget {
 }
 
 class _GiohangState extends State<Giohang> {
-  List<ProductItem> productsInCart = [
-    ProductItem(
-      imageUrl: 'assets/tải xuống (1).jpg',
-      productName: "Cam Siêu Ngọt",
-      price: 10000,
-      onQuantityChanged: (quantity) {},
-    ),
-    ProductItem(
-      imageUrl: 'assets/tải xuống (3).jpg',
-      productName: "Táo Đỏ",
-      price: 20000,
-      onQuantityChanged: (quantity) {},
-    ),
-    ProductItem(
-      imageUrl:'assets/tải xuống.jpg',
-      productName: "Chuối",
-      price: 15000,
-      onQuantityChanged: (quantity) {},
-    ),
-  ];
+  
 
   void _removeProduct(int index) {
     setState(() {
@@ -255,6 +236,7 @@ class _GiohangState extends State<Giohang> {
                               );
                             },
                           ),
+                          
                         ),
                         Container(
                           padding: const EdgeInsets.all(16.0),

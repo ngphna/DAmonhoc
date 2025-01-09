@@ -1,6 +1,6 @@
 <?php
 $serverName = "localhost"; 
-$database = "HEALTHY";     
+$database = "shopdatabase";     
 $username = "root";        
 $password = "";            
 try {
