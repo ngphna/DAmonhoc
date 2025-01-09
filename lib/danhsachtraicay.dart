@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:doan_hk2/DangNhap.dart';
 import 'package:doan_hk2/Thongtincanhan.dart';
 import 'package:doan_hk2/trangchu.dart';
@@ -10,12 +12,12 @@ class ProductList extends StatefulWidget {
 
 class _ProductListState extends State<ProductList> {
   final List<Map<String, String>> products = [
-    {'name': 'Cam siêu ngọt', 'price': '130.000 đ', 'image': 'assets/tải xuống.jpg'},
-    {'name': 'Táo', 'price': '30.000 đ', 'image': 'assets/tải xuống (3).jpg'},
-    {'name': 'Nho', 'price': '200.000 đ', 'image': 'assets/tải xuống (1).jpg'},
-    {'name': 'Xoài thái', 'price': '25.000 đ', 'image': 'assets/tải xuống (2).jpg'},
-    {'name': 'Sầu riêng', 'price': '100.000 đ', 'image': 'assets/tải xuống (5).jpg'},
-    {'name': 'Ổi ruột hồng', 'price': '35.000 đ', 'image': 'assets/tải xuống (4).jpg'},
+    {'name': 'Cam siêu ngọt', 'price': '130.000 đ', 'image': 'assets/tải xuống.jpg','status':'Còn hàng','mota':'Cam là loại trái cây có múi giàu vitamin C, vị ngọt thanh hoặc chua nhẹ, vỏ mỏng và hương thơm dịu. Cam không chỉ giúp tăng cường hệ miễn dịch mà còn hỗ trợ làm đẹp da và bổ sung năng lượng tức thì.','soluong':'1'},
+    {'name': 'Táo', 'price': '30.000 đ', 'image': 'assets/tải xuống (3).jpg','status':'Còn hàng','mota':'Táo là loại trái cây phổ biến, có nhiều loại với màu sắc và hương vị khác nhau, từ ngọt đến chua. Táo giòn, thơm, và rất giàu chất xơ, vitamin C và chất chống oxy hóa.','soluong':'1'},
+    {'name': 'Nho', 'price': '200.000 đ', 'image': 'assets/tải xuống (1).jpg','status':'Còn hàng','mota':' Nho là trái cây nhỏ, căng mọng với nhiều màu sắc như xanh, đỏ, tím. Vị của nho ngọt đậm hoặc ngọt nhẹ kèm chút chua, mang lại cảm giác tươi mát. Nho giàu chất chống oxy hóa và cung cấp năng lượng nhanh chóng.','soluong':'1'},
+    {'name': 'Xoài thái', 'price': '25.000 đ', 'image': 'assets/tải xuống (2).jpg','status':'Còn hàng','mota':'Xoài là loại trái cây nhiệt đới được yêu thích với thịt quả mềm mịn, thơm ngọt và mọng nước. Khi chín, xoài có màu vàng rực rỡ; còn khi xanh, xoài thường chua nhẹ.','soluong':'1'},
+    {'name': 'Sầu riêng', 'price': '100.000 đ', 'image': 'assets/tải xuống (5).jpg','status':'Còn hàng','mota':' Sầu riêng được mệnh danh là "vua của các loại trái cây" nhờ hương vị độc đáo. Thịt sầu riêng mềm, béo ngậy, ngọt đậm và thơm đặc trưng.','soluong':'1'},
+    {'name': 'Ổi ruột hồng', 'price': '35.000 đ', 'image': 'assets/tải xuống (4).jpg','status':'Còn hàng','mota':'Ổi là loại trái cây quen thuộc với vị ngọt thanh, giòn và thơm mát. Ổi có thể có ruột trắng hoặc ruột hồng, chứa nhiều vitamin C, chất xơ, và ít calo, phù hợp cho người muốn giữ dáng.','soluong':'1'},
   ];
 
   @override
@@ -40,6 +42,9 @@ class _ProductListState extends State<ProductList> {
                     name: product['name']!,
                     price: product['price']!,
                     image: product['image']!,
+                    status: product['status']!,
+                    mota: product['mota']!,
+                    soluong: product['soluong']!,
                   ),
                 ),
               );
@@ -86,12 +91,18 @@ class ProductDetail extends StatefulWidget {
   final String name;
   final String price;
   final String image;
+  final String status;
+  final String mota;
+  final String soluong;
 
   const ProductDetail({
     Key? key,
     required this.name,
     required this.price,
     required this.image,
+    required this.status,
+    required this.mota,
+    required this.soluong,
   }) : super(key: key);
 
   @override
@@ -186,6 +197,55 @@ class _ProductDetailState extends State<ProductDetail> {
               style: TextStyle(fontSize: 20, color: Colors.green),
             ),
             SizedBox(height: 20),
+            Text(
+              "Trạng thái: ${widget.status}",
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 20),
+            Text(
+              'Số lượng:',
+              style: TextStyle(fontSize: 16),
+            ),
+
+            SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+
+                Expanded( // Mở rộng chiều ngang cho thanh điều chỉnh số lượng
+                  child: Container(
+                    height: 50,
+                    margin: const EdgeInsets.only(left: 10), // Thêm khoảng cách bên trái
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween, // Phân bổ đều các phần tử
+                      children: [
+                        IconButton(
+                          onPressed: () {
+
+                          },
+                          icon: const Icon(Icons.remove),
+                        ),
+                        Text(
+                          '1', // Hiển thị số lượng
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                        IconButton(
+                          onPressed: () {
+
+                          },
+                          icon: const Icon(Icons.add),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 20,),
             ElevatedButton(
               onPressed: () {
                 setState(() {
@@ -208,6 +268,11 @@ class _ProductDetailState extends State<ProductDetail> {
                 isAddedToCart ? "Đã thêm" : "Thêm vào giỏ hàng",
                 style: TextStyle(fontSize: 16),
               ),
+            ),
+            SizedBox(height: 20),
+            Text(
+              widget.mota,
+              style: TextStyle(fontSize: 18,color: Colors.black),
             ),
           ],
         ),
