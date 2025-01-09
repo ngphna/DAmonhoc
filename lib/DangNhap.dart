@@ -58,21 +58,26 @@ class DangNhapState extends State<DangNhap> {
             fit: BoxFit.cover,
           ),
         ),
-        child: Center(
+        child:
+        Column(children: [
+           Text(
+                    "Đăng nhập",
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.normal,
+                      color: Colors.green,
+                    ),
+                  ),
+        Expanded(child:
+         Center(
           child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: SingleChildScrollView(  
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
+              
                 children: [
-                  const Text(
-                    "Đăng nhập",
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.green,
-                    ),
-                  ),
+                  
                   const SizedBox(height: 30),
                   TextField(
                     controller: _usernameController,
@@ -119,7 +124,7 @@ class DangNhapState extends State<DangNhap> {
               ),
             ),
           ),
-        ),
+       ), ),],)
       ),
     );
   }

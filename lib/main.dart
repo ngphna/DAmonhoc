@@ -1,6 +1,7 @@
 import 'package:doan_hk2/DangKy.dart';
 import 'package:doan_hk2/DangNhap.dart';
 import 'package:doan_hk2/DuyetDon.dart';
+import 'package:doan_hk2/Giohang.dart';
 import 'package:doan_hk2/trangchu.dart';
 import 'package:flutter/material.dart';
 import 'package:doan_hk2/text.dart';
@@ -15,8 +16,8 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner:  false,
-      home: //DangNhap(),
-      DuyetDon()
+      home: DangNhap(),
+    
     );
   }
 }

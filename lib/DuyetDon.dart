@@ -60,7 +60,7 @@ class DuyetDonState extends State<DuyetDon>
             style: TextStyle(color: Colors.black),
           ),
         ),
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.lightGreen,
           elevation: 0,
           actions: [
 
@@ -118,17 +118,17 @@ class DuyetDonState extends State<DuyetDon>
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   ElevatedButton(
-                    onPressed: order['status'] == "Pending"
+                    onPressed: order['status'] == "Chờ Duyệt"
                         ? () => approveOrder(order['id'])
                         : null,
-                    child: Text("Approve"),
+                    child: Text("Duyệt"),
                   ),
                   SizedBox(width: 8),
                   ElevatedButton(
-                    onPressed: order['status'] == "Pending"
+                    onPressed: order['status'] == "Chờ Duyệt"
                         ? () => cancelOrder(order['id'])
                         : null,
-                    child: Text("Cancel"),
+                    child: Text("Hủy"),
                   ),
                 ],
               ),

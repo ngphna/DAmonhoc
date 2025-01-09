@@ -15,7 +15,7 @@ class DangKyState extends State<DangKy> {
   final TextEditingController _confirmPasswordController = TextEditingController();
   final LoginService _loginService = LoginService();
   bool _isLoading = false;
-
+   
 
   bool _isValidEmail(String email) {
     final RegExp regex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
@@ -90,18 +90,27 @@ class DangKyState extends State<DangKy> {
             fit: BoxFit.cover,
           ),
         ),
-        child: Center(
+        child: 
+        Column(children: [ 
+        Container(
+          
+          child: 
+        Text(
+                    "Đăng ký",
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.normal, color: Colors.green),
+                  ),
+                  ),
+                  SizedBox(height: 150,),
+        Expanded(child:
+        Center(
           child: Padding(
             padding: const EdgeInsets.all(30.0),
             child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
-                    "Đăng ký",
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.green),
-                  ),
-                  const SizedBox(height: 30),
+                 
+                  
                   // Thêm trường UserName
                   TextField(
                     controller: _usernameController,
@@ -164,7 +173,7 @@ class DangKyState extends State<DangKy> {
               ),
             ),
           ),
-        ),
+       ), ),],)
       ),
     );
   }

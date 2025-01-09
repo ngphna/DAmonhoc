@@ -16,19 +16,19 @@ class Giohang extends StatefulWidget {
 class _GiohangState extends State<Giohang> {
   List<ProductItem> productsInCart = [
     ProductItem(
-      imageUrl: 'https://via.placeholder.com/150',
+      imageUrl: 'assets/tải xuống (1).jpg',
       productName: "Cam Siêu Ngọt",
       price: 10000,
       onQuantityChanged: (quantity) {},
     ),
     ProductItem(
-      imageUrl: 'https://via.placeholder.com/150',
+      imageUrl: 'assets/tải xuống (3).jpg',
       productName: "Táo Đỏ",
       price: 20000,
       onQuantityChanged: (quantity) {},
     ),
     ProductItem(
-      imageUrl: 'https://via.placeholder.com/150',
+      imageUrl:'assets/tải xuống.jpg',
       productName: "Chuối",
       price: 15000,
       onQuantityChanged: (quantity) {},

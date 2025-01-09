@@ -55,7 +55,7 @@ class _ProductItemState extends State<ProductItem> {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: Image.network(
+              child: Image.asset(
                 widget.imageUrl,
                 width: 80,
                 height: 80,
