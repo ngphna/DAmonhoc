@@ -1,3 +1,4 @@
+import 'package:doan_hk2/nutmau.dart';
 import 'package:flutter/material.dart';
 import 'api_service.dart'; // Gọi file xử lý API PHP
 import 'package:doan_hk2/DangKy.dart';
@@ -16,6 +17,7 @@ class DangNhapState extends State<DangNhap> {
   final TextEditingController _passwordController = TextEditingController();
   final LoginService _loginService = LoginService();
   bool _isLoading = false; 
+  bool _xem=true;
 
   void _handleLogin() async {
     setState(() {
@@ -50,26 +52,19 @@ class DangNhapState extends State<DangNhap> {
     }
   }
 
+  
+
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return 
+    Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/nen.jpg'),
-            fit: BoxFit.cover,
-          ),
-        ),
+
+       
         child:
         Column(children: [
-           const Text(
-                    "Đăng nhập",
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.normal,
-                      color: Colors.green,
-                    ),
-                  ),
+       
         Expanded(child:
          Center(
           child: Padding(
@@ -79,34 +74,74 @@ class DangNhapState extends State<DangNhap> {
                 mainAxisAlignment: MainAxisAlignment.center,
               
                 children: [
+
                   
                   const SizedBox(height: 30),
+
+                   Text(
+                    "Đăng Nhập",
+                    style: TextStyle(fontSize:40, fontWeight: FontWeight.bold, color: Colors.white,),
+                  ),
+                  SizedBox(height: 5,),
+                   Container(
+                    height: 100,
+                    
+                    child: 
+                   
+                  Image.asset('assets/anh.gif'),
+                  ),
+                  SizedBox(height: 5,),
+
                   TextField(
                     controller: _usernameController,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       labelText: "Tên đăng nhập",
-                      border: OutlineInputBorder(),
+                      
+                      
+                      border: OutlineInputBorder(
+                      ),
+                      // enabledBorder: OutlineInputBorder(
+                      //   borderSide: BorderSide(color: Colors.white,)
+                      // ),
+                      // focusedBorder: OutlineInputBorder(
+                      //   borderSide:BorderSide(color: Colors.purple),
+                      // )
+                      
                     ),
                   ),
                   const SizedBox(height: 20),
                   TextField(
                     controller: _passwordController,
-                    obscureText: true,
-                    decoration: const InputDecoration(
+                    obscureText: _xem,
+                    decoration:  InputDecoration(
                       labelText: "Mật khẩu",
-                      border: OutlineInputBorder(),
+                      border: OutlineInputBorder(
+                        
+                      ),
+                      suffixIcon: IconButton(
+            icon: Icon(
+              _xem ? Icons.visibility : Icons.visibility_off,
+            ),
+            onPressed: () {
+              setState(() {
+                _xem = !_xem; // Đổi trạng thái hiển thị
+              });
+            },
+          ),
                     ),
                   ),
                   const SizedBox(height: 20),
                   _isLoading
                       ? const CircularProgressIndicator() // Hiển thị vòng quay loading
-                      : ElevatedButton(
+                      :CustomButton(
+                        text: "Đăng Nhập",
                           onPressed: _handleLogin,
-                          child: const Text("Đăng nhập"),
+                         
                         ),
+                        SizedBox(height: 10),
                   TextButton(
                     onPressed: () {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) => Quenmatkhau()),
                       );
@@ -115,7 +150,7 @@ class DangNhapState extends State<DangNhap> {
                   ),
                   TextButton(
                     onPressed: () {
-                      Navigator.push(
+                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) => DangKy()),
                       );
@@ -128,6 +163,8 @@ class DangNhapState extends State<DangNhap> {
           ),
        ), ),],)
       ),
-    );
+      backgroundColor:Color.fromRGBO(151, 214, 242, 1),
+   );
+    
   }
 }

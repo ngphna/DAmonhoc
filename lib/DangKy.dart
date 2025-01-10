@@ -1,3 +1,4 @@
+import 'package:doan_hk2/nutmau.dart';
 import 'package:flutter/material.dart';
 import 'api_service.dart';
 import 'DangNhap.dart';
@@ -85,34 +86,39 @@ class DangKyState extends State<DangKy> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+     
+
       body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/nen.jpg'),
-            fit: BoxFit.cover,
-          ),
-        ),
+       
         child: 
         Column(children: [ 
-        Container(
-          
-          child: 
-        const Text(
-                    "Đăng ký",
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.normal, color: Colors.green),
-                  ),
-                  ),
-                  const SizedBox(height: 150,),
         Expanded(child:
         Center(
           child: Padding(
-            padding: const EdgeInsets.all(30.0),
-            child: SingleChildScrollView(
+            padding: const EdgeInsets.all(20.0),
+            child:
+            
+             SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                 
-                  
+
+                    Text(
+                    "Đăng Ký",
+                    style: TextStyle(fontSize:40, fontWeight: FontWeight.bold, color: Colors.white,),
+                  ),
+                  SizedBox(height: 5,),
+                   Container(
+                    height: 100,
+                    
+                    child: 
+                   
+                  Image.asset('assets/anh.gif'),
+                  ),
+                  SizedBox(height: 5,),
+                
+                   SizedBox(height: 40),
+
                   // Thêm trường UserName
                   TextField(
                     controller: _usernameController,
@@ -143,7 +149,9 @@ class DangKyState extends State<DangKy> {
                     obscureText: true,
                     decoration: const InputDecoration(
                       labelText: "Mật khẩu",
-                      border: OutlineInputBorder(),
+                      border: OutlineInputBorder(
+                        
+                      ),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -158,10 +166,9 @@ class DangKyState extends State<DangKy> {
                   const SizedBox(height: 20),
                   _isLoading
                       ? const CircularProgressIndicator()
-                      : ElevatedButton(
-                          onPressed: _handleRegister,
-                          child: const Text("Đăng ký"),
-                        ),
+                      :CustomButton(text: "Đăng ký", onPressed: _handleRegister),
+                      
+                      
                   TextButton(
                     onPressed: () {
                       Navigator.pushReplacement(
@@ -169,7 +176,9 @@ class DangKyState extends State<DangKy> {
                         MaterialPageRoute(builder: (context) => DangNhap()),
                       );
                     },
-                    child: const Text("Bạn đã có tài khoản? Đăng nhập tại đây."),
+                    child: const Text("Bạn đã có tài khoản? Đăng nhập tại đây.",
+                    )
+                    
                   ),
                 ],
               ),
@@ -177,6 +186,7 @@ class DangKyState extends State<DangKy> {
           ),
        ), ),],)
       ),
+      backgroundColor:Color.fromRGBO(151, 214, 242, 1) ,
     );
   }
 }

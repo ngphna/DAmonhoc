@@ -108,3 +108,23 @@ class _ProductItemState extends State<ProductItem> {
     );
   }
 }
+List<ProductItem> productsInCart = [
+    ProductItem(
+      imageUrl: 'assets/Cam.jpg',
+      productName: "Cam Siêu Ngọt",
+      price: 10000,
+      onQuantityChanged: (quantity) {},
+    ),
+    ProductItem(
+      imageUrl: 'assets/TaoDo.jpg',
+      productName: "Táo Đỏ",
+      price: 20000,
+      onQuantityChanged: (quantity) {},
+    ),
+    ProductItem(
+      imageUrl:'assets/Nho.jpg',
+      productName: "Nho",
+      price: 15000,
+      onQuantityChanged: (quantity) {},
+    ),
+  ];

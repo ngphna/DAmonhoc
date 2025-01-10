@@ -7,6 +7,9 @@ import 'package:doan_hk2/trangchu.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+
+import 'api_service.dart';
+
 class ProductList extends StatefulWidget {
   const ProductList({super.key});
 
@@ -41,9 +44,12 @@ class _ProductListState extends State<ProductList> {
     }
   }
 
+
+
   @override
   Widget build(BuildContext context) {
-    if (isLoading) {
+     if (isLoading) {
+
       return const Center(child: CircularProgressIndicator());
     }
 
@@ -52,13 +58,8 @@ class _ProductListState extends State<ProductList> {
     }
 
     return Expanded(
-      child: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 8.0,
-          mainAxisSpacing: 8.0,
-          childAspectRatio: 0.75,
-        ),
+      child: ListView.builder(
+       scrollDirection: Axis.horizontal,
         itemCount: products.length,
         itemBuilder: (context, index) {
           final product = products[index];
@@ -68,7 +69,9 @@ class _ProductListState extends State<ProductList> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => ProductDetail(
-                    name: product['TenSanPham'],
+
+                     name: product['TenSanPham'],
+
                     price: product['Gia'],
                     image: product['Image'],
                     status: product['TrangThai'] ?? 'Còn hàng',
@@ -89,7 +92,9 @@ class _ProductListState extends State<ProductList> {
                     child: ClipRRect(
                       borderRadius: const BorderRadius.vertical(top: Radius.circular(8.0)),
                       child: Image.asset(
-                        product['Image'],
+
+                        product['Image']!,
+
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -97,14 +102,18 @@ class _ProductListState extends State<ProductList> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      product['TenSanPham'],
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+
+                      product['TenSanPham']!,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+
                       textAlign: TextAlign.center,
                     ),
                   ),
                   Text(
-                    product['Gia'].toString(),
-                    style: const TextStyle(color: Colors.black),
+
+                    product['Gia']!.toString(),
+                    style: TextStyle(color: Colors.black),
+
                   ),
                 ],
               ),
@@ -142,6 +151,7 @@ class _ProductDetailState extends State<ProductDetail> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       appBar: AppBar(
         title: GestureDetector(
@@ -200,7 +210,9 @@ class _ProductDetailState extends State<ProductDetail> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
+        child:
+        SingleChildScrollView(child: 
+         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 10,),
@@ -304,7 +316,7 @@ class _ProductDetailState extends State<ProductDetail> {
             ),
           ],
         ),
-      ),
+      ),),
     );
   }
 }

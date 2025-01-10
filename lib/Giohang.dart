@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'itemthanhtoan.dart';
 import 'trangchu.dart';
 import 'hopghichu.dart';
+import 'menu.dart';
 
 class Giohang extends StatefulWidget {
   const Giohang({super.key});
@@ -16,27 +17,7 @@ class Giohang extends StatefulWidget {
 }
 
 class _GiohangState extends State<Giohang> {
-  List<ProductItem> productsInCart = [
-    ProductItem(
-      imageUrl: 'assets/tải xuống (1).jpg',
-      productName: "Cam Siêu Ngọt",
-      price: 10000,
-      onQuantityChanged: (quantity) {},
-    ),
-    ProductItem(
-      imageUrl: 'assets/tải xuống (3).jpg',
-      productName: "Táo Đỏ",
-      price: 20000,
-      onQuantityChanged: (quantity) {},
-    ),
-    ProductItem(
-      imageUrl:'assets/tải xuống.jpg',
-      productName: "Chuối",
-      price: 15000,
-      onQuantityChanged: (quantity) {},
-    ),
-  ];
-
+  
   void _removeProduct(int index) {
     setState(() {
       productsInCart.removeAt(index);
@@ -110,12 +91,19 @@ class _GiohangState extends State<Giohang> {
             children: [
               Row(
                 children: [
-                  IconButton(
-                    icon: const Icon(Icons.menu, color: Colors.lightGreen),
-                    onPressed: () {
-                      // Hành động khi nhấn menu
-                    },
-                  ),
+                   IconButton(
+                  icon: const Icon(Icons.menu, color: Colors.lightGreen),
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+                      ),
+                      builder: (context) => buildMenu(),
+                    );
+                  },
+                ),
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
@@ -148,6 +136,7 @@ class _GiohangState extends State<Giohang> {
                         icon: const Icon(Icons.shopping_cart_outlined,
                             color: Colors.lightGreen),
                         onPressed: () {
+                          
                           // Hành động khi nhấn giỏ hàng
                         },
                       ),

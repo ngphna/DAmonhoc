@@ -1,12 +1,9 @@
 import 'package:doan_hk2/DangNhap.dart';
 import 'package:doan_hk2/Thongtincanhan.dart';
-import 'package:doan_hk2/trangchu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'DuyetDon.dart';
-import 'Giohang.dart';
-import 'menu.dart';
 
 class Chitietdonhang extends StatefulWidget
 {

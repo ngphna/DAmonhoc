@@ -7,6 +7,7 @@ import 'package:doan_hk2/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'danhsachtraicay.dart';
+import 'itemthanhtoan.dart';
 
 class Trangchu extends StatefulWidget {
   const Trangchu({super.key});
@@ -112,9 +113,9 @@ class _TrangchuState extends State<Trangchu> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Row(
-              children: [
-                IconButton(
+           Row(
+                children: [
+                   IconButton(
                   icon: const Icon(Icons.menu, color: Colors.lightGreen),
                   onPressed: () {
                     showModalBottomSheet(
@@ -127,48 +128,69 @@ class _TrangchuState extends State<Trangchu> {
                     );
                   },
                 ),
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(30),
-                      border: Border.all(color: Colors.lightGreen),
-                    ),
-                    child: const Row(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 12.0),
-                          child: Icon(Icons.search, color: Colors.lightGreen),
-                        ),
-                        Expanded(
-                          child: TextField(
-                            decoration: InputDecoration(
-                              hintText: 'Tìm sản phẩm',
-                              border: InputBorder.none,
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(30),
+                        border: Border.all(color: Colors.lightGreen),
+                      ),
+                      child: const Row(
+                        children: [
+                          Padding(
+                            padding:
+                                EdgeInsets.symmetric(horizontal: 12.0),
+                            child: Icon(Icons.search, color: Colors.lightGreen),
+                          ),
+                          Expanded(
+                            child: TextField(
+                              decoration: InputDecoration(
+                                hintText: 'Tìm sản phẩm',
+                                border: InputBorder.none,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                Stack(
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.shopping_cart_outlined, color: Colors.lightGreen),
-                      onPressed: () {
-                        Navigator.pushReplacement(
+                  Stack(
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.shopping_cart_outlined,
+                            color: Colors.lightGreen),
+                        onPressed: () {
+                           Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                             builder: (context) => Giohang(),
                           ),
                         );
-                      },
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                          // Hành động khi nhấn giỏ hàng
+                        },
+                      ),
+                      Positioned(
+                        right: 0,
+                        top: -2,
+                        child: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: const BoxDecoration(
+                            color: Colors.red,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Text(
+                            '${productsInCart.fold(0, (sum, item) => sum + (item.quantity))}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             const SizedBox(height: 10,),
             SizedBox(
               height: 200,

@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   http: ^1.2.2
+  
     
 
 dev_dependencies:
@@ -20,9 +21,14 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
+
+   
     - assets/Cam.jpg
-    - assets/Tao.jpg
     - assets/XoaiXanh.jpg
-    - assets/OiHong.jpg
+    - assets/Tao.jpg
+    - assets/Nho.jpg
     - assets/SauRieng.jpg
-    
+    - assets/TaoDo.jpg
+    - assets/OiHong.jpg
+    - assets/anh.gif
+
