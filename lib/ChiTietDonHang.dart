@@ -10,6 +10,8 @@ import 'menu.dart';
 
 class Chitietdonhang extends StatefulWidget
 {
+  const Chitietdonhang({super.key});
+
   @override
   State<StatefulWidget> createState() => ChitietdonhangState();
 }
@@ -82,7 +84,7 @@ class ChitietdonhangState extends State<Chitietdonhang>
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Thongtincanhan(),
+                    builder: (context) => const Thongtincanhan(),
                   ),
                 );
               }
@@ -100,7 +102,7 @@ class ChitietdonhangState extends State<Chitietdonhang>
           ),
         ],
       ),
-      body: Column(
+      body: const Column(
         children: [
           Text('Chi tiết đơn hàng',
             style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold),

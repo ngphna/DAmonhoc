@@ -8,13 +8,13 @@ class ProductItem extends StatefulWidget {
   final ValueChanged<int> onQuantityChanged;
 
   ProductItem({
-    Key? key,
+    super.key,
     required this.imageUrl,
     required this.productName,
     required this.price,
     this.quantity = 1,
     required this.onQuantityChanged,
-  }) : super(key: key);
+  });
 
   @override
   _ProductItemState createState() => _ProductItemState();
@@ -62,22 +62,22 @@ class _ProductItemState extends State<ProductItem> {
                 fit: BoxFit.cover,
               ),
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     widget.productName,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   Text(
                     'Giá: ${widget.price.toStringAsFixed(0)} đ',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 14,
                       color: Colors.orange,
                       fontWeight: FontWeight.w600,
@@ -90,15 +90,15 @@ class _ProductItemState extends State<ProductItem> {
               children: [
                 IconButton(
                   onPressed: _decreaseQuantity,
-                  icon: Icon(Icons.remove),
+                  icon: const Icon(Icons.remove),
                 ),
                 Text(
                   '${widget.quantity}',
-                  style: TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 16),
                 ),
                 IconButton(
                   onPressed: _increaseQuantity,
-                  icon: Icon(Icons.add),
+                  icon: const Icon(Icons.add),
                 ),
               ],
             ),
@@ -108,23 +108,3 @@ class _ProductItemState extends State<ProductItem> {
     );
   }
 }
-List<ProductItem> productsInCart = [
-    ProductItem(
-      imageUrl: 'assets/tải xuống (1).jpg',
-      productName: "Cam Siêu Ngọt",
-      price: 10000,
-      onQuantityChanged: (quantity) {},
-    ),
-    ProductItem(
-      imageUrl: 'assets/tải xuống (3).jpg',
-      productName: "Táo Đỏ",
-      price: 20000,
-      onQuantityChanged: (quantity) {},
-    ),
-    ProductItem(
-      imageUrl:'assets/tải xuống.jpg',
-      productName: "Chuối",
-      price: 15000,
-      onQuantityChanged: (quantity) {},
-    ),
-  ];

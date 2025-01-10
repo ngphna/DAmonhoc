@@ -10,6 +10,8 @@ import 'menu.dart';
 
 class DuyetDon extends StatefulWidget
 {
+  const DuyetDon({super.key});
+
   @override
   State<StatefulWidget> createState() => DuyetDonState();
 }
@@ -82,7 +84,7 @@ class DuyetDonState extends State<DuyetDon>
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Thongtincanhan(),
+                    builder: (context) => const Thongtincanhan(),
                   ),
                 );
               }
@@ -121,14 +123,14 @@ class DuyetDonState extends State<DuyetDon>
                     onPressed: order['status'] == "Chờ Duyệt"
                         ? () => approveOrder(order['id'])
                         : null,
-                    child: Text("Duyệt"),
+                    child: const Text("Duyệt"),
                   ),
-                  SizedBox(width: 8),
+                  const SizedBox(width: 8),
                   ElevatedButton(
                     onPressed: order['status'] == "Chờ Duyệt"
                         ? () => cancelOrder(order['id'])
                         : null,
-                    child: Text("Hủy"),
+                    child: const Text("Hủy"),
                   ),
                 ],
               ),

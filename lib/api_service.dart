@@ -40,4 +40,37 @@ class LoginService {
       return false;
     }
   }
+  //Danh mục
+  Future<List<String>> fetchCategories() async {
+    final response = await http.get(Uri.parse("${apiUrl}danhmuc.php"));
+
+    if (response.statusCode == 200) {
+      // Parse the JSON response
+      final data = json.decode(response.body);
+
+      if (data['success']) {
+        List<String> categories = List<String>.from(data['data']);
+        return categories;
+      } else {
+        throw Exception('Không thể tải danh mục');
+      }
+    } else {
+      throw Exception('Lỗi kết nối: ${response.statusCode}');
+    }
+  }
+  //Trang chủ
+  Future<List<dynamic>> fetchProducts() async {
+    try {
+      final response = await http.get(Uri.parse("${apiUrl}trangchu.php"));
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        return data['data'] ?? []; // Trả về danh sách hoặc danh sách rỗng
+      } else {
+        throw Exception("Failed to load products");
+      }
+    } catch (e) {
+      throw Exception("Error fetching products: $e");
+    }
+  }
 }

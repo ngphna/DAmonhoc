@@ -3,6 +3,8 @@ import 'package:doan_hk2/trangchu.dart';
 import 'package:flutter/material.dart';
 
 class Matkhaumoi extends StatefulWidget {
+  const Matkhaumoi({super.key});
+
   @override
   State<StatefulWidget> createState() => MatkhaumoiState();
 }
@@ -13,7 +15,7 @@ class MatkhaumoiState extends State<Matkhaumoi> {
     return Scaffold(
 
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/nen.jpg'), // Đường dẫn đến ảnh nền trong thư mục assets
             fit: BoxFit.cover, // Căng đầy màn hình
@@ -43,7 +45,7 @@ class MatkhaumoiState extends State<Matkhaumoi> {
                     color: Colors.black, // Màu chữ trắng để nổi bật trên nền
                   ),
                 ),
-                TextField(
+                const TextField(
                   decoration: InputDecoration(
                     labelText: "Mật khẩu",
                     border: OutlineInputBorder(),
@@ -59,7 +61,7 @@ class MatkhaumoiState extends State<Matkhaumoi> {
                     color: Colors.black, // Màu chữ trắng để nổi bật trên nền
                   ),
                 ),
-                TextField(
+                const TextField(
                   decoration: InputDecoration(
                     labelText: "Nhập lại mật khẩu",
                     border: OutlineInputBorder(),

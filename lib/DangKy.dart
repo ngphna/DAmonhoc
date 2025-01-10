@@ -3,6 +3,8 @@ import 'api_service.dart';
 import 'DangNhap.dart';
 
 class DangKy extends StatefulWidget {
+  const DangKy({super.key});
+
   @override
   State<StatefulWidget> createState() => DangKyState();
 }
@@ -84,8 +86,23 @@ class DangKyState extends State<DangKy> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/nen.jpg'),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: 
-       
+        Column(children: [ 
+        Container(
+          
+          child: 
+        const Text(
+                    "Đăng ký",
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.normal, color: Colors.green),
+                  ),
+                  ),
+                  const SizedBox(height: 150,),
         Expanded(child:
         Center(
           child: Padding(
@@ -95,11 +112,7 @@ class DangKyState extends State<DangKy> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                  
-                  Text(
-                    "Đăng ký",
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.normal, color: Colors.green),
-                  ),
-                   SizedBox(height: 30),
+                  
                   // Thêm trường UserName
                   TextField(
                     controller: _usernameController,
@@ -162,7 +175,7 @@ class DangKyState extends State<DangKy> {
               ),
             ),
           ),
-       ), ),
+       ), ),],)
       ),
     );
   }

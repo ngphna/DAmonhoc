@@ -7,12 +7,12 @@ class ProductItemds extends StatefulWidget {
   
 
   const ProductItemds({
-    Key? key,
+    super.key,
     required this.imageUrl,
     required this.productName,
     required this.price,
     
-  }) : super(key: key);
+  });
 
   @override
   _ProductItemStates createState() => _ProductItemStates();
@@ -27,7 +27,7 @@ class _ProductItemStates extends State<ProductItemds> {
         color: Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
-         side: BorderSide(
+         side: const BorderSide(
       color: Colors.black, // Màu viền
       width: 0.5, // Độ dày viền
     ),
@@ -48,7 +48,7 @@ class _ProductItemStates extends State<ProductItemds> {
                   fit: BoxFit.cover,
                 ),
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               // Thông tin sản phẩm
               Expanded(
                 child: Column(
@@ -56,15 +56,15 @@ class _ProductItemStates extends State<ProductItemds> {
                   children: [
                     Text(
                       widget.productName,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     Text(
                       'Giá: ${widget.price.toStringAsFixed(0)} đ',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 14,
                         color: Colors.orange,
                         fontWeight: FontWeight.w600,
@@ -77,10 +77,10 @@ class _ProductItemStates extends State<ProductItemds> {
         ElevatedButton(
   onPressed: () {},
   style: ElevatedButton.styleFrom(
-    backgroundColor: Color.fromRGBO(249, 147, 14, 1), // Màu nền của nút
+    backgroundColor: const Color.fromRGBO(249, 147, 14, 1), // Màu nền của nút
     foregroundColor: Colors.white, // Màu văn bản của nút
   ),
-  child: Text("Mua Lại"),
+  child: const Text("Mua Lại"),
 )
 
             ],

@@ -50,7 +50,7 @@ class ThongtincanhanState extends State<Thongtincanhan> {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Thongtincanhan(),
+                    builder: (context) => const Thongtincanhan(),
                   ),
                 );
               }
@@ -87,7 +87,7 @@ class ThongtincanhanState extends State<Thongtincanhan> {
           ),
           const SizedBox(height: 16),
           Container(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(8),
@@ -113,12 +113,12 @@ class ThongtincanhanState extends State<Thongtincanhan> {
                         color: Colors.green,
                       ),
                     ),
-                    SizedBox(height: 20,),
+                    const SizedBox(height: 20,),
                     IconButton(
                         onPressed: (){
                           
                         }, 
-                        icon: Icon(Icons.edit)
+                        icon: const Icon(Icons.edit)
                     ),
                   ],
                 ),
@@ -132,7 +132,7 @@ class ThongtincanhanState extends State<Thongtincanhan> {
               ],
             ),
           ),
-          Spacer(),
+          const Spacer(),
           Center(
             child: ElevatedButton(
               onPressed: () {},
@@ -161,7 +161,7 @@ class InfoRow extends StatelessWidget {
   final String label;
   final String value;
 
-  const InfoRow({
+  const InfoRow({super.key, 
     required this.icon,
     required this.label,
     required this.value,
@@ -174,7 +174,7 @@ class InfoRow extends StatelessWidget {
       child: Row(
         children: [
           Icon(icon, color: Colors.green),
-          SizedBox(width: 8),
+          const SizedBox(width: 8),
           Text(
             label,
             style: const TextStyle(fontWeight: FontWeight.bold),

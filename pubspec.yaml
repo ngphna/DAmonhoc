@@ -20,14 +20,9 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/nen.jpg
-    - assets/0106_hinh-nen-4k-may-tinh33.jpg
-    - assets/anime-girl-windows-11-4k-wallpaper-uhdpaper.com-320@2@b.jpg
-    - assets/anime-one-piece-monkey-d-luffy-wallpaper-preview.jpg
-    - assets/tải xuống.jpg
-    - assets/tải xuống (1).jpg
-    - assets/tải xuống (2).jpg
-    - assets/tải xuống (3).jpg
-    - assets/tải xuống (4).jpg
-    - assets/tải xuống (5).jpg
-    - assets/tải xuống (6).jpg
+    - assets/Cam.jpg
+    - assets/Tao.jpg
+    - assets/XoaiXanh.jpg
+    - assets/OiHong.jpg
+    - assets/SauRieng.jpg
+    

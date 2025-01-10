@@ -2,6 +2,8 @@ import 'package:doan_hk2/Giohang.dart';
 import 'package:flutter/material.dart';
 import 'nutmau.dart';
 class Thanhtoan extends StatefulWidget {
+  const Thanhtoan({super.key});
+
   @override
   State<StatefulWidget> createState() => ThanhtoanSate();
 }
@@ -25,25 +27,25 @@ class ThanhtoanSate extends State<Thanhtoan> {
               ),
             );
           },
-          child: Text(
+          child: const Text(
             "Fruit Paradise",
             style: TextStyle(color: Colors.black),
           ),
         ),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Thành Tiền: 130.000.000đ',
               style: TextStyle(color: Colors.red, fontSize: 24),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Row(
               children: [
-                Expanded(
+                const Expanded(
                   child: TextField(
                     decoration: InputDecoration(
                       hintText: 'Mã giảm giá',
@@ -51,18 +53,18 @@ class ThanhtoanSate extends State<Thanhtoan> {
                     ),
                   ),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.orange,
                   ),
-                  child: Text('Sử dụng'),
+                  child: const Text('Sử dụng'),
                 ),
               ],
             ),
-            SizedBox(height: 20),
-            Text('Thông tin giao hàng', style: TextStyle(fontSize: 20)),
+            const SizedBox(height: 20),
+            const Text('Thông tin giao hàng', style: TextStyle(fontSize: 20)),
             _buildTextField('Họ và Tên'),
             _buildTextField('Số điện Thoại'),
             _buildTextField('Email'),
@@ -70,8 +72,8 @@ class ThanhtoanSate extends State<Thanhtoan> {
             _buildTextField('Huyện'),
             _buildTextField('Xã'),
             _buildTextField('Địa Chỉ', maxLines: 3),
-            SizedBox(height: 20),
-            Text('Phương Thức Thanh Toán', style: TextStyle(fontSize: 20)),
+            const SizedBox(height: 20),
+            const Text('Phương Thức Thanh Toán', style: TextStyle(fontSize: 20)),
             Row(
               children: [
                 Radio(
@@ -83,8 +85,8 @@ class ThanhtoanSate extends State<Thanhtoan> {
                     });
                   },
                 ),
-                Text('Chuyển Khoản'),
-                SizedBox(width: 20),
+                const Text('Chuyển Khoản'),
+                const SizedBox(width: 20),
                 Radio(
                   value: 'Sau khi nhận hàng',
                   groupValue: _selectedPaymentMethod,
@@ -94,10 +96,10 @@ class ThanhtoanSate extends State<Thanhtoan> {
                     });
                   },
                 ),
-                Text('Sau khi nhận hàng'),
+                const Text('Sau khi nhận hàng'),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Center(
               child: CustomButton(
                                   text: "Thanh toán",
@@ -116,7 +118,7 @@ class ThanhtoanSate extends State<Thanhtoan> {
         maxLines: maxLines,
         decoration: InputDecoration(
           hintText: hint,
-          border: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
         ),
       ),
     );

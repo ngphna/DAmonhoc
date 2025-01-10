@@ -7,10 +7,10 @@ class NoteBox extends StatelessWidget {
   final Function(String) onSaved;
 
   const NoteBox({
-    Key? key,
+    super.key,
     required this.hintText,
     required this.onSaved,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

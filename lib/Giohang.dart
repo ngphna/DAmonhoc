@@ -9,12 +9,33 @@ import 'trangchu.dart';
 import 'hopghichu.dart';
 
 class Giohang extends StatefulWidget {
+  const Giohang({super.key});
+
   @override
   _GiohangState createState() => _GiohangState();
 }
 
 class _GiohangState extends State<Giohang> {
-  
+  List<ProductItem> productsInCart = [
+    ProductItem(
+      imageUrl: 'assets/tải xuống (1).jpg',
+      productName: "Cam Siêu Ngọt",
+      price: 10000,
+      onQuantityChanged: (quantity) {},
+    ),
+    ProductItem(
+      imageUrl: 'assets/tải xuống (3).jpg',
+      productName: "Táo Đỏ",
+      price: 20000,
+      onQuantityChanged: (quantity) {},
+    ),
+    ProductItem(
+      imageUrl:'assets/tải xuống.jpg',
+      productName: "Chuối",
+      price: 15000,
+      onQuantityChanged: (quantity) {},
+    ),
+  ];
 
   void _removeProduct(int index) {
     setState(() {
@@ -35,11 +56,11 @@ class _GiohangState extends State<Giohang> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => Trangchu(),
+                  builder: (context) => const Trangchu(),
                 ),
               );
             },
-            child: Text(
+            child: const Text(
               "Fruit Paradise",
               style: TextStyle(color: Colors.black),
             ),
@@ -65,7 +86,7 @@ class _GiohangState extends State<Giohang> {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Thongtincanhan(),
+                    builder: (context) => const Thongtincanhan(),
                   ),
                 );
               }
@@ -90,7 +111,7 @@ class _GiohangState extends State<Giohang> {
               Row(
                 children: [
                   IconButton(
-                    icon: Icon(Icons.menu, color: Colors.lightGreen),
+                    icon: const Icon(Icons.menu, color: Colors.lightGreen),
                     onPressed: () {
                       // Hành động khi nhấn menu
                     },
@@ -102,11 +123,11 @@ class _GiohangState extends State<Giohang> {
                         borderRadius: BorderRadius.circular(30),
                         border: Border.all(color: Colors.lightGreen),
                       ),
-                      child: Row(
+                      child: const Row(
                         children: [
                           Padding(
                             padding:
-                                const EdgeInsets.symmetric(horizontal: 12.0),
+                                EdgeInsets.symmetric(horizontal: 12.0),
                             child: Icon(Icons.search, color: Colors.lightGreen),
                           ),
                           Expanded(
@@ -124,7 +145,7 @@ class _GiohangState extends State<Giohang> {
                   Stack(
                     children: [
                       IconButton(
-                        icon: Icon(Icons.shopping_cart_outlined,
+                        icon: const Icon(Icons.shopping_cart_outlined,
                             color: Colors.lightGreen),
                         onPressed: () {
                           // Hành động khi nhấn giỏ hàng
@@ -134,14 +155,14 @@ class _GiohangState extends State<Giohang> {
                         right: 0,
                         top: -2,
                         child: Container(
-                          padding: EdgeInsets.all(4),
-                          decoration: BoxDecoration(
+                          padding: const EdgeInsets.all(4),
+                          decoration: const BoxDecoration(
                             color: Colors.red,
                             shape: BoxShape.circle,
                           ),
                           child: Text(
                             '${productsInCart.fold(0, (sum, item) => sum + (item.quantity))}',
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 12,
                             ),
@@ -154,7 +175,7 @@ class _GiohangState extends State<Giohang> {
               ),
               Container(
                 color: Colors.white,
-                child: TabBar(
+                child: const TabBar(
                   labelColor: Colors.orange,
                   unselectedLabelColor: Colors.black,
                   indicatorColor: Colors.orange,
@@ -171,7 +192,7 @@ class _GiohangState extends State<Giohang> {
                   children: [
                     Column(
                       children: [
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         Expanded(
                           child: ListView.builder(
                             itemCount: productsInCart.length,
@@ -185,21 +206,21 @@ class _GiohangState extends State<Giohang> {
                                     context: context,
                                     builder: (BuildContext context) {
                                       return AlertDialog(
-                                        title: Text("Xác nhận"),
-                                        content: Text(
+                                        title: const Text("Xác nhận"),
+                                        content: const Text(
                                             "Bạn có chắc chắn muốn xóa sản phẩm này?"),
                                         actions: [
                                           TextButton(
                                             onPressed: () {
                                               Navigator.of(context).pop(false);
                                             },
-                                            child: Text("Hủy"),
+                                            child: const Text("Hủy"),
                                           ),
                                           TextButton(
                                             onPressed: () {
                                               Navigator.of(context).pop(true);
                                             },
-                                            child: Text("Xóa"),
+                                            child: const Text("Xóa"),
                                           ),
                                         ],
                                       );
@@ -213,9 +234,9 @@ class _GiohangState extends State<Giohang> {
                                 background: Container(
                                   color: Colors.red,
                                   alignment: Alignment.centerRight,
-                                  child: Padding(
+                                  child: const Padding(
                                     padding:
-                                        const EdgeInsets.only(right: 16.0),
+                                        EdgeInsets.only(right: 16.0),
                                     child: Icon(Icons.delete,
                                         color: Colors.white),
                                   ),
@@ -236,7 +257,6 @@ class _GiohangState extends State<Giohang> {
                               );
                             },
                           ),
-                          
                         ),
                         Container(
                           padding: const EdgeInsets.all(16.0),
@@ -249,15 +269,15 @@ class _GiohangState extends State<Giohang> {
                         ),
                         Row(
                           children: [
-                            Text(
+                            const Text(
                               'Tổng cộng:',
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.bold),
                             ),
-                            SizedBox(width: 5),
+                            const SizedBox(width: 5),
                             Text(
                               '${productsInCart.fold(0, (sum, item) => sum + (item.price * item.quantity))}đ',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.normal,
                                 color: Colors.red,
@@ -276,7 +296,7 @@ class _GiohangState extends State<Giohang> {
                                   Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => Trangchu(),
+                                      builder: (context) => const Trangchu(),
                                     ),
                                   );
                                 },
@@ -298,17 +318,17 @@ class _GiohangState extends State<Giohang> {
                       ],
                     ),
                     ListView(
-                      children: [
+                      children: const [
                         Text("Chờ Duyệt"),
                       ],
                     ),
                     ListView(
-                      children: [
+                      children: const [
                         Text("Chờ Giao"),
                       ],
                     ),
                     ListView(
-                      children: [
+                      children: const [
                         ProductItemds(
                             imageUrl: 'https://via.placeholder.com/150',
                             productName: "Cam Sieu ngot",
