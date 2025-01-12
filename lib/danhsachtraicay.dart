@@ -125,6 +125,8 @@ class _ProductListState extends State<ProductList> {
   }
 }
 
+
+
 class ProductDetail extends StatefulWidget {
   final String name;
   final int price;
@@ -148,10 +150,35 @@ class ProductDetail extends StatefulWidget {
 }
 class _ProductDetailState extends State<ProductDetail> {
   bool isAddedToCart = false; // Biến trạng thái để kiểm tra sản phẩm đã được thêm vào giỏ hàng
+  late int currentQuantity; // Số lượng hiện tại
+  late int totalPrice; // Tổng giá trị
 
   @override
-  Widget build(BuildContext context) {
-    
+  void initState() {
+    super.initState();
+    // Khởi tạo số lượng và giá ban đầu
+    currentQuantity = widget.soluong;
+    totalPrice = widget.price * currentQuantity;
+  }
+
+  void _updateQuantity(bool isIncrement) {
+    setState(() {
+      // Nếu là tăng và số lượng > 0
+      if (isIncrement) {
+        currentQuantity++;
+      } else {
+        // Nếu là giảm nhưng số lượng phải lớn hơn 1
+        if (currentQuantity > 1) {
+          currentQuantity--;
+        }
+      }
+      // Cập nhật giá tổng khi số lượng thay đổi
+      totalPrice = widget.price * currentQuantity;
+    });
+  }
+
+  @override
+ Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: GestureDetector(
@@ -171,11 +198,9 @@ class _ProductDetailState extends State<ProductDetail> {
         backgroundColor: Colors.lightGreen,
         elevation: 0,
         actions: [
-          
           PopupMenuButton<String>(
             icon: const Icon(Icons.settings, color: Colors.white),
             onSelected: (value) {
-              // Xử lý khi chọn menu
               if (value == "Dangxuat") {
                 Navigator.of(context, rootNavigator: true).pop();
                 showModalBottomSheet(
@@ -206,117 +231,117 @@ class _ProductDetailState extends State<ProductDetail> {
               ),
             ],
           ),
-        ], // Truy cập thông tin từ widget
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child:
-        SingleChildScrollView(child: 
-         Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 10,),
-            Center(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.asset(
-                  widget.image,
-                  height: 250,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            Text(
-              widget.name,
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              "Giá: ${widget.price}",
-              style: const TextStyle(fontSize: 20, color: Colors.green),
-            ),
-            const SizedBox(height: 20),
-            Text(
-              "Trạng thái: ${widget.status}",
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Số lượng:',
-              style: TextStyle(fontSize: 16),
-            ),
-
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-
-                Expanded( // Mở rộng chiều ngang cho thanh điều chỉnh số lượng
-                  child: Container(
-                    height: 50,
-                    margin: const EdgeInsets.only(left: 10), // Thêm khoảng cách bên trái
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween, // Phân bổ đều các phần tử
-                      children: [
-                        IconButton(
-                          onPressed: () {
-
-                          },
-                          icon: const Icon(Icons.remove),
-                        ),
-                        const Text(
-                          '1', // Hiển thị số lượng
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        IconButton(
-                          onPressed: () {
-
-                          },
-                          icon: const Icon(Icons.add),
-                        ),
-                      ],
-                    ),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 10),
+              Center(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.asset(
+                    widget.image,
+                    height: 250,
+                    fit: BoxFit.cover,
                   ),
                 ),
-              ],
-            ),
-            const SizedBox(height: 20,),
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  isAddedToCart = true; // Cập nhật trạng thái
-                });
-
-                // Hiển thị thông báo
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text("Đã thêm ${widget.name} vào giỏ hàng!"),
-                    duration: const Duration(seconds: 2),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                widget.name,
+                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                "Giá mỗi sản phẩm: ${widget.price}",
+                style: const TextStyle(fontSize: 20, color: Colors.green),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                "Trạng thái: ${widget.status}",
+                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'Số lượng:',
+                style: TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Container(
+                      height: 50,
+                      margin: const EdgeInsets.only(left: 10),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                            onPressed: () => _updateQuantity(false), // Giảm số lượng
+                            icon: const Icon(Icons.remove),
+                          ),
+                          Text(
+                            '$currentQuantity', // Hiển thị số lượng hiện tại
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                          IconButton(
+                            onPressed: () => _updateQuantity(true), // Tăng số lượng
+                            icon: const Icon(Icons.add),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: isAddedToCart ? Colors.grey : Colors.orange, // Thay đổi màu khi đã thêm
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                ],
               ),
-              child: Text(
-                isAddedToCart ? "Đã thêm" : "Thêm vào giỏ hàng",
-                style: const TextStyle(fontSize: 16),
+              const SizedBox(height: 20),
+              Text(
+                "Tổng giá: $totalPrice", // Hiển thị giá tổng
+                style: const TextStyle(fontSize: 20, color: Colors.red),
               ),
-            ),
-            const SizedBox(height: 20),
-            Text(
-              widget.mota,
-              style: const TextStyle(fontSize: 18,color: Colors.black),
-            ),
-          ],
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    isAddedToCart = true;
+                  });
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text("Đã thêm ${widget.name} vào giỏ hàng!"),
+                      duration: const Duration(seconds: 2),
+                    ),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      isAddedToCart ? Colors.grey : Colors.orange,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                ),
+                child: Text(
+                  isAddedToCart ? "Đã thêm" : "Thêm vào giỏ hàng",
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                widget.mota,
+                style: const TextStyle(fontSize: 18, color: Colors.black),
+              ),
+            ],
+          ),
         ),
-      ),),
+      ),
     );
   }
 }
