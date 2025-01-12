@@ -41,6 +41,7 @@ CREATE TABLE `chitietdonhang` (
 --
 
 CREATE TABLE `danhgia` (
+
   `TaiKhoanID` varchar(15) NOT NULL,
   `SanPhamID` int(11) NOT NULL,
   `NoiDung` text DEFAULT NULL,
@@ -367,7 +368,7 @@ ALTER TABLE `danhgia`
 -- Các ràng buộc cho bảng `diachigiao`
 --
 ALTER TABLE `diachigiao`
-  ADD CONSTRAINT `diachigiao_ibfk_1` FOREIGN KEY (`TaiKhoanID`) REFERENCES `taikhoan` (`TaiKhoanID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `diachigiao_ibfk_1` FOREIGN KEY (`TaiKhoanID`) REFERENCES `taikhoan` (`TaiKhoanID`) ON DELETE CASCADE;
 
 --
 -- Các ràng buộc cho bảng `donhang`
