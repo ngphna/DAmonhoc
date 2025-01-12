@@ -41,8 +41,7 @@ CREATE TABLE `chitietdonhang` (
 --
 
 CREATE TABLE `danhgia` (
-  `DanhGiaID` int(11) NOT NULL,
-  `TaiKhoanID` int(11) NOT NULL,
+  `TaiKhoanID` varchar(15) NOT NULL,
   `SanPhamID` int(11) NOT NULL,
   `NoiDung` text DEFAULT NULL,
   `NgayDanhGia` timestamp NOT NULL DEFAULT current_timestamp()
@@ -52,10 +51,6 @@ CREATE TABLE `danhgia` (
 -- Đang đổ dữ liệu cho bảng `danhgia`
 --
 
-INSERT INTO `danhgia` (`DanhGiaID`, `TaiKhoanID`, `SanPhamID`, `NoiDung`, `NgayDanhGia`) VALUES
-(1, 1, 1, 'San pham tot!', '0000-00-00 00:00:00'),
-(2, 2, 2, 'Giao hang nhanh, san pham chat luong.', '0000-00-00 00:00:00'),
-(3, 3, 3, 'San pham dep nhung giao hang cham.', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -87,8 +82,7 @@ INSERT INTO `danhmuc` (`DanhMucID`, `TenDanhMuc`) VALUES
 --
 
 CREATE TABLE `diachigiao` (
-  `DiaChiGiaoID` int(11) NOT NULL,
-  `KhachHangID` int(11) NOT NULL,
+  `TaiKhoanID` varchar(15) NOT NULL,
   `Ten` varchar(100) DEFAULT NULL,
   `DiaChi` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -101,7 +95,7 @@ CREATE TABLE `diachigiao` (
 
 CREATE TABLE `donhang` (
   `DonHangID` int(11) NOT NULL,
-  `TaiKhoanID` int(11) NOT NULL,
+  `TaiKhoanID` varchar(15) NOT NULL,
   `KhuyenMaiID` int(11) DEFAULT NULL,
   `ThanhToanID` int(11) DEFAULT NULL,
   `DiaChiGiaoID` int(11) DEFAULT NULL,
@@ -117,8 +111,7 @@ CREATE TABLE `donhang` (
 --
 
 CREATE TABLE `giohang` (
-  `GioHangID` int(11) NOT NULL,
-  `TaiKhoanID` int(11) NOT NULL,
+ `TaiKhoanID` varchar(15) NOT NULL,
   `SanPhamID` int(11) NOT NULL,
   `SoLuong` int(11) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -127,10 +120,7 @@ CREATE TABLE `giohang` (
 -- Đang đổ dữ liệu cho bảng `giohang`
 --
 
-INSERT INTO `giohang` (`GioHangID`, `TaiKhoanID`, `SanPhamID`, `SoLuong`) VALUES
-(1, 1, 1, 2),
-(2, 2, 2, 1),
-(3, 3, 3, 5);
+
 
 -- --------------------------------------------------------
 
@@ -138,23 +128,11 @@ INSERT INTO `giohang` (`GioHangID`, `TaiKhoanID`, `SanPhamID`, `SoLuong`) VALUES
 -- Cấu trúc bảng cho bảng `khachhang`
 --
 
-CREATE TABLE `khachhang` (
-  `KhachHangID` int(11) NOT NULL,
-  `TaiKhoanID` int(11) NOT NULL,
-  `HoTen` varchar(100) NOT NULL,
-  `DiaChi` text DEFAULT NULL,
-  `NgaySinh` date DEFAULT NULL,
-  `GioiTinh` enum('Nam','Nu','Khac') DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `khachhang`
 --
 
-INSERT INTO `khachhang` (`KhachHangID`, `TaiKhoanID`, `HoTen`, `DiaChi`, `NgaySinh`, `GioiTinh`) VALUES
-(1, 1, 'Nguyen Van A', '123 Le Loi, Ha Noi', '0000-00-00', 'Nam'),
-(2, 2, 'Tran Thi B', '456 Nguyen Trai, Ho Chi Minh', '0000-00-00', 'Nu'),
-(3, 3, 'Le Van C', '789 Tran Phu, Da Nang', '0000-00-00', 'Nam');
 
 -- --------------------------------------------------------
 
@@ -194,12 +172,12 @@ CREATE TABLE `sanpham` (
 --
 
 INSERT INTO `sanpham` (`SanPhamID`, `Image`, `TenSanPham`, `Gia`, `SoLuong`, `DonVi`, `MoTa`, `TrangThai`, `DanhMucID`) VALUES
-(1, 'Cam.jpg', 'Cam ngọt', 5000000, 10, 'kg', 'Cam siêu ngọt , ngon ', '', 1),
-(2, 'Oi.jpg', 'Ổi hồng', 15000000, 5, 'kg', 'Ổi hồng ngọt, ngon', '', 2),
-(3, 'Xoai.jpg', 'Xoài xanh', 300000, 20, 'kg', 'Xoài chua chấm muối siêu giòn ngon', '', 3),
-(4, 'Cam.jpg', 'Cam ngọt', 5000000, 10, 'kg', 'Cam siêu ngọt , ngon ', '', 1),
-(5, 'Oi.jpg', 'Ổi hồng', 15000000, 5, 'kg', 'Ổi hồng ngọt, ngon', '', 2),
-(6, 'Xoai.jpg', 'Xoài xanh', 300000, 20, 'kg', 'Xoài chua chấm muối siêu giòn ngon', '', 3);
+(1, 'assets/Cam.jpg', 'Cam ngọt', 5000000, 10, 'kg', 'Cam siêu ngọt , ngon ', '', 1),
+(2, 'assets/Oi.jpg', 'Ổi hồng', 15000000, 5, 'kg', 'Ổi hồng ngọt, ngon', '', 2),
+(3, 'assets/Xoai.jpg', 'Xoài xanh', 300000, 20, 'kg', 'Xoài chua chấm muối siêu giòn ngon', '', 3),
+(4, 'assets/Cam.jpg', 'Cam ngọt', 5000000, 10, 'kg', 'Cam siêu ngọt , ngon ', '', 1),
+(5, 'assets/Oi.jpg', 'Ổi hồng', 15000000, 5, 'kg', 'Ổi hồng ngọt, ngon', '', 2),
+(6, 'assets/Xoai.jpg', 'Xoài xanh', 300000, 20, 'kg', 'Xoài chua chấm muối siêu giòn ngon', '', 3);
 
 -- --------------------------------------------------------
 
@@ -208,23 +186,20 @@ INSERT INTO `sanpham` (`SanPhamID`, `Image`, `TenSanPham`, `Gia`, `SoLuong`, `Do
 --
 
 CREATE TABLE `taikhoan` (
-  `TaiKhoanID` int(11) NOT NULL,
-  `TenDangNhap` varchar(50) NOT NULL,
-  `MatKhau` varchar(255) NOT NULL,
-  `Email` varchar(100) NOT NULL,
-  `SoDienThoai` varchar(15) DEFAULT NULL,
-  `NgayTao` date DEFAULT NULL
+    `TaiKhoanID` VARCHAR(15) NOT NULL PRIMARY KEY, -- Khóa chính
+    `MatKhau` VARCHAR(255) NOT NULL,               -- Mật khẩu (có thể mã hóa bằng các phương pháp bảo mật)
+    `HoTen` VARCHAR(100) NOT NULL,                -- Họ tên
+    `Email` VARCHAR(100) DEFAULT NULL,         -- Email (đảm bảo duy nhất)
+    `SoDienThoai` VARCHAR(15) DEFAULT NULL,       -- Số điện thoại (cho phép NULL)
+    `DiaChi` TEXT DEFAULT NULL,                   -- Địa chỉ (cho phép NULL)
+    `NgaySinh` DATE DEFAULT NULL,                 -- Ngày sinh (cho phép NULL)
+    `GioiTinh` ENUM('Nam', 'Nu', 'Khac') DEFAULT NULL, -- Giới tính (cho phép NULL)
+    `NgayTao` DATE DEFAULT CURRENT_DATE           -- Ngày tạo (mặc định là ngày hiện tại)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `taikhoan`
 --
-
-INSERT INTO `taikhoan` (`TaiKhoanID`, `TenDangNhap`, `MatKhau`, `Email`, `SoDienThoai`, `NgayTao`) VALUES
-(1, 'user1', '*668425423DB5193AF921380129F465A6425216D0', 'user1@example.com', '0123456789', NULL),
-(2, 'user2', '*DC52755F3C09F5923046BD42AFA76BD1D80DF2E9', 'user2@example.com', '0987654321', NULL),
-(3, 'user3', '*40C3E7D386A2FADBDF69ACEBE7AA4DC3C723D798', 'user3@example.com', '0112233445', NULL),
-(7, 'thuc', '$2y$10$eHABAaXS12l26QRmY66lXuHp0ZHDSfyLW8cy4Y2YuVAIcZJ26hy2e', 'thuc@gmail.com', '09876', NULL);
 
 -- --------------------------------------------------------
 
@@ -254,7 +229,6 @@ ALTER TABLE `chitietdonhang`
 -- Chỉ mục cho bảng `danhgia`
 --
 ALTER TABLE `danhgia`
-  ADD PRIMARY KEY (`DanhGiaID`),
   ADD KEY `TaiKhoanID` (`TaiKhoanID`),
   ADD KEY `SanPhamID` (`SanPhamID`);
 
@@ -268,8 +242,7 @@ ALTER TABLE `danhmuc`
 -- Chỉ mục cho bảng `diachigiao`
 --
 ALTER TABLE `diachigiao`
-  ADD PRIMARY KEY (`DiaChiGiaoID`),
-  ADD KEY `KhachHangID` (`KhachHangID`);
+  ADD KEY `TaiKhoanID` (`TaiKhoanID`);
 
 --
 -- Chỉ mục cho bảng `donhang`
@@ -282,15 +255,11 @@ ALTER TABLE `donhang`
 -- Chỉ mục cho bảng `giohang`
 --
 ALTER TABLE `giohang`
-  ADD PRIMARY KEY (`GioHangID`),
   ADD KEY `TaiKhoanID` (`TaiKhoanID`);
 
 --
 -- Chỉ mục cho bảng `khachhang`
 --
-ALTER TABLE `khachhang`
-  ADD PRIMARY KEY (`KhachHangID`),
-  ADD KEY `TaiKhoanID` (`TaiKhoanID`);
 
 --
 -- Chỉ mục cho bảng `khuyenmai`
@@ -308,8 +277,6 @@ ALTER TABLE `sanpham`
 --
 -- Chỉ mục cho bảng `taikhoan`
 --
-ALTER TABLE `taikhoan`
-  ADD PRIMARY KEY (`TaiKhoanID`);
 
 --
 -- Chỉ mục cho bảng `thanhtoan`
@@ -330,8 +297,6 @@ ALTER TABLE `chitietdonhang`
 --
 -- AUTO_INCREMENT cho bảng `danhgia`
 --
-ALTER TABLE `danhgia`
-  MODIFY `DanhGiaID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT cho bảng `danhmuc`
@@ -342,8 +307,6 @@ ALTER TABLE `danhmuc`
 --
 -- AUTO_INCREMENT cho bảng `diachigiao`
 --
-ALTER TABLE `diachigiao`
-  MODIFY `DiaChiGiaoID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT cho bảng `donhang`
@@ -354,14 +317,10 @@ ALTER TABLE `donhang`
 --
 -- AUTO_INCREMENT cho bảng `giohang`
 --
-ALTER TABLE `giohang`
-  MODIFY `GioHangID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT cho bảng `khachhang`
 --
-ALTER TABLE `khachhang`
-  MODIFY `KhachHangID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT cho bảng `khuyenmai`
@@ -378,8 +337,7 @@ ALTER TABLE `sanpham`
 --
 -- AUTO_INCREMENT cho bảng `taikhoan`
 --
-ALTER TABLE `taikhoan`
-  MODIFY `TaiKhoanID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
 
 --
 -- AUTO_INCREMENT cho bảng `thanhtoan`
@@ -409,7 +367,7 @@ ALTER TABLE `danhgia`
 -- Các ràng buộc cho bảng `diachigiao`
 --
 ALTER TABLE `diachigiao`
-  ADD CONSTRAINT `diachigiao_ibfk_1` FOREIGN KEY (`KhachHangID`) REFERENCES `khachhang` (`KhachHangID`) ON DELETE CASCADE;
+  ADD CONSTRAINT `diachigiao_ibfk_1` FOREIGN KEY (`TaiKhoanID`) REFERENCES `taikhoan` (`TaiKhoanID`) ON DELETE CASCADE,
 
 --
 -- Các ràng buộc cho bảng `donhang`
@@ -426,8 +384,6 @@ ALTER TABLE `giohang`
 --
 -- Các ràng buộc cho bảng `khachhang`
 --
-ALTER TABLE `khachhang`
-  ADD CONSTRAINT `khachhang_ibfk_1` FOREIGN KEY (`TaiKhoanID`) REFERENCES `taikhoan` (`TaiKhoanID`) ON DELETE CASCADE;
 
 --
 -- Các ràng buộc cho bảng `sanpham`

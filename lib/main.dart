@@ -1,3 +1,4 @@
+import 'package:doan_hk2/DangKy.dart';
 import 'package:doan_hk2/DangNhap.dart';
 
 import 'package:doan_hk2/DuyetDon.dart';
@@ -17,8 +18,8 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner:  false,
-      home: //DangNhap(),
-      Trangchu(),
+      home: DangNhap(),
+    
     
     );
   }

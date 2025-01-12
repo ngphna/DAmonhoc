@@ -7,7 +7,7 @@ header('Access-Control-Allow-Headers: Content-Type');
 
 $data = json_decode(file_get_contents("php://input"));
 
-if (!isset($data->username) || !isset($data->password) || !isset($data->email) || !isset($data->phone)) {
+if (!isset($data->username) || !isset($data->password) || !isset($data->email) || !isset($data->name)) {
     echo json_encode(["success" => false, "message" => "Thiếu thông tin!"]);
     exit();
 }
@@ -15,11 +15,11 @@ if (!isset($data->username) || !isset($data->password) || !isset($data->email) |
 $username = $data->username;
 $password = password_hash($data->password, PASSWORD_BCRYPT); // Mã hóa mật khẩu bằng bcrypt
 $email = $data->email;
-$phone = $data->phone;
+$name = $data->name;
 
 try {
-    $stmt = $conn->prepare("INSERT INTO TaiKhoan (TenDangNhap, MatKhau, Email, SoDienThoai) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("ssss", $username, $password, $email, $phone);
+    $stmt = $conn->prepare("INSERT INTO TaiKhoan (TaiKhoanID, MatKhau, HoTen, Email) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param($username, $password, $name, $email);
 
     if ($stmt->execute()) {
         echo json_encode(["success" => true, "message" => "Đăng ký thành công!"]);

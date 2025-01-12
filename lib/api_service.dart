@@ -21,7 +21,7 @@ class LoginService {
   }
 
   // Đăng ký
-   Future<bool> register(String username, String password, String email, String phone) async {
+   Future<bool> register(String username, String password, String email, String name) async {
     final response = await http.post(
       Uri.parse("${apiUrl}register.php"),
       headers: {"Content-Type": "application/json"},
@@ -29,7 +29,7 @@ class LoginService {
         "username": username,
         "password": password,
         "email": email,
-        "phone": phone
+        "name": name
       }),
     );
     
