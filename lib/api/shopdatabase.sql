@@ -43,7 +43,7 @@ CREATE TABLE `chitietdonhang` (
 CREATE TABLE `danhgia` (
   `DanhGiaID` int(11) NOT NULL,
   `SanPhamID` int(11) NOT NULL,
-  `TenDangNhap` varchar (50) NOT NULL,
+  `TenDangNhap` varchar (50)  DEFAULT NULL,
   `NoiDung` text DEFAULT NULL,
   `NgayDanhGia` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -52,12 +52,6 @@ CREATE TABLE `danhgia` (
 -- Đang đổ dữ liệu cho bảng `danhgia`
 --
 
-INSERT INTO `danhgia` (`DanhGiaID`,TenDangNhap, `SanPhamID`, `NoiDung`, `NgayDanhGia`) VALUES
-(1, 'tuan', 1, 'San pham tot!', '0000-00-00 00:00:00'),
-(2,'thuc', 'Giao hang nhanh, san pham chat luong.', '0000-00-00 00:00:00'),
-(3,'nam', 'San pham dep nhung giao hang cham.', '0000-00-00 00:00:00');
-
--- --------------------------------------------------------
 
 --
 -- Cấu trúc bảng cho bảng `danhmuc`
@@ -88,10 +82,10 @@ INSERT INTO `danhmuc` (`DanhMucID`, `TenDanhMuc`) VALUES
 
 CREATE TABLE `diachigiao` (
   `DiaChiGiaoID` int(11) NOT NULL,
-  `KhachHangID` int(11) NOT NULL,
+  `TenDangNhap` VARCHAR (50) NOT NULL,
   `Ten` varchar(100) DEFAULT NULL,
-  `SDT` varchar (10) NOT NULL,
-  `DiaChi` text NOT NULL
+  `SDT` varchar (10) DEFAULT NULL,
+  `DiaChi` text  DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -127,40 +121,12 @@ CREATE TABLE `giohang` (
 -- Đang đổ dữ liệu cho bảng `giohang`
 --
 
-INSERT INTO `giohang` (TenDangNhap, `SanPhamID`, `SoLuong`) VALUES
-('tuan', 1, 2),
-('thuc', 2, 1),
-('nam', 3, 5);
 
 -- --------------------------------------------------------
 
---
--- Cấu trúc bảng cho bảng `khachhang`
---
 
-CREATE TABLE `khachhang` (
-  `KhachHangID` int(11) NOT NULL,
-  `TenDangNhap` varchar (50) NOT NULL,
-  `HoTen` varchar(100) NOT NULL,
-  `DiaChi` text DEFAULT NULL,
-  `NgaySinh` date DEFAULT NULL,
-  `GioiTinh` enum('Nam','Nu','Khac') DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Đang đổ dữ liệu cho bảng `khachhang`
---
 
-INSERT INTO `khachhang` (`KhachHangID`, `TenDangNhap`, `HoTen`, `DiaChi`, `NgaySinh`, `GioiTinh`) VALUES
-(1, 'tuan', 'Nguyen Van A', '123 Le Loi, Ha Noi', '0000-00-00', 'Nam'),
-(2, 'thuc', 'Tran Thi B', '456 Nguyen Trai, Ho Chi Minh', '0000-00-00', 'Nu'),
-(3,'nam', 'Le Van C', '789 Tran Phu, Da Nang', '0000-00-00', 'Nam');
-
--- --------------------------------------------------------
-
---
--- Cấu trúc bảng cho bảng `khuyenmai`
---
 
 CREATE TABLE `khuyenmai` (
   `KhuyenMaiID` int(11) NOT NULL,
@@ -193,15 +159,34 @@ CREATE TABLE `sanpham` (
 -- Đang đổ dữ liệu cho bảng `sanpham`
 --
 
-INSERT INTO `sanpham` (`SanPhamID`, `Image`, `TenSanPham`, `Gia`,`SoLuong`, `DonVi`, `MoTa`, `TrangThai`, `DanhMucID`) VALUES
-(1, 'Cam.jpg', 'Cam ngọt', 5000000, , 'kg', 'Cam siêu ngọt , ngon ', '', 1),
-(2, 'Oi.jpg', 'Ổi hồng', 15000000, , 'kg', 'Ổi hồng ngọt, ngon', '', 2),
-(3, 'Xoai.jpg', 'Xoài xanh', 300000, ,'kg', 'Xoài chua chấm muối siêu giòn ngon', '', 3),
-(4, 'Cam.jpg', 'Cam ngọt', 5000000, ,'kg', 'Cam siêu ngọt , ngon ', '', 1),
-(5, 'Oi.jpg', 'Ổi hồng', 15000000, ,'kg', 'Ổi hồng ngọt, ngon', '', 2),
-(6, 'Xoai.jpg', 'Xoài xanh', 300000, ,'kg', 'Xoài chua chấm muối siêu giòn ngon', '', 3);
+INSERT INTO `sanpham` (`SanPhamID`, `Image`, `TenSanPham`, `Gia`, `SoLuong`, `DonVi`, `MoTa`, `TrangThai`, `DanhMucID`) 
+VALUES
+(1, 'assets/TaoDo.jpg', 'Táo đỏ', 50000, 1, 'kg', 'Táo đỏ nhập khẩu', 'ConHang', 1),
+(2, 'assets/banane.jpg', 'Chuối tiêu', 20000, 1, 'nải', 'Chuối tiêu sạch', 'ConHang', 1),
+(3, 'assets/Cam.jpg', 'Cam sành', 30000, 1, 'kg', 'Cam sành từ miền Tây', 'ConHang', 1),
+(4, 'assets/Nho.jpg', 'Nho Mỹ', 120000, 1, 'kg', 'Nho Mỹ nhập khẩu', 'HetHang', 1),
+(5, 'assets/XoaiXanh.jpg', 'Xoài cát', 40000, 1, 'kg', 'Xoài cát chín tự nhiên', 'ConHang', 1),
+(6, 'assets/SauRieng.jpg', 'Sầu Riêng', 100000, 1, 'kg', 'Sầu một mình cũng được', 'ConHang', 1),
+(7, 'assets/TaoDo.jpg', 'Táo đỏ Trung Quốc', 50000, 1, 'kg', 'Táo đỏ nhập khẩu', 'ConHang', 6),
+(8, 'assets/banane.jpg', 'Chuối tiêu Trung Quốc', 20000, 1, 'nải', 'Chuối tiêu sạch', 'ConHang', 6),
+(9, 'assets/Cam.jpg', 'Cam sành Trung Quốc', 30000, 1, 'kg', 'Cam sành từ miền Tây', 'ConHang', 6),
+(10, 'assets/Nho.jpg', 'Nho Trung Quốc', 120000, 1, 'kg', 'Nho Mỹ nhập khẩu', 'HetHang', 6),
+(11, 'assets/XoaiXanh.jpg', 'Xoài cát Trung Quốc', 40000, 1, 'kg', 'Xoài cát chín tự nhiên', 'ConHang', 6),
+(12, 'assets/SauRieng.jpg', 'Sầu Riêng Trung Quốc', 100000, 1, 'kg', 'Sầu một mình cũng được', 'ConHang', 6),
+(13, 'assets/TaoDo.jpg', 'Táo đỏ Mọng Nước', 50000, 1, 'kg', 'Táo đỏ nhập khẩu', 'ConHang', 2),
+(14, 'assets/banane.jpg', 'Chuối tiêu Mọng Nước', 20000, 1, 'nải', 'Chuối tiêu sạch', 'ConHang', 2),
+(15, 'assets/Cam.jpg', 'Cam sành Mọng Nước', 30000, 1, 'kg', 'Cam sành từ miền Tây', 'ConHang', 2),
+(16, 'assets/Nho.jpg', 'Nho Mọng Nước', 120000, 1, 'kg', 'Nho Mỹ nhập khẩu', 'HetHang', 2),
+(17, 'assets/XoaiXanh.jpg', 'Xoài cát Mọng Nước', 40000, 1, 'kg', 'Xoài cát chín tự nhiên', 'ConHang', 2),
+(18, 'assets/SauRieng.jpg', 'Sầu Riêng Siêu Ngọt', 100000, 1, 'kg', 'Sầu một mình cũng được', 'ConHang', 2),
+(19, 'assets/TaoDo.jpg', 'Táo đỏ Thái Lan', 50000, 1, 'kg', 'Táo đỏ nhập khẩu', 'ConHang', 3),
+(20, 'assets/banane.jpg', 'Chuối tiêu Thái Lan', 30000, 1, 'nải', 'Chuối tiêu sạch', 'ConHang', 3),
+(21, 'assets/Cam.jpg', 'Cam sành Thái Lan', 30000, 1, 'kg', 'Cam sành từ miền Tây', 'ConHang', 3),
+(22, 'assets/Nho.jpg', 'Nho Thái Lan', 130000, 1, 'kg', 'Nho Mỹ nhập khẩu', 'HetHang', 3),
+(23, 'assets/XoaiXanh.jpg', 'Xoài cát Thái Lan', 40000, 1, 'kg', 'Xoài cát chín tự nhiên', 'ConHang', 3),
+(24, 'assets/SauRieng.jpg', 'Sầu Riêng Siêu Ngọt', 100000, 1, 'kg', 'Sầu một mình cũng được', 'ConHang', 3);
 
--- --------------------------------------------------------
+
 
 --
 -- Cấu trúc bảng cho bảng `taikhoan`
@@ -212,6 +197,10 @@ CREATE TABLE `taikhoan` (
   `MatKhau` varchar(255) NOT NULL,
   `Email` varchar(100) NOT NULL,
   `SoDienThoai` varchar(15) DEFAULT NULL,
+  `HoTen` varchar(100) NOT NULL,
+  `DiaChi` text DEFAULT NULL,
+  `NgaySinh` date DEFAULT NULL,
+  `GioiTinh` enum('Nam','Nu','Khac') DEFAULT NULL,
   `NgayTao` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -268,7 +257,7 @@ ALTER TABLE `danhmuc`
 --
 ALTER TABLE `diachigiao`
   ADD PRIMARY KEY (`DiaChiGiaoID`),
-  ADD KEY `KhachHangID` (`KhachHangID`);
+  ADD KEY `TenDangNhap` (`TenDangNhap`);
 
 --
 -- Chỉ mục cho bảng `donhang`
@@ -284,16 +273,7 @@ ALTER TABLE `giohang`
   ADD PRIMARY KEY (`TenDangNhap`),
   ADD KEY `TenDangNhap` (`TenDangNhap`);
 
---
--- Chỉ mục cho bảng `khachhang`
---
-ALTER TABLE `khachhang`
-  ADD PRIMARY KEY (`KhachHangID`),
-  ADD KEY `TenDangNhap` (`TenDangNhap`);
 
---
--- Chỉ mục cho bảng `khuyenmai`
---
 ALTER TABLE `khuyenmai`
   ADD PRIMARY KEY (`KhuyenMaiID`);
 
@@ -316,13 +296,7 @@ ALTER TABLE `taikhoan`
 ALTER TABLE `thanhtoan`
   ADD PRIMARY KEY (`ThanhToanID`);
 
---
--- AUTO_INCREMENT cho các bảng đã đổ
---
 
---
--- AUTO_INCREMENT cho bảng `chitietdonhang`
---
 ALTER TABLE `chitietdonhang`
   MODIFY `ChiTietID` int(11) NOT NULL AUTO_INCREMENT;
 
@@ -358,8 +332,6 @@ ALTER TABLE `donhang`
 --
 -- AUTO_INCREMENT cho bảng `khachhang`
 --
-ALTER TABLE `khachhang`
-  MODIFY `KhachHangID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT cho bảng `khuyenmai`
@@ -406,7 +378,7 @@ ALTER TABLE `danhgia`
 -- Các ràng buộc cho bảng `diachigiao`
 --
 ALTER TABLE `diachigiao`
-  ADD CONSTRAINT `diachigiao_ibfk_1` FOREIGN KEY (`KhachHangID`) REFERENCES `khachhang` (`KhachHangID`) ON DELETE CASCADE;
+  ADD CONSTRAINT `diachigiao_ibfk_1` FOREIGN KEY (`TenDangNhap`) REFERENCES `taikhoan` (`TenDangNhap`) ON DELETE CASCADE;
 
 --
 -- Các ràng buộc cho bảng `donhang`
@@ -419,13 +391,6 @@ ALTER TABLE `donhang`
 --
 ALTER TABLE `giohang`
   ADD CONSTRAINT `giohang_ibfk_1` FOREIGN KEY (`TenDangNhap`) REFERENCES `taikhoan` (`TenDangNhap`) ON DELETE CASCADE;
-
---
--- Các ràng buộc cho bảng `khachhang`
---
-ALTER TABLE `khachhang`
-  ADD CONSTRAINT `khachhang_ibfk_1` FOREIGN KEY (`TenDangNhap`) REFERENCES `taikhoan` (`TenDangNhap`) ON DELETE CASCADE;
-
 --
 -- Các ràng buộc cho bảng `sanpham`
 --

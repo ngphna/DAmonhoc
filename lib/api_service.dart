@@ -60,18 +60,26 @@ class LoginService {
     }
   }
   //Trang chủ
-  Future<List<dynamic>> fetchProducts() async {
-    try {
-      final response = await http.get(Uri.parse("${apiUrl}trangchu.php"));
+  Future<List<dynamic>> fetchProducts(int danhMucId) async {
+  try {
+    // Gửi yêu cầu GET tới API với tham số DanhMucID
+    final response = await http.get(Uri.parse("${apiUrl}trangchu.php?DanhMucID=$danhMucId"));
 
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        return data['data'] ?? []; // Trả về danh sách hoặc danh sách rỗng
+    // Kiểm tra mã trạng thái HTTP
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+
+      // Kiểm tra nếu API trả về dữ liệu hợp lệ
+      if (data['success'] == true) {
+        return data['data'] ?? []; // Trả về danh sách sản phẩm hoặc danh sách rỗng
       } else {
-        throw Exception("Failed to load products");
+        throw Exception(data['message'] ?? "Không có sản phẩm nào!");
       }
-    } catch (e) {
-      throw Exception("Error fetching products: $e");
+    } else {
+      throw Exception("Failed to load products: ${response.statusCode}");
     }
+  } catch (e) {
+    // Xử lý lỗi khi gặp vấn đề trong quá trình fetch dữ liệu
+    throw Exception("Error fetching products: $e");
   }
-}
+}}

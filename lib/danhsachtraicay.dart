@@ -11,7 +11,9 @@ import 'package:http/http.dart' as http;
 import 'api_service.dart';
 
 class ProductList extends StatefulWidget {
-  const ProductList({super.key});
+  final int danhMucId; // Thêm tham số danhMucId vào constructor
+
+  const ProductList({super.key, required this.danhMucId}); // Nhận danhMucId từ constructor
 
   @override
   _ProductListState createState() => _ProductListState();
@@ -21,17 +23,20 @@ class _ProductListState extends State<ProductList> {
   List<dynamic> products = [];
   bool isLoading = true;
   final loginService = LoginService();
+
   @override
   void initState() {
     super.initState();
-    fetchProducts();
+    // Gọi phương thức fetchProducts và truyền vào danhMucId từ widget
+    fetchProducts(widget.danhMucId);
   }
 
-  Future<void> fetchProducts() async {
+  Future<void> fetchProducts(int danhMucId) async {
     try {
-      final fetchedProducts = await loginService.fetchProducts();
+      final fetchedProducts = await loginService.fetchProducts(danhMucId);
+
       setState(() {
-        products = fetchedProducts;
+        products = fetchedProducts.isNotEmpty ? fetchedProducts : [];
         isLoading = false;
       });
     } catch (e) {
@@ -44,12 +49,9 @@ class _ProductListState extends State<ProductList> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-     if (isLoading) {
-
+    if (isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
 
@@ -57,9 +59,11 @@ class _ProductListState extends State<ProductList> {
       return const Center(child: Text("Không có sản phẩm nào!"));
     }
 
-    return Expanded(
+    return 
+    
+    Expanded(
       child: ListView.builder(
-       scrollDirection: Axis.horizontal,
+        scrollDirection: Axis.horizontal,
         itemCount: products.length,
         itemBuilder: (context, index) {
           final product = products[index];
@@ -69,9 +73,8 @@ class _ProductListState extends State<ProductList> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => ProductDetail(
-
-                     name: product['TenSanPham'],
-
+                    name: product['TenSanPham'],
+                    
                     price: product['Gia'],
                     image: product['Image'],
                     status: product['TrangThai'] ?? 'Còn hàng',
@@ -81,7 +84,10 @@ class _ProductListState extends State<ProductList> {
                 ),
               );
             },
-            child: Card(
+            child:
+            
+            
+             Card(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0),
               ),
@@ -125,8 +131,6 @@ class _ProductListState extends State<ProductList> {
   }
 }
 
-
-
 class ProductDetail extends StatefulWidget {
   final String name;
   final int price;
@@ -134,6 +138,7 @@ class ProductDetail extends StatefulWidget {
   final String status;
   final String mota;
   final int soluong;
+  
 
   const ProductDetail({
     super.key,
@@ -143,6 +148,7 @@ class ProductDetail extends StatefulWidget {
     required this.status,
     required this.mota,
     required this.soluong,
+
   });
 
   @override
