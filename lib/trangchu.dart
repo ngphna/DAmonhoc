@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:doan_hk2/TrangTimKiem.dart';
+import 'package:doan_hk2/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:doan_hk2/DangNhap.dart';
 import 'package:doan_hk2/Giohang.dart';
@@ -16,6 +18,34 @@ class Trangchu extends StatefulWidget {
 }
 
 class _TrangchuState extends State<Trangchu> {
+  //Tìm kiếm sản phẩm
+  final TextEditingController tk_sp = TextEditingController();
+  
+  //Hàm tìm kiếm sản phẩm
+  void TK_SanPham() async {
+  final searchQuery = tk_sp.text.trim();
+  
+  if (searchQuery.isEmpty) {
+    // Nếu không có từ khóa tìm kiếm
+    return;
+  }
+
+  try {
+    // Gọi API để tìm kiếm sản phẩm theo tên
+    List<dynamic> searchResults = await LoginService().tkSanPham(searchQuery);
+
+    // Chuyển đến trang tìm kiếm kết quả
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TrangTimKiem(searchResults: searchResults),
+      ),
+    );
+  } catch (e) {
+    // Xử lý lỗi nếu không tìm thấy hoặc có vấn đề khi gọi API
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Lỗi: $e")));
+  }
+}
   final PageController _pageController = PageController();
   
   
@@ -103,18 +133,22 @@ class _TrangchuState extends State<Trangchu> {
                   borderRadius: BorderRadius.circular(30),
                   border: Border.all(color: Colors.lightGreen),
                 ),
-                child: const Row(
+                child: Row(
                   children: [
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 12.0),
                       child: Icon(Icons.search, color: Colors.lightGreen),
                     ),
                     Expanded(
                       child: TextField(
-                        decoration: InputDecoration(
+                        controller: tk_sp,
+                        decoration: const InputDecoration(
                           hintText: 'Tìm sản phẩm',
                           border: InputBorder.none,
                         ),
+                        onSubmitted: (_) {
+                          TK_SanPham(); // Gọi hàm tìm kiếm khi nhấn Enter
+                        },
                       ),
                     ),
                   ],
@@ -217,3 +251,4 @@ class _TrangchuState extends State<Trangchu> {
     );
   }
 }
+

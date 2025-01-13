@@ -82,4 +82,30 @@ class LoginService {
     // Xử lý lỗi khi gặp vấn đề trong quá trình fetch dữ liệu
     throw Exception("Error fetching products: $e");
   }
-}}
+}
+// Tìm kiếm sản phẩm theo tên
+Future<List<dynamic>> tkSanPham(String name) async {
+  try {
+    // Gửi yêu cầu GET tới API với tham số tìm kiếm 'search'
+    final response = await http.get(Uri.parse('${apiUrl}timkiemSP.php?search=$name'));
+
+    // Kiểm tra mã trạng thái HTTP
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+
+      // Kiểm tra nếu API trả về dữ liệu hợp lệ
+      if (data['success'] == true) {
+        return data['data'] ?? []; // Trả về danh sách sản phẩm hoặc danh sách rỗng
+      } else {
+        throw Exception(data['message'] ?? "Không có sản phẩm nào phù hợp với tên '$name'.");
+      }
+    } else {
+      throw Exception("Failed to load products: ${response.statusCode}");
+    }
+  } catch (e) {
+    // Xử lý lỗi khi gặp vấn đề trong quá trình fetch dữ liệu
+    throw Exception("Error fetching products: $e");
+  }
+}
+
+}
