@@ -1,3 +1,7 @@
+import 'dart:ui';
+
+import 'package:doan_hk2/Loaddanhmucsp.dart';
+import 'package:doan_hk2/SoSanh.dart';
 import 'package:flutter/material.dart';
 import 'package:doan_hk2/api_service.dart';
 
@@ -26,7 +30,7 @@ Widget buildMenu() {
               ),
               const Divider(color: Colors.green),
               for (var category in categories)
-                buildMenuItem(category),
+                buildMenuItem(category,context),
             ],
           );
         }
@@ -35,11 +39,14 @@ Widget buildMenu() {
   );
 }
 
-Widget buildMenuItem(String title) {
+Widget buildMenuItem(String title,BuildContext context) {
   return InkWell(
     onTap: () {
+      Navigator.pop(context);
       // Xử lý sự kiện khi chọn item menu
       print("Bạn chọn $title");
+      int danhmucid = Sosanh(title);
+      Navigator.push(context, MaterialPageRoute(builder: (context)=>Loaddanhmucsp(danhmucid: danhmucid)));
     },
     child: Padding(
       padding: const EdgeInsets.symmetric(vertical: 12.0),
