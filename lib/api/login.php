@@ -16,7 +16,7 @@ $username = $data->username;
 $password = $data->password;
 
 try {
-    $stmt = $conn->prepare("SELECT MatKhau FROM TaiKhoan WHERE TaiKhoanID = ?");
+    $stmt = $conn->prepare("SELECT MatKhau FROM TaiKhoan WHERE TenDangNhap = ?");
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $result = $stmt->get_result();

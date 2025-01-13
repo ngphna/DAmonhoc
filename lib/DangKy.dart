@@ -13,7 +13,7 @@ class DangKy extends StatefulWidget {
 class DangKyState extends State<DangKy> {
   final TextEditingController _usernameController = TextEditingController(); 
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
   final LoginService _loginService = LoginService();
@@ -28,7 +28,7 @@ class DangKyState extends State<DangKy> {
   void _handleRegister() async {
     if (_usernameController.text.isEmpty ||
         _emailController.text.isEmpty ||
-        _nameController.text.isEmpty ||
+        _phoneController.text.isEmpty ||
         _passwordController.text.isEmpty ||
         _confirmPasswordController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -59,7 +59,7 @@ class DangKyState extends State<DangKy> {
       _usernameController.text.trim(),
       _passwordController.text.trim(),
       _emailController.text.trim(),
-      _nameController.text.trim(),
+      _phoneController.text.trim(),
     );
 
     setState(() {
@@ -150,9 +150,9 @@ class DangKyState extends State<DangKy> {
                   const SizedBox(height: 20),
                   
                   TextField(
-                    controller: _nameController,
+                    controller: _phoneController,
                     decoration: const InputDecoration(
-                      labelText: "Họ Và Tên",
+                      labelText: "Số Điện Thoại",
                       border: OutlineInputBorder(),
                     ),
                   ),
