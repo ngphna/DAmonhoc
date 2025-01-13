@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:doan_hk2/DangNhap.dart';
 import 'package:doan_hk2/Thongtincanhan.dart';
 import 'package:doan_hk2/api_service.dart';
+import 'package:doan_hk2/hopghichu.dart';
 import 'package:doan_hk2/trangchu.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
@@ -59,10 +60,7 @@ class _ProductListState extends State<ProductList> {
       return const Center(child: Text("Không có sản phẩm nào!"));
     }
 
-    return 
-    
-    Expanded(
-      child: ListView.builder(
+    return ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: products.length,
         itemBuilder: (context, index) {
@@ -110,23 +108,28 @@ class _ProductListState extends State<ProductList> {
                     child: Text(
 
                       product['TenSanPham']!,
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(fontWeight: FontWeight.w100,fontSize:20),
 
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  Text(
-
+                  Row(children:
+                  
+                   [
+                    Text(
                     product['Gia']!.toString(),
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(color: Colors.orange,fontSize:20),),
+                    SizedBox(width: 2,),
+                    Text("đ",style: TextStyle(fontWeight: FontWeight.w100,color: Colors.orange,fontSize:20),),
 
-                  ),
+                  ],)
+                  
                 ],
               ),
             ),
           );
         },
-      ),
+      
     );
   }
 }
@@ -166,7 +169,7 @@ class _ProductDetailState extends State<ProductDetail> {
     currentQuantity = widget.soluong;
     totalPrice = widget.price * currentQuantity;
   }
-
+  
   void _updateQuantity(bool isIncrement) {
     setState(() {
       // Nếu là tăng và số lượng > 0
@@ -182,6 +185,14 @@ class _ProductDetailState extends State<ProductDetail> {
       totalPrice = widget.price * currentQuantity;
     });
   }
+   String trangthai(String value) {
+    if(value=="ConHang"){
+      return "Còn Hàng";
+    }
+    else{
+      return "Hết Hàng";
+    }
+   }
 
   @override
  Widget build(BuildContext context) {
@@ -249,6 +260,7 @@ class _ProductDetailState extends State<ProductDetail> {
               Center(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
+                  
                   child: Image.asset(
                     widget.image,
                     height: 250,
@@ -257,20 +269,22 @@ class _ProductDetailState extends State<ProductDetail> {
                 ),
               ),
               const SizedBox(height: 20),
+              Center(child: 
               Text(
                 widget.name,
                 style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
+              ),),
               const SizedBox(height: 10),
               Text(
-                "Giá mỗi sản phẩm: ${widget.price}",
-                style: const TextStyle(fontSize: 20, color: Colors.green),
+                "Giá: ${widget.price} đ",
+                style: const TextStyle(fontSize: 20, color: Colors.orange,),
               ),
               const SizedBox(height: 20),
-              Text(
-                "Trạng thái: ${widget.status}",
-                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
+              Row(children: [Text(
+                "Trạng thái: ${trangthai(widget.status)}",
+                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold,color: Colors.lightGreen),
+              ),],),
+              
               const SizedBox(height: 20),
               const Text(
                 'Số lượng:',
@@ -311,10 +325,18 @@ class _ProductDetailState extends State<ProductDetail> {
               ),
               const SizedBox(height: 20),
               Text(
-                "Tổng giá: $totalPrice", // Hiển thị giá tổng
+                "Tổng giá: $totalPrice đ", // Hiển thị giá tổng
                 style: const TextStyle(fontSize: 20, color: Colors.red),
               ),
               const SizedBox(height: 20),
+              Text(
+                
+               "Mô Tả: ${widget.mota}" ,
+                style: const TextStyle(fontSize: 20, color: Colors.grey),
+                softWrap: true,
+              ), 
+              const SizedBox(height: 20),
+              Center(child: 
               ElevatedButton(
                 onPressed: () {
                   setState(() {
@@ -330,24 +352,24 @@ class _ProductDetailState extends State<ProductDetail> {
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor:
-                      isAddedToCart ? Colors.grey : Colors.orange,
+                      isAddedToCart ? Colors.grey : Colors.lightGreen,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 ),
                 child: Text(
                   isAddedToCart ? "Đã thêm" : "Thêm vào giỏ hàng",
-                  style: const TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 16,color: Colors.white),
                 ),
-              ),
+              ),),
               const SizedBox(height: 20),
-              Text(
-                widget.mota,
-                style: const TextStyle(fontSize: 18, color: Colors.black),
-              ),
+              
+             
+              
             ],
           ),
         ),
       ),
+      backgroundColor: Colors.white,
     );
   }
 }
