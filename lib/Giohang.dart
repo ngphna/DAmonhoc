@@ -1,7 +1,7 @@
 import 'package:doan_hk2/DangNhap.dart';
 import 'package:doan_hk2/Thongtincanhan.dart';
 import 'package:doan_hk2/itemdamua.dart';
-import 'package:doan_hk2/text.dart';
+import 'package:doan_hk2/ThanhToan.dart';
 import 'nutmau.dart';
 import 'package:flutter/material.dart';
 import 'itemthanhtoan.dart';

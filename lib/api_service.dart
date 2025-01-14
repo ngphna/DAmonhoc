@@ -1,11 +1,12 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginService {
   final String apiUrl = "http://localhost/api/";
 
   // Đăng nhập
-  Future<bool> login(String username, String password) async {
+ Future<bool> login(String username, String password) async {
     final response = await http.post(
       Uri.parse("${apiUrl}login.php"),
       headers: {"Content-Type": "application/json"},
@@ -14,13 +15,72 @@ class LoginService {
 
     if (response.statusCode == 200) {
       final responseData = jsonDecode(response.body);
-      return responseData['success'];
+      if (responseData['success']) {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('TenDangNhap', username);
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // Đăng xuất
+  Future<void> logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('TenDangNhap');
+  }
+
+  // Lấy thông tin người dùng dựa theo TenDangNhap
+  Future<Map<String, dynamic>?> fetchCurrentUserInfo() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? username = prefs.getString('TenDangNhap');
+    if (username == null) return null;
+
+    final response = await http.post(
+      Uri.parse("${apiUrl}thongtincanhan.php"),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({"username": username}),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      if (data['success']) {
+        return data['data'];
+      } else {
+        throw Exception(data['message']);
+      }
     } else {
-      return false;
+      throw Exception("Lỗi server: ${response.statusCode}");
     }
   }
 
-  // Đăng ký
+  // Cập nhật thông tin cá nhân theo TenDangNhap
+  Future<void> updateUserInfo(Map<String, dynamic> updatedInfo) async {
+    final prefs = await SharedPreferences.getInstance();
+    String? username = prefs.getString('TenDangNhap');
+
+    if (username == null || username.isEmpty) {
+      throw Exception("Thiếu username. Vui lòng đăng nhập lại.");
+    }
+
+    updatedInfo['username'] = username;
+
+    final response = await http.post(
+      Uri.parse("${apiUrl}thongtincanhan.php"),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode(updatedInfo),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      if (!data['success']) {
+        throw Exception("Cập nhật thất bại: ${data['message']}");
+      }
+    } else {
+      throw Exception("Lỗi server: ${response.statusCode}");
+    }
+  }
+
   // Đăng ký
    Future<bool> register(String username, String password, String email, String phone) async {
     final response = await http.post(
