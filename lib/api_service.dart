@@ -1,7 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'product_item_model.dart';
 class LoginService {
   final String apiUrl = "http://localhost/api/";
 
@@ -167,5 +167,64 @@ Future<List<dynamic>> tkSanPham(String name) async {
     throw Exception("Error fetching products: $e");
   }
 }
+ // Lấy giỏ hàng từ server theo TenDangNhap
+ // Hàm fetchProductInfo trả về dữ liệu từ API
+  Future<Map<String, dynamic>> fetchProductInfo() async {
+    try {
+      final response = await http.post(
+        Uri.parse('${apiUrl}giohang.php'),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({"SanPhamID": 1}),  // Thay đổi ID theo sản phẩm cần lấy
+      );
 
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        if (responseData['success'] == true) {
+          return responseData['data'];
+        } else {
+          throw Exception("Lỗi từ server: ${responseData['message']}");
+        }
+      } else {
+        throw Exception("Lỗi server: ${response.statusCode}");
+      }
+    } catch (error) {
+      throw Exception("Lỗi kết nối: $error");
+    }
+  }
+  Future<List<ProductItemModel>> fetchCartProducts() async {
+  final prefs = await SharedPreferences.getInstance();
+  String? username = prefs.getString('TenDangNhap');
+
+  if (username == null || username.isEmpty) {
+    throw Exception("Lỗi: Người dùng chưa đăng nhập hoặc thiếu TenDangNhap.");
+  }
+
+  try {
+    final response = await http.post(
+      Uri.parse("${apiUrl}giohang.php"),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({"TenDangNhap": username}),
+    );
+
+    if (response.statusCode == 200) {
+      final responseData = jsonDecode(response.body);
+      if (responseData['success']) {
+        return (responseData['data'] as List).map((item) {
+          return ProductItemModel(
+            imageUrl: item['Image'],
+            productName: item['TenSanPham'],
+            price: item['Gia'],
+            quantity: item['SoLuong'],
+          );
+        }).toList();
+      } else {
+        throw Exception("Không có sản phẩm trong giỏ hàng.");
+      }
+    } else {
+      throw Exception("Lỗi server: Mã trạng thái ${response.statusCode}");
+    }
+  } catch (e) {
+    throw Exception("Lỗi kết nối hoặc xử lý dữ liệu: $e");
+  }
+}
 }

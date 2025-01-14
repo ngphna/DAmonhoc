@@ -4,7 +4,6 @@ import 'package:doan_hk2/Thongtincanhan.dart';
 import 'package:doan_hk2/api_service.dart';
 import 'package:doan_hk2/trangchu.dart';
 import 'package:flutter/material.dart';
-import 'dart:ffi';
 import "TrangTimKiem.dart";
 import 'Giohang.dart';
 import 'menu.dart';
@@ -350,13 +349,13 @@ final TextEditingController tk_sp = TextEditingController();
                       color: Colors.red,
                       shape: BoxShape.circle,
                     ),
-                    child: Text(
-                      '${productsInCart.fold(0, (sum, item) => sum + (item.quantity))}',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                      ),
-                    ),
+                    // child: Text(
+                    //   '${productsInCart.fold(0, (sum, item) => sum + (item.quantity))}',
+                    //   style: const TextStyle(
+                    //     color: Colors.white,
+                    //     fontSize: 12,
+                    //   ),
+                    // ),
                   ),
                 ),
               ],

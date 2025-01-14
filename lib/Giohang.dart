@@ -10,6 +10,7 @@ import 'hopghichu.dart';
 import 'menu.dart';
 import 'TrangTimKiem.dart';
 import 'api_service.dart';
+import 'product_item_model.dart';
 
 class Giohang extends StatefulWidget {
   const Giohang({super.key});
@@ -20,6 +21,28 @@ class Giohang extends StatefulWidget {
 
 class _GiohangState extends State<Giohang> {
   final TextEditingController tk_sp = TextEditingController();
+    List<ProductItemModel> productsInCart = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCartProducts();
+  }
+
+  void _loadCartProducts() async {
+  try {
+    List<ProductItemModel> loadedProducts = await LoginService().fetchCartProducts();
+    setState(() {
+      productsInCart = loadedProducts;
+    });
+  } catch (e) {
+    // Hiển thị thông báo lỗi chi tiết
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text("Lỗi khi tải giỏ hàng: $e"),
+      backgroundColor: Colors.red,
+    ));
+  }
+}
   
   //Hàm tìm kiếm sản phẩm
   void TK_SanPham() async {
@@ -51,7 +74,7 @@ class _GiohangState extends State<Giohang> {
   
   void _removeProduct(int index) {
     setState(() {
-      productsInCart.removeAt(index);
+      //productsInCart.removeAt(index);
     });
   }
 
@@ -266,15 +289,10 @@ class _GiohangState extends State<Giohang> {
                                   ),
                                 ),
                                 child: ProductItem(
-                                  imageUrl: productsInCart[index].imageUrl,
-                                  productName:
-                                      productsInCart[index].productName,
-                                  price: productsInCart[index].price,
-                                  quantity: productsInCart[index].quantity,
-                                  onQuantityChanged: (newQuantity) {
-                                    setState(() {
-                                      productsInCart[index].quantity =
-                                          newQuantity;
+                                    product: productsInCart[index],
+                                    onQuantityChanged: (newQuantity) {
+                                 setState(() {
+                                     productsInCart[index].quantity = newQuantity;
                                     });
                                   },
                                 ),

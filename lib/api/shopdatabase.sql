@@ -112,9 +112,9 @@ CREATE TABLE `donhang` (
 --
 
 CREATE TABLE `giohang` (
-  `TenDangNhap` varchar (50) NOT NULL,
-  `SanPhamID` int(11) NOT NULL,
-  `SoLuong` int(11) DEFAULT 1
+  `TenDangNhap` varchar (50) DEFAULT NULL,
+  `SanPhamID` int(11) DEFAULT NULL,
+  `SoLuong` int(11) DEFAULT NULL 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -263,7 +263,6 @@ ALTER TABLE `diachigiao`
 -- Chỉ mục cho bảng `donhang`
 --
 ALTER TABLE `donhang`
-  ADD PRIMARY KEY (`DonHangID`),
   ADD KEY `TenDangNhap` (`TenDangNhap`);
 
 --

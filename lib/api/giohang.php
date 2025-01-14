@@ -1,16 +1,51 @@
 <?php
-require 'config.php';
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Content-Type: application/json");
+
+
+include 'config.php';
+
+// Đặt kiểu trả về JSON
 header('Content-Type: application/json');
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET');
-header('Access-Control-Allow-Headers: Content-Type');
+
+$data = json_decode(file_get_contents('php://input'), true);
+$tenDangNhap = $data['TenDangNhap'] ?? null;
+
+$response = array();
+
+if (!$tenDangNhap) {
+    echo json_encode(["success" => false, "message" => "Thiếu TenDangNhap trong yêu cầu."]);
+    exit();
+}
 
 try {
-    $stmt = $conn->prepare("SELECT SanPhamID,Soluong FROM GioHang WHERE GioHang.TenDangNhap == TaiKhoan.TenDangNhap");
+    // Truy vấn SQL an toàn
+    $query = "SELECT gh.SanPhamID, gh.SoLuong, sp.Image, sp.TenSanPham, sp.Gia 
+              FROM giohang gh 
+              JOIN sanpham sp ON gh.SanPhamID = sp.SanPhamID 
+              WHERE gh.TenDangNhap = ?";
+              
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("s", $tenDangNhap);
     $stmt->execute();
     $result = $stmt->get_result();
-    
-} catch (mysqli_sql_exception $e) {
-    
+
+    if ($result->num_rows > 0) {
+        $response['success'] = true;
+        $response['data'] = [];
+        while ($row = $result->fetch_assoc()) {
+            $response['data'][] = $row;
+        }
+    } else {
+        $response['success'] = false;
+        $response['message'] = "Không có sản phẩm nào trong giỏ hàng.";
+    }
+} catch (Exception $e) {
+    $response['success'] = false;
+    $response['message'] = "Lỗi khi truy vấn cơ sở dữ liệu: " . $e->getMessage();
 }
+
+echo json_encode($response);
 ?>

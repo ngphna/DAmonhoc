@@ -177,13 +177,13 @@ class _TrangchuState extends State<Trangchu> {
                       color: Colors.red,
                       shape: BoxShape.circle,
                     ),
-                    child: Text(
-                      '${productsInCart.fold(0, (sum, item) => sum + (item.quantity))}',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                      ),
-                    ),
+                    // child: Text(
+                    //   '${productsInCart.fold(0, (sum, item) => sum + (item.quantity))}',
+                    //   style: const TextStyle(
+                    //     color: Colors.white,
+                    //     fontSize: 12,
+                    //   ),
+                    // ),
                   ),
                 ),
               ],
