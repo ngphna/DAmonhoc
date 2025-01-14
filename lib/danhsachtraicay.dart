@@ -1,15 +1,14 @@
-import 'dart:ffi';
 
 import 'package:doan_hk2/DangNhap.dart';
 import 'package:doan_hk2/Thongtincanhan.dart';
 import 'package:doan_hk2/api_service.dart';
-import 'package:doan_hk2/hopghichu.dart';
 import 'package:doan_hk2/trangchu.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import "TrangTimKiem.dart";
+import 'Giohang.dart';
+import 'menu.dart';
+import 'itemthanhtoan.dart';
 
-import 'api_service.dart';
 
 class ProductList extends StatefulWidget {
   final int danhMucId; // Thêm tham số danhMucId vào constructor
@@ -67,6 +66,7 @@ class _ProductListState extends State<ProductList> {
           final product = products[index];
           return GestureDetector(
             onTap: () {
+              Navigator.pop(context);
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -161,7 +161,33 @@ class _ProductDetailState extends State<ProductDetail> {
   bool isAddedToCart = false; // Biến trạng thái để kiểm tra sản phẩm đã được thêm vào giỏ hàng
   late int currentQuantity; // Số lượng hiện tại
   late int totalPrice; // Tổng giá trị
+final TextEditingController tk_sp = TextEditingController();
+  
+  //Hàm tìm kiếm sản phẩm
+  void TK_SanPham() async {
+  final searchQuery = tk_sp.text.trim();
+  
+  if (searchQuery.isEmpty) {
+    // Nếu không có từ khóa tìm kiếm
+    return;
+  }
 
+  try {
+    // Gọi API để tìm kiếm sản phẩm theo tên
+    List<dynamic> searchResults = await LoginService().tkSanPham(searchQuery);
+
+    // Chuyển đến trang tìm kiếm kết quả
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TrangTimKiem(searchResults: searchResults),
+      ),
+    );
+  } catch (e) {
+    // Xử lý lỗi nếu không tìm thấy hoặc có vấn đề khi gọi API
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Lỗi: $e")));
+  }
+}
   @override
   void initState() {
     super.initState();
@@ -254,8 +280,88 @@ class _ProductDetailState extends State<ProductDetail> {
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
+            
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+               Row(
+          children: [
+            IconButton(
+              icon: const Icon(Icons.menu, color: Colors.lightGreen),
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+                  ),
+                  builder: (context) => buildMenu(),
+                );
+              },
+            ),
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(30),
+                  border: Border.all(color: Colors.lightGreen),
+                ),
+                child: Row(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 12.0),
+                      child: Icon(Icons.search, color: Colors.lightGreen),
+                    ),
+                    Expanded(
+                      child: TextField(
+                        controller: tk_sp,
+                        decoration: const InputDecoration(
+                          hintText: 'Tìm sản phẩm',
+                          border: InputBorder.none,
+                        ),
+                        onSubmitted: (_) {
+                          TK_SanPham(); // Gọi hàm tìm kiếm khi nhấn Enter
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Stack(
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.shopping_cart_outlined, color: Colors.lightGreen),
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Giohang(),
+                      ),
+                    );
+                  },
+                ),
+                Positioned(
+                  right: 0,
+                  top: -2,
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: const BoxDecoration(
+                      color: Colors.red,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Text(
+                      '${productsInCart.fold(0, (sum, item) => sum + (item.quantity))}',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
               const SizedBox(height: 10),
               Center(
                 child: ClipRRect(

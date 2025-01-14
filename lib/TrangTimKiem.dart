@@ -1,6 +1,6 @@
 // trangtimkiem.dart
 import 'package:flutter/material.dart';
-
+import 'danhsachtraicay.dart';
 class TrangTimKiem extends StatelessWidget {
   final List<dynamic> searchResults;
 
@@ -24,7 +24,20 @@ class TrangTimKiem extends StatelessWidget {
                   subtitle: Text('Giá: ${product['Gia']}'),
                   leading: Image.asset(product['Image']),
                   onTap: () {
-                    // Bạn có thể thêm hành động khi người dùng chọn sản phẩm
+                      Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProductDetail(
+                    name: product['TenSanPham'],
+                    
+                    price: product['Gia'],
+                    image: product['Image'],
+                    status: product['TrangThai'] ?? 'Còn hàng',
+                    mota: product['MoTa'] ?? 'Không có mô tả',
+                    soluong: product['SoLuong'] ?? '1',
+                  ),
+                ),);
                   },
                 );
               },

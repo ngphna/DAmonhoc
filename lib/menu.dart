@@ -1,7 +1,8 @@
 import 'dart:ui';
 
-import 'package:doan_hk2/Loaddanhmucsp.dart';
+
 import 'package:doan_hk2/SoSanh.dart';
+import 'package:doan_hk2/danhsachtraicay.dart';
 import 'package:flutter/material.dart';
 import 'package:doan_hk2/api_service.dart';
 
@@ -43,10 +44,30 @@ Widget buildMenuItem(String title,BuildContext context) {
   return InkWell(
     onTap: () {
       Navigator.pop(context);
-      // Xử lý sự kiện khi chọn item menu
-      print("Bạn chọn $title");
       int danhmucid = Sosanh(title);
-      Navigator.push(context, MaterialPageRoute(builder: (context)=>Loaddanhmucsp(danhmucid: danhmucid)));
+     showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title, style:TextStyle(color:Colors.lightGreen),),
+          content: Container(
+            width: double.maxFinite,
+            child:SizedBox(
+          height: 200,
+          child: ProductList(danhMucId: danhmucid),
+        ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Đóng dialog
+              },
+              child: Text('Đóng'),
+            ),
+          ],
+        );
+      },
+    );
     },
     child: Padding(
       padding: const EdgeInsets.symmetric(vertical: 12.0),

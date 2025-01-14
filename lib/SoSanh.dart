@@ -3,7 +3,7 @@ int Sosanh(String title) {
 
   if (title == "Trái cây Việt Nam") {
     iddanhmuc = 1;
-  } else if (title == "Trái cây Nhiệt Đới") {
+  } else if (title == "Trái cây Nhiệt đới") {
     iddanhmuc = 2;
   } else if (title == "Trái cây Thái Lan") {
     iddanhmuc = 3;
