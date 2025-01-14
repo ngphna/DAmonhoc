@@ -23,7 +23,11 @@ class LoginService {
     }
     return false;
   }
-
+  // Lấy TenDangNhap từ SharedPreferences
+  Future<String?> getUsername() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('TenDangNhap');
+  }
   // Đăng xuất
   Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
@@ -227,4 +231,45 @@ Future<List<dynamic>> tkSanPham(String name) async {
     throw Exception("Lỗi kết nối hoặc xử lý dữ liệu: $e");
   }
 }
+//Thêm vào giỏ hàng
+Future<void> themGioHang(String username, int productId, int quantity) async {
+  final url = Uri.parse('${apiUrl}themgiohang.php');
+
+  try {
+    // Thực hiện gửi yêu cầu POST
+    final response = await http.post(
+      url,
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({
+        'TenDangNhap': username,  // Không cần mã hóa tên đăng nhập
+        'SanPhamID': productId,
+        'SoLuong': quantity,
+      }),
+    );
+
+    // Kiểm tra mã trạng thái HTTP
+    if (response.statusCode == 200) {
+      try {
+        // Giải mã JSON từ phản hồi
+        final data = jsonDecode(response.body);
+        
+        // Kiểm tra trạng thái của API
+        if (data['status'] == 'success') {
+          print('Thêm sản phẩm vào giỏ hàng thành công: ${data['message']}');
+        } else {
+          print('Lỗi khi thêm sản phẩm: ${data['message']}');
+        }
+      } catch (e) {
+        print("Lỗi khi giải mã JSON: $e");
+      }
+    } else {
+      // Xử lý các mã lỗi HTTP khác (không phải 200 OK)
+      print('Lỗi HTTP: ${response.statusCode}');
+    }
+  } catch (e) {
+    // Xử lý lỗi nếu không thể kết nối với API
+    print("Lỗi kết nối: $e");
+  }
+}
+
 }
