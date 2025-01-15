@@ -1,4 +1,6 @@
 import 'package:doan_hk2/DangNhap.dart';
+import 'package:doan_hk2/DonHangChoXacNhan.dart';
+import 'package:doan_hk2/DonHangDaXacNhan.dart';
 import 'package:doan_hk2/Thongtincanhan.dart';
 import 'package:doan_hk2/itemdamua.dart';
 import 'package:doan_hk2/ThanhToan.dart';
@@ -404,13 +406,35 @@ class _GiohangState extends State<Giohang> {
                       ],
                     ),
                     ListView(
-                      children: const [
-                        Text("Chờ Duyệt"),
+                      children: [
+                         // Màn hình đơn hàng
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Danh sách đơn hàng:',
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 400, // Giới hạn chiều cao
+                          child: DonHangChoXacNhan(),
+                        ),
                       ],
                     ),
                     ListView(
-                      children: const [
-                        Text("Chờ Giao"),
+                      children: [
+                        // Màn hình đơn hàng
+                        const Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Danh sách đơn hàng:',
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 400, // Giới hạn chiều cao
+                          child: DonHangDaXacNhan(),
+                        ),
                       ],
                     ),
                     ListView(
