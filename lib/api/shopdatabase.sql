@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th1 09, 2025 lúc 05:41 PM
+-- Thời gian đã tạo: Th1 14, 2025 lúc 07:09 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -43,15 +43,12 @@ CREATE TABLE `chitietdonhang` (
 CREATE TABLE `danhgia` (
   `DanhGiaID` int(11) NOT NULL,
   `SanPhamID` int(11) NOT NULL,
-  `TenDangNhap` varchar (50)  DEFAULT NULL,
+  `TenDangNhap` varchar(50) DEFAULT NULL,
   `NoiDung` text DEFAULT NULL,
   `NgayDanhGia` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Đang đổ dữ liệu cho bảng `danhgia`
---
-
+-- --------------------------------------------------------
 
 --
 -- Cấu trúc bảng cho bảng `danhmuc`
@@ -82,10 +79,10 @@ INSERT INTO `danhmuc` (`DanhMucID`, `TenDanhMuc`) VALUES
 
 CREATE TABLE `diachigiao` (
   `DiaChiGiaoID` int(11) NOT NULL,
-  `TenDangNhap` VARCHAR (50) NOT NULL,
+  `TenDangNhap` varchar(50) NOT NULL,
   `Ten` varchar(100) DEFAULT NULL,
-  `SDT` varchar (10) DEFAULT NULL,
-  `DiaChi` text  DEFAULT NULL
+  `SDT` varchar(10) DEFAULT NULL,
+  `DiaChi` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -96,7 +93,7 @@ CREATE TABLE `diachigiao` (
 
 CREATE TABLE `donhang` (
   `DonHangID` int(11) NOT NULL,
-  `TenDangNhap` VARCHAR (50) NOT NULL,
+  `TenDangNhap` varchar(50) NOT NULL,
   `KhuyenMaiID` int(11) DEFAULT NULL,
   `ThanhToanID` int(11) DEFAULT NULL,
   `DiaChiGiaoID` int(11) DEFAULT NULL,
@@ -112,7 +109,7 @@ CREATE TABLE `donhang` (
 --
 
 CREATE TABLE `giohang` (
-  `TenDangNhap` varchar (50) NOT NULL,
+  `TenDangNhap` varchar(50) NOT NULL,
   `SanPhamID` int(11) NOT NULL,
   `SoLuong` int(11) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -121,12 +118,14 @@ CREATE TABLE `giohang` (
 -- Đang đổ dữ liệu cho bảng `giohang`
 --
 
+INSERT INTO `giohang` (`TenDangNhap`, `SanPhamID`, `SoLuong`) VALUES
+('thuc', 1, 3);
 
 -- --------------------------------------------------------
 
-
-
-
+--
+-- Cấu trúc bảng cho bảng `khuyenmai`
+--
 
 CREATE TABLE `khuyenmai` (
   `KhuyenMaiID` int(11) NOT NULL,
@@ -159,8 +158,7 @@ CREATE TABLE `sanpham` (
 -- Đang đổ dữ liệu cho bảng `sanpham`
 --
 
-INSERT INTO `sanpham` (`SanPhamID`, `Image`, `TenSanPham`, `Gia`, `SoLuong`, `DonVi`, `MoTa`, `TrangThai`, `DanhMucID`) 
-VALUES
+INSERT INTO `sanpham` (`SanPhamID`, `Image`, `TenSanPham`, `Gia`, `SoLuong`, `DonVi`, `MoTa`, `TrangThai`, `DanhMucID`) VALUES
 (1, 'assets/TaoDo.jpg', 'Táo đỏ', 50000, 1, 'kg', 'Táo đỏ nhập khẩu', 'ConHang', 1),
 (2, 'assets/banane.jpg', 'Chuối tiêu', 20000, 1, 'nải', 'Chuối tiêu sạch', 'ConHang', 1),
 (3, 'assets/Cam.jpg', 'Cam sành', 30000, 1, 'kg', 'Cam sành từ miền Tây', 'ConHang', 1),
@@ -186,7 +184,7 @@ VALUES
 (23, 'assets/XoaiXanh.jpg', 'Xoài cát Thái Lan', 40000, 1, 'kg', 'Xoài cát chín tự nhiên', 'ConHang', 3),
 (24, 'assets/SauRieng.jpg', 'Sầu Riêng Siêu Ngọt', 100000, 1, 'kg', 'Sầu một mình cũng được', 'ConHang', 3);
 
-
+-- --------------------------------------------------------
 
 --
 -- Cấu trúc bảng cho bảng `taikhoan`
@@ -208,11 +206,13 @@ CREATE TABLE `taikhoan` (
 -- Đang đổ dữ liệu cho bảng `taikhoan`
 --
 
-INSERT INTO `taikhoan` ( `TenDangNhap`, `MatKhau`, `Email`, `SoDienThoai`, `NgayTao`) VALUES
-('user1', '*668425423DB5193AF921380129F465A6425216D0', 'user1@example.com', '0123456789', NULL),
-('user2', '*DC52755F3C09F5923046BD42AFA76BD1D80DF2E9', 'user2@example.com', '0987654321', NULL),
-('user3', '*40C3E7D386A2FADBDF69ACEBE7AA4DC3C723D798', 'user3@example.com', '0112233445', NULL),
-('thuc', '$2y$10$eHABAaXS12l26QRmY66lXuHp0ZHDSfyLW8cy4Y2YuVAIcZJ26hy2e', 'thuc@gmail.com', '09876', NULL);
+INSERT INTO `taikhoan` (`TenDangNhap`, `MatKhau`, `Email`, `SoDienThoai`, `HoTen`, `DiaChi`, `NgaySinh`, `GioiTinh`, `NgayTao`) VALUES
+('Nam', '$2y$10$VLqY432utHsAx2KNFKbY8.UECdQo.F6JMYdDRgiCAYlCyfl8ivf..', 'Namlor@gmail.com', '0345', '', NULL, NULL, NULL, NULL),
+('Namqqq', '$2y$10$Y1jlQMuT4wA2e6nGECopuuNQmyh1dBsSotezvWXkKNqzkWHwCMpdm', 'Namlo@gmail.com', '0123', 'Nam Nguyễn', '', '0000-00-00', '', NULL),
+('thuc', '$2y$10$eHABAaXS12l26QRmY66lXuHp0ZHDSfyLW8cy4Y2YuVAIcZJ26hy2e', 'thuc@gmail.com', '09876', '', NULL, NULL, NULL, NULL),
+('user1', '*668425423DB5193AF921380129F465A6425216D0', 'user1@example.com', '0123456789', '', NULL, NULL, NULL, NULL),
+('user2', '*DC52755F3C09F5923046BD42AFA76BD1D80DF2E9', 'user2@example.com', '0987654321', '', NULL, NULL, NULL, NULL),
+('user3', '*40C3E7D386A2FADBDF69ACEBE7AA4DC3C723D798', 'user3@example.com', '0112233445', '', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -273,7 +273,9 @@ ALTER TABLE `giohang`
   ADD PRIMARY KEY (`TenDangNhap`),
   ADD KEY `TenDangNhap` (`TenDangNhap`);
 
-
+--
+-- Chỉ mục cho bảng `khuyenmai`
+--
 ALTER TABLE `khuyenmai`
   ADD PRIMARY KEY (`KhuyenMaiID`);
 
@@ -288,7 +290,8 @@ ALTER TABLE `sanpham`
 -- Chỉ mục cho bảng `taikhoan`
 --
 ALTER TABLE `taikhoan`
-  ADD PRIMARY KEY (`TenDangNhap`);
+  ADD PRIMARY KEY (`TenDangNhap`),
+  ADD UNIQUE KEY `Email` (`Email`);
 
 --
 -- Chỉ mục cho bảng `thanhtoan`
@@ -296,7 +299,13 @@ ALTER TABLE `taikhoan`
 ALTER TABLE `thanhtoan`
   ADD PRIMARY KEY (`ThanhToanID`);
 
+--
+-- AUTO_INCREMENT cho các bảng đã đổ
+--
 
+--
+-- AUTO_INCREMENT cho bảng `chitietdonhang`
+--
 ALTER TABLE `chitietdonhang`
   MODIFY `ChiTietID` int(11) NOT NULL AUTO_INCREMENT;
 
@@ -325,15 +334,6 @@ ALTER TABLE `donhang`
   MODIFY `DonHangID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT cho bảng `giohang`
---
-
-
---
--- AUTO_INCREMENT cho bảng `khachhang`
---
-
---
 -- AUTO_INCREMENT cho bảng `khuyenmai`
 --
 ALTER TABLE `khuyenmai`
@@ -343,12 +343,7 @@ ALTER TABLE `khuyenmai`
 -- AUTO_INCREMENT cho bảng `sanpham`
 --
 ALTER TABLE `sanpham`
-  MODIFY `SanPhamID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
--- AUTO_INCREMENT cho bảng `taikhoan`
---
-
+  MODIFY `SanPhamID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT cho bảng `thanhtoan`
@@ -391,6 +386,7 @@ ALTER TABLE `donhang`
 --
 ALTER TABLE `giohang`
   ADD CONSTRAINT `giohang_ibfk_1` FOREIGN KEY (`TenDangNhap`) REFERENCES `taikhoan` (`TenDangNhap`) ON DELETE CASCADE;
+
 --
 -- Các ràng buộc cho bảng `sanpham`
 --
