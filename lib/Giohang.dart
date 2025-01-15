@@ -20,62 +20,88 @@ class Giohang extends StatefulWidget {
 }
 
 class _GiohangState extends State<Giohang> {
+  LoginService cartService = LoginService();
+  String? username;
   final TextEditingController tk_sp = TextEditingController();
-    List<ProductItemModel> productsInCart = [];
+  List<ProductItemModel> productsInCart = [];
 
   @override
   void initState() {
     super.initState();
     _loadCartProducts();
+    _loadUsername();
+  }
+
+  Future<void> _loadUsername() async {
+    // Lấy tên đăng nhập
+    String? loadedUsername = await cartService.getUsername();
+    setState(() {
+      username = loadedUsername; // Cập nhật lại state với tên đăng nhập
+    });
   }
 
   void _loadCartProducts() async {
-  try {
-    List<ProductItemModel> loadedProducts = await LoginService().fetchCartProducts();
-    setState(() {
-      productsInCart = loadedProducts;
-    });
-  } catch (e) {
-    // Hiển thị thông báo lỗi chi tiết
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text("Lỗi khi tải giỏ hàng: $e"),
-      backgroundColor: Colors.red,
-    ));
+    try {
+      List<ProductItemModel> loadedProducts = await cartService.fetchCartProducts();
+      setState(() {
+        productsInCart = loadedProducts;
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Lỗi khi tải giỏ hàng: $e"),
+        backgroundColor: Colors.red,
+      ));
+    }
   }
-}
-  
-  //Hàm tìm kiếm sản phẩm
+
+  // Hàm tìm kiếm sản phẩm
   void TK_SanPham() async {
-  final searchQuery = tk_sp.text.trim();
-  
-  if (searchQuery.isEmpty) {
-    // Nếu không có từ khóa tìm kiếm
-    return;
+    final searchQuery = tk_sp.text.trim();
+
+    if (searchQuery.isEmpty) {
+      return; // Nếu không có từ khóa tìm kiếm
+    }
+
+    try {
+      List<dynamic> searchResults = await cartService.tkSanPham(searchQuery);
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => TrangTimKiem(searchResults: searchResults),
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Lỗi: $e")));
+    }
   }
 
-  try {
-    // Gọi API để tìm kiếm sản phẩm theo tên
-    List<dynamic> searchResults = await LoginService().tkSanPham(searchQuery);
-
-    // Chuyển đến trang tìm kiếm kết quả
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => TrangTimKiem(searchResults: searchResults),
-      ),
-    );
-  } catch (e) {
-    // Xử lý lỗi nếu không tìm thấy hoặc có vấn đề khi gọi API
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Lỗi: $e")));
-  }
-}
   final PageController _pageController = PageController();
-  
-  
-  void _removeProduct(int index) {
+
+  // Hàm xóa sản phẩm khỏi giỏ hàng và đồng bộ hóa với server
+  void _removeProduct(int index) async {
     setState(() {
-      //productsInCart.removeAt(index);
+      // Xóa sản phẩm khỏi danh sách giỏ hàng
+      ProductItemModel product = productsInCart[index];
+      productsInCart.removeAt(index);
+
+      // Gọi API để xóa sản phẩm khỏi giỏ hàng trên server
+      cartService.themGioHang(username ?? "", product.id, -product.quantity);
     });
+  }
+
+  // Hàm thay đổi số lượng sản phẩm và đồng bộ hóa với server
+  void _updateProductQuantity(int index, int newQuantity) async {
+    setState(() {
+      productsInCart[index].quantity = newQuantity;
+    });
+
+    // Gọi API để cập nhật số lượng sản phẩm trên server
+    cartService.themGioHang(
+      username ?? "",
+      productsInCart[index].id,
+      newQuantity - productsInCart[index].quantity,
+    );
   }
 
   @override
@@ -102,42 +128,40 @@ class _GiohangState extends State<Giohang> {
           ),
           centerTitle: false,
           actions: [
-          
-          PopupMenuButton<String>(
-            icon: const Icon(Icons.settings, color: Colors.white),
-            onSelected: (value) {
-              // Xử lý khi chọn menu
-              if (value == "Dangxuat") {
-                Navigator.of(context, rootNavigator: true).pop();
-                showModalBottomSheet(
-                  context: context,
-                  isScrollControlled: true,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-                  ),
-                  builder: (context) => DangNhap(),
-                );
-              } else if (value == "Thongtin") {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const Thongtincanhan(),
-                  ),
-                );
-              }
-            },
-            itemBuilder: (BuildContext context) => [
-              const PopupMenuItem(
-                value: "Dangxuat",
-                child: Text("Đăng xuất"),
-              ),
-              const PopupMenuItem(
-                value: "Thongtin",
-                child: Text("Thông tin cá nhân"),
-              ),
-            ],
-          ),
-        ],
+            PopupMenuButton<String>(
+              icon: const Icon(Icons.settings, color: Colors.white),
+              onSelected: (value) {
+                if (value == "Dangxuat") {
+                  Navigator.of(context, rootNavigator: true).pop();
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+                    ),
+                    builder: (context) => DangNhap(),
+                  );
+                } else if (value == "Thongtin") {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const Thongtincanhan(),
+                    ),
+                  );
+                }
+              },
+              itemBuilder: (BuildContext context) => [
+                const PopupMenuItem(
+                  value: "Dangxuat",
+                  child: Text("Đăng xuất"),
+                ),
+                const PopupMenuItem(
+                  value: "Thongtin",
+                  child: Text("Thông tin cá nhân"),
+                ),
+              ],
+            ),
+          ],
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -145,19 +169,19 @@ class _GiohangState extends State<Giohang> {
             children: [
               Row(
                 children: [
-                   IconButton(
-                  icon: const Icon(Icons.menu, color: Colors.lightGreen),
-                  onPressed: () {
-                    showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-                      ),
-                      builder: (context) => buildMenu(),
-                    );
-                  },
-                ),
+                  IconButton(
+                    icon: const Icon(Icons.menu, color: Colors.lightGreen),
+                    onPressed: () {
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+                        ),
+                        builder: (context) => buildMenu(),
+                      );
+                    },
+                  ),
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
@@ -165,11 +189,10 @@ class _GiohangState extends State<Giohang> {
                         borderRadius: BorderRadius.circular(30),
                         border: Border.all(color: Colors.lightGreen),
                       ),
-                      child:  Row(
+                      child: Row(
                         children: [
                           Padding(
-                            padding:
-                                EdgeInsets.symmetric(horizontal: 12.0),
+                            padding: EdgeInsets.symmetric(horizontal: 12.0),
                             child: Icon(Icons.search, color: Colors.lightGreen),
                           ),
                           Expanded(
@@ -179,9 +202,9 @@ class _GiohangState extends State<Giohang> {
                                 hintText: 'Tìm sản phẩm',
                                 border: InputBorder.none,
                               ),
-                                 onSubmitted: (_) {
-                          TK_SanPham(); // Gọi hàm tìm kiếm khi nhấn Enter
-                        },
+                              onSubmitted: (_) {
+                                TK_SanPham();
+                              },
                             ),
                           ),
                         ],
@@ -194,7 +217,6 @@ class _GiohangState extends State<Giohang> {
                         icon: const Icon(Icons.shopping_cart_outlined,
                             color: Colors.lightGreen),
                         onPressed: () {
-                          
                           // Hành động khi nhấn giỏ hàng
                         },
                       ),
@@ -208,7 +230,7 @@ class _GiohangState extends State<Giohang> {
                             shape: BoxShape.circle,
                           ),
                           child: Text(
-                            '${productsInCart.fold(0, (sum, item) => sum + (item.quantity))}',
+                            '${productsInCart.fold(0, (sum, item) => sum + item.quantity)}',
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 12,
@@ -248,7 +270,6 @@ class _GiohangState extends State<Giohang> {
                                 key: Key(productsInCart[index].productName),
                                 direction: DismissDirection.endToStart,
                                 confirmDismiss: (direction) async {
-                                  
                                   return await showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
@@ -276,24 +297,19 @@ class _GiohangState extends State<Giohang> {
                                 },
                                 onDismissed: (direction) {
                                   _removeProduct(index);
-                                  
                                 },
                                 background: Container(
                                   color: Colors.red,
                                   alignment: Alignment.centerRight,
                                   child: const Padding(
-                                    padding:
-                                        EdgeInsets.only(right: 16.0),
-                                    child: Icon(Icons.delete,
-                                        color: Colors.white),
+                                    padding: EdgeInsets.only(right: 16.0),
+                                    child: Icon(Icons.delete, color: Colors.white),
                                   ),
                                 ),
                                 child: ProductItem(
-                                    product: productsInCart[index],
-                                    onQuantityChanged: (newQuantity) {
-                                 setState(() {
-                                     productsInCart[index].quantity = newQuantity;
-                                    });
+                                  product: productsInCart[index],
+                                  onQuantityChanged: (newQuantity) {
+                                    _updateProductQuantity(index, newQuantity);
                                   },
                                 ),
                               );

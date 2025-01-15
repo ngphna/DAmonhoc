@@ -65,8 +65,8 @@ class _ProductListState extends State<ProductList> {
         final product = products[index];
         return GestureDetector(
           onTap: () {
-            Navigator.pop(context);
-            Navigator.push(
+          
+            Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (context) => ProductDetail(
@@ -180,7 +180,7 @@ class _ProductDetailState extends State<ProductDetail> {
       List<dynamic> searchResults = await LoginService().tkSanPham(searchQuery);
 
       // Chuyển đến trang tìm kiếm kết quả
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => TrangTimKiem(searchResults: searchResults),

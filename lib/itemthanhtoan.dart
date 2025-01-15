@@ -6,7 +6,7 @@ class ProductItem extends StatefulWidget {
   final ProductItemModel product;
   final ValueChanged<int> onQuantityChanged;
 
-  ProductItem({
+  const ProductItem({
     super.key,
     required this.product,
     required this.onQuantityChanged,
@@ -17,71 +17,127 @@ class ProductItem extends StatefulWidget {
 }
 
 class _ProductItemState extends State<ProductItem> {
-  void _increaseQuantity() {
-    setState(() {
-      widget.product.quantity++;
-      widget.onQuantityChanged(widget.product.quantity);
-    });
+  final LoginService cartService = LoginService(); // Dịch vụ gọi API
+  String? username;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUsername(); // Gọi để lấy tên đăng nhập
   }
 
-  void _decreaseQuantity() {
-    if (widget.product.quantity > 1) {
+  Future<void> _loadUsername() async {
+    try {
+      String? loadedUsername = await cartService.getUsername();
       setState(() {
-        widget.product.quantity--;
-        widget.onQuantityChanged(widget.product.quantity);
+        username = loadedUsername; // Cập nhật state với tên đăng nhập
       });
+    } catch (e) {
+      debugPrint('Lỗi khi tải username: $e');
     }
   }
 
- @override
-Widget build(BuildContext context) {
-  if (widget.product.productName.isEmpty) {
-    return const Center(child: Text("Không có thông tin sản phẩm."));
+  void _increaseQuantity() async {
+    if (username == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Lỗi: Không tìm thấy tên đăng nhập!')),
+      );
+      return;
+    }
+
+    try {
+      // Gọi API để thêm vào giỏ hàng
+      await cartService.themGioHang(username!, widget.product.id, 1);
+      setState(() {
+        widget.product.quantity++; // Cập nhật số lượng sản phẩm
+        widget.onQuantityChanged(widget.product.quantity);
+      });
+    } catch (e) {
+      debugPrint('Lỗi khi thêm vào giỏ hàng: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Lỗi: Không thể thêm sản phẩm vào giỏ hàng!')),
+      );
+    }
   }
-  return Card(
-    color: Colors.white,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(10),
-      side: BorderSide(color: Colors.black.withOpacity(0.2), width: 0.5),
-    ),
-    elevation: 2,
-    child: Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: Image.asset(
-              widget.product.imageUrl,
-              width: 80,
-              height: 80,
-              fit: BoxFit.cover,
+
+  void _decreaseQuantity() async {
+    if (username == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Lỗi: Không tìm thấy tên đăng nhập!')),
+      );
+      return;
+    }
+
+    try {
+      // Gọi API để thêm vào giỏ hàng
+      if(widget.product.quantity>1){
+      await cartService.themGioHang(username!, widget.product.id, -1);
+      setState(() {
+        widget.product.quantity--; // Cập nhật số lượng sản phẩm
+        widget.onQuantityChanged(widget.product.quantity);
+      });}
+    } catch (e) {
+      debugPrint('Lỗi khi thêm vào giỏ hàng: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Lỗi: Không thể thêm sản phẩm vào giỏ hàng!')),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (widget.product.productName.isEmpty) {
+      return const Center(child: Text("Không có thông tin sản phẩm."));
+    }
+    return Card(
+      color: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+        side: BorderSide(color: Colors.black.withOpacity(0.2), width: 0.5),
+      ),
+      elevation: 2,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.asset(
+                widget.product.imageUrl,
+                width: 80,
+                height: 80,
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(widget.product.productName,
+                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 5),
+                  Text('Giá: ${widget.product.price.toStringAsFixed(0)} đ',
+                      style: const TextStyle(color: Colors.orange, fontWeight: FontWeight.w600)),
+                ],
+              ),
+            ),
+            Row(
               children: [
-                Text(widget.product.productName,
-                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                const SizedBox(height: 5),
-                Text('Giá: ${widget.product.price.toStringAsFixed(0)} đ',
-                    style: const TextStyle(color: Colors.orange, fontWeight: FontWeight.w600)),
+                IconButton(
+                  onPressed: _decreaseQuantity,
+                  icon: const Icon(Icons.remove),
+                ),
+                Text('${widget.product.quantity}', style: const TextStyle(fontSize: 16)),
+                IconButton(
+                  onPressed: _increaseQuantity,
+                  icon: const Icon(Icons.add),
+                ),
               ],
             ),
-          ),
-          Row(
-            children: [
-              IconButton(onPressed: _decreaseQuantity, icon: const Icon(Icons.remove)),
-              Text('${widget.product.quantity}', style: const TextStyle(fontSize: 16)),
-              IconButton(onPressed: _increaseQuantity, icon: const Icon(Icons.add)),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
-  );
-}
-
+    );
+  }
 }

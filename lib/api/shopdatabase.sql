@@ -41,8 +41,8 @@ CREATE TABLE `chitietdonhang` (
 --
 
 CREATE TABLE `danhgia` (
-  `DanhGiaID` int(11) NOT NULL,
-  `SanPhamID` int(11) NOT NULL,
+  `DanhGiaID` int(11) NOT NULL PRIMARY KEY,
+  `SanPhamID` int(11) DEFAULT NULL,
   `TenDangNhap` varchar (50)  DEFAULT NULL,
   `NoiDung` text DEFAULT NULL,
   `NgayDanhGia` timestamp NOT NULL DEFAULT current_timestamp()
@@ -95,7 +95,7 @@ CREATE TABLE `diachigiao` (
 --
 
 CREATE TABLE `donhang` (
-  `DonHangID` int(11) NOT NULL,
+  `DonHangID` int(11) NOT NULL PRIMARY KEY,
   `TenDangNhap` VARCHAR (50) NOT NULL,
   `KhuyenMaiID` int(11) DEFAULT NULL,
   `ThanhToanID` int(11) DEFAULT NULL,
@@ -136,6 +136,20 @@ CREATE TABLE `khuyenmai` (
   `NgayBatDau` date DEFAULT NULL,
   `NgayKetThuc` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+INSERT INTO KhuyenMai (KhuyenMaiID, TenKhuyenMai, MoTa, GiamGiaPhanTram, NgayBatDau, NgayKetThuc) VALUES
+(1, 'Khuyến mãi đầu năm', 'Giảm giá các sản phẩm nhân dịp năm mới', 10, '2025-01-01', '2025-01-15'),
+(2, 'Khuyến mãi hè', 'Ưu đãi đặc biệt cho mùa hè', 15, '2025-06-01', '2025-06-30'),
+(3, 'Black Friday Sale', 'Giảm giá sốc dịp Black Friday', 50, '2025-11-25', '2025-11-30'),
+(4, 'Mid-year Sale', 'Khuyến mãi giữa năm', 20, '2025-07-01', '2025-07-15'),
+(5, 'Ưu đãi cuối năm', 'Mừng Giáng sinh và năm mới', 30, '2025-12-15', '2025-12-31'),
+(6, 'Mua 1 tặng 1', 'Chương trình khuyến mãi đặc biệt mua 1 tặng 1', 0, '2025-03-01', '2025-03-10'),
+(7, 'Ngày của mẹ', 'Khuyến mãi dành cho Ngày của Mẹ', 25, '2025-05-05', '2025-05-10'),
+(8, 'Ngày Quốc tế Phụ nữ', 'Ưu đãi giảm giá cho phái đẹp', 20, '2025-03-01', '2025-03-08'),
+(9, 'Khai trương chi nhánh mới', 'Ưu đãi tại chi nhánh mới', 40, '2025-09-01', '2025-09-10'),
+(10, 'Sale Valentine', 'Khuyến mãi ngày Valentine', 30, '2025-02-10', '2025-02-15'),
+(11, 'Khuyến mãi 15%', 'Giảm giá các sản phẩm nhân dịp năm mới', 15, '2025-01-01', '2025-02-15'),
+(12, 'Siêu Xa Le 85', 'Giảm giá các sản phẩm nhân dịp năm mới', 85, '2025-01-05', '2025-01-22'),
+(13, 'Sale sập sàn', 'Giảm giá các sản phẩm nhân dịp năm mới', 90, '2025-01-08', '2025-01-31');
 
 -- --------------------------------------------------------
 
@@ -209,11 +223,11 @@ CREATE TABLE `taikhoan` (
 --
 
 INSERT INTO `taikhoan` ( `TenDangNhap`, `MatKhau`, `Email`, `SoDienThoai`, `NgayTao`) VALUES
-('user1', '*668425423DB5193AF921380129F465A6425216D0', 'user1@example.com', '0123456789', NULL),
-('user2', '*DC52755F3C09F5923046BD42AFA76BD1D80DF2E9', 'user2@example.com', '0987654321', NULL),
-('user3', '*40C3E7D386A2FADBDF69ACEBE7AA4DC3C723D798', 'user3@example.com', '0112233445', NULL),
-('thuc', '$2y$10$eHABAaXS12l26QRmY66lXuHp0ZHDSfyLW8cy4Y2YuVAIcZJ26hy2e', 'thuc@gmail.com', '09876', NULL);
 
+('thuc', '$2y$10$eHABAaXS12l26QRmY66lXuHp0ZHDSfyLW8cy4Y2YuVAIcZJ26hy2e', 'thuc@gmail.com', '09876', NULL),
+('nhan', '$2y$10$eHABAaXS12l26QRmY66lXuHp0ZHDSfyLW8cy4Y2YuVAIcZJ26hy2e', 'nhan@gmail.com', '09876', NULL),
+('tuan', '$2y$10$eHABAaXS12l26QRmY66lXuHp0ZHDSfyLW8cy4Y2YuVAIcZJ26hy2e', 'tuan@gmail.com', '09876', NULL),
+('nam', '$2y$10$eHABAaXS12l26QRmY66lXuHp0ZHDSfyLW8cy4Y2YuVAIcZJ26hy2e', 'nam@gmail.com', '09876', NULL);
 -- --------------------------------------------------------
 
 --
@@ -242,7 +256,6 @@ ALTER TABLE `chitietdonhang`
 -- Chỉ mục cho bảng `danhgia`
 --
 ALTER TABLE `danhgia`
-  ADD PRIMARY KEY (`DanhGiaID`),
   ADD KEY `TenDangNhap` (`TenDangNhap`),
   ADD KEY `SanPhamID` (`SanPhamID`);
 
@@ -269,7 +282,7 @@ ALTER TABLE `donhang`
 -- Chỉ mục cho bảng `giohang`
 --
 ALTER TABLE `giohang`
-  ADD PRIMARY KEY (`TenDangNhap`),
+  ADD KEY `SanPhamID` (`SanPhamID`),
   ADD KEY `TenDangNhap` (`TenDangNhap`);
 
 
@@ -303,7 +316,7 @@ ALTER TABLE `chitietdonhang`
 -- AUTO_INCREMENT cho bảng `danhgia`
 --
 ALTER TABLE `danhgia`
-  MODIFY `DanhGiaID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `DanhGiaID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT cho bảng `danhmuc`
@@ -389,7 +402,8 @@ ALTER TABLE `donhang`
 -- Các ràng buộc cho bảng `giohang`
 --
 ALTER TABLE `giohang`
-  ADD CONSTRAINT `giohang_ibfk_1` FOREIGN KEY (`TenDangNhap`) REFERENCES `taikhoan` (`TenDangNhap`) ON DELETE CASCADE;
+  ADD CONSTRAINT `giohang_ibfk_1` FOREIGN KEY (`TenDangNhap`) REFERENCES `taikhoan` (`TenDangNhap`) ON DELETE CASCADE,
+ ADD CONSTRAINT `giohang_ibfk_2` FOREIGN KEY (`SanPhamID`) REFERENCES `sanpham` (`SanPhamID`) ON DELETE CASCADE;
 --
 -- Các ràng buộc cho bảng `sanpham`
 --

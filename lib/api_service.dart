@@ -2,6 +2,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'product_item_model.dart';
+import 'package:doan_hk2/khuyenmai.dart';
+
 class LoginService {
   final String apiUrl = "http://localhost/api/";
 
@@ -219,6 +221,7 @@ Future<List<dynamic>> tkSanPham(String name) async {
             productName: item['TenSanPham'],
             price: item['Gia'],
             quantity: item['SoLuong'],
+            id:item['SanPhamID'],
           );
         }).toList();
       } else {
@@ -270,6 +273,27 @@ Future<void> themGioHang(String username, int productId, int quantity) async {
     // Xử lý lỗi nếu không thể kết nối với API
     print("Lỗi kết nối: $e");
   }
-}
+}//khuyenmai
+Future<List<KhuyenMai>> fetchPromotions() async {
+    try {
+      final response = await http.get(Uri.parse("${apiUrl}khuyenmai.php"));
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+
+        if (data['success'] == true) {
+          List<KhuyenMai> promotions = (data['data'] as List)
+              .map((item) => KhuyenMai.fromJson(item))
+              .toList();
+          return promotions;
+        } else {
+          throw Exception("Không có khuyến mãi nào!");
+        }
+      } else {
+        throw Exception("Lỗi kết nối: ${response.statusCode}");
+      }
+    } catch (e) {
+      throw Exception("Lỗi khi tải khuyến mãi: $e");
+    }
+  }
 
 }

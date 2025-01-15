@@ -9,6 +9,8 @@ import 'package:doan_hk2/menu.dart';
 import 'danhsachtraicay.dart';
 import 'itemthanhtoan.dart';
 import 'giothieu.dart';
+import 'khuyenmai.dart';
+import 'product_item_model.dart';
 
 class Trangchu extends StatefulWidget {
   const Trangchu({super.key});
@@ -19,8 +21,42 @@ class Trangchu extends StatefulWidget {
 
 class _TrangchuState extends State<Trangchu> {
   //Tìm kiếm sản phẩm
+   LoginService cartService = LoginService();
+  String? username;
   final TextEditingController tk_sp = TextEditingController();
-  
+   List<ProductItemModel> productsInCart = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCartProducts();
+    _loadUsername();
+  }
+
+  Future<void> _loadUsername() async {
+    // Lấy tên đăng nhập
+    String? loadedUsername = await cartService.getUsername();
+    setState(() {
+      username = loadedUsername; // Cập nhật lại state với tên đăng nhập
+    });
+  }
+
+  void _loadCartProducts() async {
+    try {
+      List<ProductItemModel> loadedProducts = await cartService.fetchCartProducts();
+      setState(() {
+        productsInCart = loadedProducts;
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Lỗi khi tải giỏ hàng: $e"),
+        backgroundColor: Colors.red,
+      ));
+    }
+  }
+
+  // Hàm tìm kiếm sản phẩm
+
   //Hàm tìm kiếm sản phẩm
   void TK_SanPham() async {
   final searchQuery = tk_sp.text.trim();
@@ -35,7 +71,7 @@ class _TrangchuState extends State<Trangchu> {
     List<dynamic> searchResults = await LoginService().tkSanPham(searchQuery);
 
     // Chuyển đến trang tìm kiếm kết quả
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => TrangTimKiem(searchResults: searchResults),
@@ -177,13 +213,13 @@ class _TrangchuState extends State<Trangchu> {
                       color: Colors.red,
                       shape: BoxShape.circle,
                     ),
-                    // child: Text(
-                    //   '${productsInCart.fold(0, (sum, item) => sum + (item.quantity))}',
-                    //   style: const TextStyle(
-                    //     color: Colors.white,
-                    //     fontSize: 12,
-                    //   ),
-                    // ),
+                    child: Text(
+                      '${productsInCart.fold(0, (sum, item) => sum + (item.quantity))}',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -198,9 +234,11 @@ class _TrangchuState extends State<Trangchu> {
 
 // Định nghĩa danh sách ảnh
 
-        const SizedBox(height: 10),
-        
+         const SizedBox(height: 10),
+        SizedBox(height: 120,child: PromotionsScreen() ,),
+       
         const SizedBox(height: 16),
+         
          Center(child: Text(
           "Trái Cây Việt Nam",
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w100,color: Colors.lightGreen,),

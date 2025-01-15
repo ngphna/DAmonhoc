@@ -25,7 +25,7 @@ try {
     $query = "SELECT gh.SanPhamID, gh.SoLuong, sp.Image, sp.TenSanPham, sp.Gia 
               FROM giohang gh 
               JOIN sanpham sp ON gh.SanPhamID = sp.SanPhamID 
-              WHERE gh.TenDangNhap = ?";
+              WHERE gh.TenDangNhap = ? AND gh.soLuong >0";
               
     $stmt = $conn->prepare($query);
     $stmt->bind_param("s", $tenDangNhap);

@@ -69,7 +69,7 @@ class _AutoScrollCarouselViewState extends State<AutoScrollCarouselView> {
                 borderRadius: BorderRadius.circular(12),
                 image: DecorationImage(
                   image: AssetImage(imgList[index]),
-                  fit: BoxFit.cover,
+                  fit: BoxFit.fitHeight,
                 ),
               ),
             );
