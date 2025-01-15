@@ -1,7 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'product_item_model.dart';
 class LoginService {
   final String apiUrl = "http://localhost/api/";
 
@@ -23,7 +23,11 @@ class LoginService {
     }
     return false;
   }
-
+  // Lấy TenDangNhap từ SharedPreferences
+  Future<String?> getUsername() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('TenDangNhap');
+  }
   // Đăng xuất
   Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
@@ -165,6 +169,106 @@ Future<List<dynamic>> tkSanPham(String name) async {
   } catch (e) {
     // Xử lý lỗi khi gặp vấn đề trong quá trình fetch dữ liệu
     throw Exception("Error fetching products: $e");
+  }
+}
+ // Lấy giỏ hàng từ server theo TenDangNhap
+ // Hàm fetchProductInfo trả về dữ liệu từ API
+  Future<Map<String, dynamic>> fetchProductInfo() async {
+    try {
+      final response = await http.post(
+        Uri.parse('${apiUrl}giohang.php'),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({"SanPhamID": 1}),  // Thay đổi ID theo sản phẩm cần lấy
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        if (responseData['success'] == true) {
+          return responseData['data'];
+        } else {
+          throw Exception("Lỗi từ server: ${responseData['message']}");
+        }
+      } else {
+        throw Exception("Lỗi server: ${response.statusCode}");
+      }
+    } catch (error) {
+      throw Exception("Lỗi kết nối: $error");
+    }
+  }
+  Future<List<ProductItemModel>> fetchCartProducts() async {
+  final prefs = await SharedPreferences.getInstance();
+  String? username = prefs.getString('TenDangNhap');
+
+  if (username == null || username.isEmpty) {
+    throw Exception("Lỗi: Người dùng chưa đăng nhập hoặc thiếu TenDangNhap.");
+  }
+
+  try {
+    final response = await http.post(
+      Uri.parse("${apiUrl}giohang.php"),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({"TenDangNhap": username}),
+    );
+
+    if (response.statusCode == 200) {
+      final responseData = jsonDecode(response.body);
+      if (responseData['success']) {
+        return (responseData['data'] as List).map((item) {
+          return ProductItemModel(
+            imageUrl: item['Image'],
+            productName: item['TenSanPham'],
+            price: item['Gia'],
+            quantity: item['SoLuong'],
+          );
+        }).toList();
+      } else {
+        throw Exception("Không có sản phẩm trong giỏ hàng.");
+      }
+    } else {
+      throw Exception("Lỗi server: Mã trạng thái ${response.statusCode}");
+    }
+  } catch (e) {
+    throw Exception("Lỗi kết nối hoặc xử lý dữ liệu: $e");
+  }
+}
+//Thêm vào giỏ hàng
+Future<void> themGioHang(String username, int productId, int quantity) async {
+  final url = Uri.parse('${apiUrl}themgiohang.php');
+
+  try {
+    // Thực hiện gửi yêu cầu POST
+    final response = await http.post(
+      url,
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({
+        'TenDangNhap': username,  // Không cần mã hóa tên đăng nhập
+        'SanPhamID': productId,
+        'SoLuong': quantity,
+      }),
+    );
+
+    // Kiểm tra mã trạng thái HTTP
+    if (response.statusCode == 200) {
+      try {
+        // Giải mã JSON từ phản hồi
+        final data = jsonDecode(response.body);
+        
+        // Kiểm tra trạng thái của API
+        if (data['status'] == 'success') {
+          print('Thêm sản phẩm vào giỏ hàng thành công: ${data['message']}');
+        } else {
+          print('Lỗi khi thêm sản phẩm: ${data['message']}');
+        }
+      } catch (e) {
+        print("Lỗi khi giải mã JSON: $e");
+      }
+    } else {
+      // Xử lý các mã lỗi HTTP khác (không phải 200 OK)
+      print('Lỗi HTTP: ${response.statusCode}');
+    }
+  } catch (e) {
+    // Xử lý lỗi nếu không thể kết nối với API
+    print("Lỗi kết nối: $e");
   }
 }
 
