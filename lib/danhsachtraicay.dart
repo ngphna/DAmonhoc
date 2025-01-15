@@ -243,7 +243,7 @@ class _ProductDetailState extends State<ProductDetail> {
       appBar: AppBar(
         title: GestureDetector(
           onTap: () {
-            Navigator.pushReplacement(
+            Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => const Trangchu(),
@@ -325,10 +325,16 @@ class _ProductDetailState extends State<ProductDetail> {
                       ),
                       child: Row(
                         children: [
-                          const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 12.0),
-                            child: Icon(Icons.search, color: Colors.lightGreen),
-                          ),
+                           Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 12.0),
+                      child:InkWell(
+                        onTap: () {
+                        TK_SanPham();
+                      },
+                      
+                        child:Icon(Icons.search, color: Colors.lightGreen,)), 
+                      
+                    ),
                           Expanded(
                             child: TextField(
                               controller: tk_sp,

@@ -65,7 +65,7 @@ class _GiohangState extends State<Giohang> {
     try {
       List<dynamic> searchResults = await cartService.tkSanPham(searchQuery);
 
-      Navigator.pushReplacement(
+      Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => TrangTimKiem(searchResults: searchResults),
@@ -192,9 +192,15 @@ class _GiohangState extends State<Giohang> {
                       child: Row(
                         children: [
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 12.0),
-                            child: Icon(Icons.search, color: Colors.lightGreen),
-                          ),
+                      padding: EdgeInsets.symmetric(horizontal: 12.0),
+                      child:InkWell(
+                        onTap: () {
+                        TK_SanPham();
+                      },
+                      
+                        child:Icon(Icons.search, color: Colors.lightGreen,)), 
+                      
+                    ),
                           Expanded(
                             child: TextField(
                               controller: tk_sp,
@@ -217,7 +223,12 @@ class _GiohangState extends State<Giohang> {
                         icon: const Icon(Icons.shopping_cart_outlined,
                             color: Colors.lightGreen),
                         onPressed: () {
-                          // Hành động khi nhấn giỏ hàng
+                          Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Giohang(),
+                      ),
+                    );
                         },
                       ),
                       Positioned(
