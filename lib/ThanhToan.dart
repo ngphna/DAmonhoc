@@ -1,4 +1,6 @@
+import 'package:doan_hk2/DiaChiGiao.dart';
 import 'package:doan_hk2/Giohang.dart';
+import 'package:doan_hk2/api_service.dart';
 import 'package:flutter/material.dart';
 import 'nutmau.dart';
 class Thanhtoan extends StatefulWidget {
@@ -63,19 +65,29 @@ class ThanhtoanSate extends State<Thanhtoan> {
                 ),
               ],
             ),
+            const SizedBox(height: 10,),
+            //Nút chọn địa chỉ từ sổ địa chỉ
+            CustomButton(
+                text: "Chọn địa chỉ",
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DiaChiGiao(),
+                    ),
+                  );
+                },
+            ), 
             const SizedBox(height: 20),
             const Text('Thông tin giao hàng', style: TextStyle(fontSize: 20)),
             _buildTextField('Họ và Tên'),
             _buildTextField('Số điện Thoại'),
-            _buildTextField('Email'),
-            _buildTextField('Tỉnh'),
-            _buildTextField('Huyện'),
-            _buildTextField('Xã'),
             _buildTextField('Địa Chỉ', maxLines: 3),
             const SizedBox(height: 20),
             const Text('Phương Thức Thanh Toán', style: TextStyle(fontSize: 20)),
             Row(
               children: [
+                
                 Radio(
                   value: 'Chuyển Khoản',
                   groupValue: _selectedPaymentMethod,
@@ -102,8 +114,11 @@ class ThanhtoanSate extends State<Thanhtoan> {
             const SizedBox(height: 20),
             Center(
               child: CustomButton(
-                                  text: "Thanh toán",
-                                  onPressed: () {}),
+                text: "Thanh toán",
+                onPressed: () {
+
+                }
+              ),                  
             ),
           ],
         ),

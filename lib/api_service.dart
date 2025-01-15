@@ -1,3 +1,4 @@
+import 'package:doan_hk2/model/diachi_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -295,5 +296,51 @@ Future<List<KhuyenMai>> fetchPromotions() async {
       throw Exception("Lỗi khi tải khuyến mãi: $e");
     }
   }
+  //Hàm lấy địa chỉ giao
+  Future<List<Address>> fetchAddresses(String username) async {
+  final response = await http.get(Uri.parse('${apiUrl}diachigiao.php?username=$username'));
+
+  if (response.statusCode == 200) {
+    print("JSON từ API: ${response.body}"); // Debug JSON trả về
+    List<dynamic> data = jsonDecode(response.body);
+    return data.map((json) => Address.fromJson(json)).toList();
+  } else {
+    throw Exception("Failed to load addresses");
+  }
+}
+//Hàm post diachigiao
+Future<void> addAddress(Address address) async {
+  final url = Uri.parse('${apiUrl}themdiachigiao.php'); // Địa chỉ API của bạn
+
+  // Chuyển đối tượng Address thành JSON
+  final Map<String, dynamic> addressJson = address.toJson();
+
+  // Gửi yêu cầu POST
+  try {
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode(addressJson),  // Chuyển dữ liệu thành JSON
+    );
+
+    // Kiểm tra mã trạng thái HTTP
+    if (response.statusCode == 200) {
+      final responseData = jsonDecode(response.body);
+
+      if (responseData['success'] == true) {
+        print('Địa chỉ đã được thêm thành công');
+      } else {
+        print('Lỗi khi thêm địa chỉ: ${responseData['message']}');
+      }
+    } else {
+      print('Lỗi HTTP: ${response.statusCode}');
+    }
+  } catch (e) {
+    // Xử lý lỗi nếu không thể kết nối với API
+    print("Lỗi kết nối: $e");
+  }
+}
+
+
 
 }
