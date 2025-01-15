@@ -1,7 +1,7 @@
 class Order {
   final int donHangID;
   final String tenDangNhap;
-  final int khuyenMaiID;
+  final int? khuyenMaiID;
   final int thanhToanID;
   final int diaChiGiaoID;
   final DateTime ngayDat;
@@ -11,7 +11,7 @@ class Order {
   Order({
     required this.donHangID,
     required this.tenDangNhap,
-    required this.khuyenMaiID,
+    this.khuyenMaiID,
     required this.thanhToanID,
     required this.diaChiGiaoID,
     required this.ngayDat,
@@ -23,7 +23,9 @@ class Order {
     return Order(
       donHangID: int.parse(json['DonHangID'].toString()),
       tenDangNhap: json['TenDangNhap'].toString(),
-      khuyenMaiID: int.parse(json['KhuyenMaiID'].toString()),
+      khuyenMaiID: json['KhuyenMaiID'] != null
+          ? int.parse(json['KhuyenMaiID'].toString())
+          : null,  // Xử lý null cho KhuyenMaiID
       thanhToanID: int.parse(json['ThanhToanID'].toString()),
       diaChiGiaoID: int.parse(json['DiaChiGiaoID'].toString()),
       ngayDat: DateTime.parse(json['NgayDat'].toString()),

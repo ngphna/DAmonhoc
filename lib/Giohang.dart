@@ -1,9 +1,11 @@
 import 'package:doan_hk2/DangNhap.dart';
-import 'package:doan_hk2/DonHangChoXacNhan.dart';
-import 'package:doan_hk2/DonHangDaXacNhan.dart';
+import 'package:doan_hk2/view/DonHangChoXacNhan.dart';
+import 'package:doan_hk2/view/DonHangDaMua.dart';
+import 'package:doan_hk2/view/DonHangDaXacNhan.dart';
 import 'package:doan_hk2/Thongtincanhan.dart';
 import 'package:doan_hk2/itemdamua.dart';
 import 'package:doan_hk2/ThanhToan.dart';
+import 'package:doan_hk2/view/DonHangDangGiao.dart';
 import 'nutmau.dart';
 import 'package:flutter/material.dart';
 import 'itemthanhtoan.dart';
@@ -109,7 +111,7 @@ class _GiohangState extends State<Giohang> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 4, // Số lượng tab
+      length: 5, // Số lượng tab
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.lightGreen,
@@ -262,8 +264,9 @@ class _GiohangState extends State<Giohang> {
                   unselectedLabelColor: Colors.black,
                   indicatorColor: Colors.orange,
                   tabs: [
-                    Tab(text: 'Chờ Thanh Toán'),
+                    Tab(text: 'Chờ thanh toán'),
                     Tab(text: 'Chờ Duyệt'),
+                    Tab(text: 'Đã duyệt'),
                     Tab(text: 'Đang Giao'),
                     Tab(text: 'Đã Mua'),
                   ],
@@ -388,9 +391,10 @@ class _GiohangState extends State<Giohang> {
                         ),
                       ],
                     ),
+                    
                     ListView(
                       children: [
-                         // Màn hình đơn hàng
+                         // Màn hình đơn hàng chờ duyệt
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
@@ -406,7 +410,7 @@ class _GiohangState extends State<Giohang> {
                     ),
                     ListView(
                       children: [
-                        // Màn hình đơn hàng
+                        // Màn hình đơn hàng đã duyệt
                         const Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
@@ -421,15 +425,35 @@ class _GiohangState extends State<Giohang> {
                       ],
                     ),
                     ListView(
-                      children: const [
-                        ProductItemds(
-                            imageUrl: 'https://via.placeholder.com/150',
-                            productName: "Cam Sieu ngot",
-                            price: 1),
-                        ProductItemds(
-                            imageUrl: 'https://via.placeholder.com/150',
-                            productName: "Cam Sieu ngot",
-                            price: 2),
+                      children: [
+                         // Màn hình đơn hàng đang giao
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Danh sách đơn hàng:',
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 400, // Giới hạn chiều cao
+                          child: DonHangDangGiao(),
+                        ),
+                      ],
+                    ),
+                    ListView(
+                      children: [
+                         // Màn hình đơn hàng đã mua
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Danh sách đơn hàng:',
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 400, // Giới hạn chiều cao
+                          child: DonHangDaMua(),
+                        ),
                       ],
                     ),
                   ],

@@ -309,6 +309,18 @@ Future<List<KhuyenMai>> fetchPromotions() async {
     throw Exception("Failed to load addresses");
   }
 }
+//Hàm lấy địa chỉ giao
+  Future<List<Address>> layDiaChiID(int id) async {
+  final response = await http.get(Uri.parse('${apiUrl}diachigiao.php?id=$id'));
+
+  if (response.statusCode == 200) {
+    print("JSON từ API: ${response.body}"); // Debug JSON trả về
+    List<dynamic> data = jsonDecode(response.body);
+    return data.map((json) => Address.fromJson(json)).toList();
+  } else {
+    throw Exception("Failed to load addresses");
+  }
+}
 //Hàm post diachigiao
 Future<void> addAddress(Address address) async {
   final url = Uri.parse('${apiUrl}themdiachigiao.php'); // Địa chỉ API của bạn

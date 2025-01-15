@@ -1,6 +1,6 @@
 import 'package:doan_hk2/DangKy.dart';
 import 'package:doan_hk2/DangNhap.dart';
-import 'package:doan_hk2/DonHangChoXacNhan.dart';
+import 'package:doan_hk2/view/DonHangChoXacNhan.dart';
 
 import 'package:doan_hk2/DuyetDon.dart';
 import 'package:doan_hk2/Giohang.dart';
