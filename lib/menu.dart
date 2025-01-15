@@ -43,7 +43,7 @@ Widget buildMenu() {
 Widget buildMenuItem(String title,BuildContext context) {
   return InkWell(
     onTap: () {
-      Navigator.pop(context);
+      
       int danhmucid = Sosanh(title);
      showDialog(
       context: context,

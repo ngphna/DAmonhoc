@@ -71,7 +71,7 @@ class _TrangchuState extends State<Trangchu> {
     List<dynamic> searchResults = await LoginService().tkSanPham(searchQuery);
 
     // Chuyển đến trang tìm kiếm kết quả
-    Navigator.pushReplacement(
+    Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => TrangTimKiem(searchResults: searchResults),
@@ -171,9 +171,15 @@ class _TrangchuState extends State<Trangchu> {
                 ),
                 child: Row(
                   children: [
-                    const Padding(
+                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 12.0),
-                      child: Icon(Icons.search, color: Colors.lightGreen),
+                      child:InkWell(
+                        onTap: () {
+                        TK_SanPham();
+                      },
+                      
+                        child:Icon(Icons.search, color: Colors.lightGreen,)), 
+                      
                     ),
                     Expanded(
                       child: TextField(

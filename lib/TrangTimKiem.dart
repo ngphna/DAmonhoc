@@ -25,7 +25,7 @@ class TrangTimKiem extends StatelessWidget {
                   leading: Image.asset(product['Image']),
                   onTap: () {
                       Navigator.pop(context);
-              Navigator.push(
+                      Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => ProductDetail(
