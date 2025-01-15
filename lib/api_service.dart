@@ -355,4 +355,15 @@ Future<void> addAddress(Address address) async {
     }
   }
 
+// Hàm lấy dữ liệu đơn hàng theo trạng thái
+Future<List<Order>> fetchOrdersByStatus() async {
+  final response = await http.get(Uri.parse('${apiUrl}loaddonadmin.php'));
+
+  if (response.statusCode == 200) {
+    List<dynamic> data = json.decode(response.body);
+    return data.map((orderJson) => Order.fromJson(orderJson)).toList();
+  } else {
+    throw Exception('Failed to load orders');
+  }
+}
 }

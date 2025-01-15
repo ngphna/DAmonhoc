@@ -1,3 +1,4 @@
+import 'package:doan_hk2/AdminDonHangChoXacNhan.dart';
 import 'package:doan_hk2/ChiTietDonHang.dart';
 import 'package:doan_hk2/DangNhap.dart';
 import 'package:doan_hk2/Thongtincanhan.dart';
@@ -102,42 +103,45 @@ class DuyetDonState extends State<DuyetDon>
           ),
         ],
       ),
-      body: ListView.builder(
-        itemCount: orders.length,
-        itemBuilder: (context, index) {
-          final order = orders[index];
-          return Card(
-            child: ListTile(
-              title: Text("Họ và tên: ${order['customer']}"),
-              subtitle: Text("Tổng: ${order['total']} VND\n Trạng thái: ${order['status']}"),
-              onTap: ()=>Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Chitietdonhang(),
-                ),
-              ),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ElevatedButton(
-                    onPressed: order['status'] == "Chờ Duyệt"
-                        ? () => approveOrder(order['id'])
-                        : null,
-                    child: const Text("Duyệt"),
-                  ),
-                  const SizedBox(width: 8),
-                  ElevatedButton(
-                    onPressed: order['status'] == "Chờ Duyệt"
-                        ? () => cancelOrder(order['id'])
-                        : null,
-                    child: const Text("Hủy"),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      ),
+      body: 
+      // ListView.builder(
+      //   itemCount: orders.length,
+      //   itemBuilder: (context, index) {
+      //     final order = orders[index];
+      //     return Card(
+      //       child: 
+      //       ListTile(
+      //         title: Text("Họ và tên: ${order['customer']}"),
+      //         subtitle: Text("Tổng: ${order['total']} VND\n Trạng thái: ${order['status']}"),
+      //         onTap: ()=>Navigator.pushReplacement(
+      //           context,
+      //           MaterialPageRoute(
+      //             builder: (context) => Chitietdonhang(),
+      //           ),
+      //         ),
+      //         trailing: Row(
+      //           mainAxisSize: MainAxisSize.min,
+      //           children: [
+      //             ElevatedButton(
+      //               onPressed: order['status'] == "Chờ Duyệt"
+      //                   ? () => approveOrder(order['id'])
+      //                   : null,
+      //               child: const Text("Duyệt"),
+      //             ),
+      //             const SizedBox(width: 8),
+      //             ElevatedButton(
+      //               onPressed: order['status'] == "Chờ Duyệt"
+      //                   ? () => cancelOrder(order['id'])
+      //                   : null,
+      //               child: const Text("Hủy"),
+      //             ),
+      //           ],
+      //         ),
+      //       ),
+      //     );
+      //   },
+      // ),
+      AdminDonHangChoXacNhan()
     );
   }
 }
