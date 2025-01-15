@@ -1,4 +1,5 @@
 import 'package:doan_hk2/model/diachi_model.dart';
+import 'package:doan_hk2/model/donhang_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -341,6 +342,17 @@ Future<void> addAddress(Address address) async {
   }
 }
 
+// Hàm lấy dữ liệu đơn hàng theo TenDangNhap
+  Future<List<Order>> fetchOrdersByUsername(String tenDangNhap) async {
+    final response = await http.get(Uri.parse('${apiUrl}donhang.php?TenDangNhap=$tenDangNhap'),
+    );
 
+    if (response.statusCode == 200) {
+      List<dynamic> data = json.decode(response.body);
+      return data.map((orderJson) => Order.fromJson(orderJson)).toList();
+    } else {
+      throw Exception('Failed to load orders');
+    }
+  }
 
 }
