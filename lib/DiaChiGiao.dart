@@ -111,7 +111,7 @@ class DiaChiGiaoState extends State<DiaChiGiao> {
     }
 
     Address newAddress = Address(
-      diaChiGiaoID: 0,  // Có thể để là 0, ID tự động tăng sẽ được cấp từ server
+      diaChiGiaoID: 0, // Có thể để là 0, ID tự động tăng sẽ được cấp từ server
       tenDangNhap: tenDangNhap!,
       ten: ten,
       sdt: sdt,

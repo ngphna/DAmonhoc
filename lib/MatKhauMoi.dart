@@ -14,11 +14,11 @@ class MatkhaumoiState extends State<Matkhaumoi> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: Container(
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.all(20.0), // Padding xung quanh toàn bộ Column
+            padding:
+                const EdgeInsets.all(20.0), // Padding xung quanh toàn bộ Column
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -30,37 +30,32 @@ class MatkhaumoiState extends State<Matkhaumoi> {
                     color: Colors.black, // Màu chữ trắng để nổi bật trên nền
                   ),
                 ),
-
                 const SizedBox(height: 50),
-
-               
                 TextField(
-
                   decoration: InputDecoration(
                     labelText: "Mật khẩu",
                     border: OutlineInputBorder(),
                   ),
-
                 ),
                 const SizedBox(height: 20),
-
-                
                 TextField(
-
                   decoration: InputDecoration(
                     labelText: "Nhập lại mật khẩu",
                     border: OutlineInputBorder(),
                   ),
                 ),
-
                 const SizedBox(height: 20),
-                CustomButton(text: "Hoàn Tất", onPressed: (){Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DangNhap(),
-                      ),
-                    );})
-                             ],
+                CustomButton(
+                    text: "Hoàn Tất",
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DangNhap(),
+                        ),
+                      );
+                    })
+              ],
             ),
           ),
         ),

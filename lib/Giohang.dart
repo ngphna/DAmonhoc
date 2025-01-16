@@ -44,13 +44,12 @@ class _GiohangState extends State<Giohang> {
 
   void _loadCartProducts() async {
     try {
-      List<ProductItemModel> loadedProducts = await cartService.fetchCartProducts();
+      List<ProductItemModel> loadedProducts =
+          await cartService.fetchCartProducts();
       setState(() {
         productsInCart = loadedProducts;
       });
-    } catch (e) {
-     
-    }
+    } catch (e) {}
   }
 
   // Hàm tìm kiếm sản phẩm
@@ -71,7 +70,8 @@ class _GiohangState extends State<Giohang> {
         ),
       );
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Lỗi: $e")));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Lỗi: $e")));
     }
   }
 
@@ -136,7 +136,8 @@ class _GiohangState extends State<Giohang> {
                     context: context,
                     isScrollControlled: true,
                     shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(16)),
                     ),
                     builder: (context) => DangNhap(),
                   );
@@ -175,7 +176,8 @@ class _GiohangState extends State<Giohang> {
                         context: context,
                         isScrollControlled: true,
                         shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+                          borderRadius:
+                              BorderRadius.vertical(top: Radius.circular(16)),
                         ),
                         builder: (context) => buildMenu(),
                       );
@@ -191,15 +193,16 @@ class _GiohangState extends State<Giohang> {
                       child: Row(
                         children: [
                           Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12.0),
-                      child:InkWell(
-                        onTap: () {
-                        TK_SanPham();
-                      },
-                      
-                        child:Icon(Icons.search, color: Colors.lightGreen,)), 
-                      
-                    ),
+                            padding: EdgeInsets.symmetric(horizontal: 12.0),
+                            child: InkWell(
+                                onTap: () {
+                                  TK_SanPham();
+                                },
+                                child: Icon(
+                                  Icons.search,
+                                  color: Colors.lightGreen,
+                                )),
+                          ),
                           Expanded(
                             child: TextField(
                               controller: tk_sp,
@@ -223,11 +226,11 @@ class _GiohangState extends State<Giohang> {
                             color: Colors.lightGreen),
                         onPressed: () {
                           Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Giohang(),
-                      ),
-                    );
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Giohang(),
+                            ),
+                          );
                         },
                       ),
                       Positioned(
@@ -313,7 +316,8 @@ class _GiohangState extends State<Giohang> {
                                   alignment: Alignment.centerRight,
                                   child: const Padding(
                                     padding: EdgeInsets.only(right: 16.0),
-                                    child: Icon(Icons.delete, color: Colors.white),
+                                    child:
+                                        Icon(Icons.delete, color: Colors.white),
                                   ),
                                 ),
                                 child: ProductItem(
@@ -372,32 +376,31 @@ class _GiohangState extends State<Giohang> {
                               CustomButton(
                                 text: "Thanh toán",
                                 onPressed: () {
-                      if(productsInCart.length>0){
-                        Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder:( context)=> Thanhtoan())
-                        );
-                      }
-                      else{
-                         showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text("Thông báo"),
-        content: Text("Bạn Chưa Có Sản Phẩm"),
-        actions: [
-          TextButton(
-            child: Text("Ok"),
-            onPressed: () {
-              Navigator.of(context).pop(); // Đóng dialog
-            },
-          ),
-         
-          
-        ],
-      );
-    },
-  );
-                      }
+                                  if (productsInCart.length > 0) {
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Thanhtoan()));
+                                  } else {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text("Thông báo"),
+                                          content: Text("Bạn Chưa Có Sản Phẩm"),
+                                          actions: [
+                                            TextButton(
+                                              child: Text("Ok"),
+                                              onPressed: () {
+                                                Navigator.of(context)
+                                                    .pop(); // Đóng dialog
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  }
                                 },
                               ),
                             ],
@@ -407,12 +410,13 @@ class _GiohangState extends State<Giohang> {
                     ),
                     ListView(
                       children: [
-                         // Màn hình đơn hàng
+                        // Màn hình đơn hàng
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
                             'Danh sách đơn hàng:',
-                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
                           ),
                         ),
                         SizedBox(
@@ -428,7 +432,8 @@ class _GiohangState extends State<Giohang> {
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
                             'Danh sách đơn hàng:',
-                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
                           ),
                         ),
                         SizedBox(

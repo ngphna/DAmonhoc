@@ -49,8 +49,7 @@ class _ThongtincanhanState extends State<Thongtincanhan> {
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Cập nhật thông tin thành công!"))
-      );
+          const SnackBar(content: Text("Cập nhật thông tin thành công!")));
     } catch (error) {
       setState(() {
         _error = error.toString();
@@ -59,7 +58,8 @@ class _ThongtincanhanState extends State<Thongtincanhan> {
   }
 
   void _showEditDialog(String fieldKey, String currentValue) {
-    TextEditingController controller = TextEditingController(text: currentValue);
+    TextEditingController controller =
+        TextEditingController(text: currentValue);
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -69,7 +69,9 @@ class _ThongtincanhanState extends State<Thongtincanhan> {
           decoration: const InputDecoration(labelText: 'Nhập giá trị mới'),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Hủy')),
+          TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Hủy')),
           TextButton(
             onPressed: () {
               if (controller.text.isNotEmpty) {
@@ -89,8 +91,10 @@ class _ThongtincanhanState extends State<Thongtincanhan> {
     return Scaffold(
       appBar: AppBar(
         title: GestureDetector(
-          onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Trangchu())),
-          child: const Text("Fruit Paradise", style: TextStyle(color: Colors.black)),
+          onTap: () => Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const Trangchu())),
+          child: const Text("Fruit Paradise",
+              style: TextStyle(color: Colors.black)),
         ),
         backgroundColor: Colors.lightGreen,
       ),
@@ -103,14 +107,20 @@ class _ThongtincanhanState extends State<Thongtincanhan> {
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text("Thông tin tài khoản", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
+                      const Text("Thông tin tài khoản",
+                          style: TextStyle(
+                              fontSize: 30, fontWeight: FontWeight.bold)),
                       const SizedBox(height: 20),
-                      Text('Xin chào, ${_userInfo?['TenDangNhap'] ?? 'Chưa có dữ liệu'}!',
-                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      Text(
+                          'Xin chào, ${_userInfo?['TenDangNhap'] ?? 'Chưa có dữ liệu'}!',
+                          style: const TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold)),
                       const SizedBox(height: 16),
                       Container(
                         padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8)),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -118,39 +128,45 @@ class _ThongtincanhanState extends State<Thongtincanhan> {
                               icon: Icons.account_circle,
                               label: 'Họ Tên:',
                               value: _userInfo?['HoTen'] ?? 'Chưa cập nhật',
-                              onEdit: () => _showEditDialog('HoTen', _userInfo?['HoTen'] ?? ''),
+                              onEdit: () => _showEditDialog(
+                                  'HoTen', _userInfo?['HoTen'] ?? ''),
                             ),
                             InfoRow(
                               icon: Icons.boy,
                               label: 'Giới Tính:',
                               value: _userInfo?['GioiTinh'] ?? 'Chưa cập nhật',
-                              onEdit: () => _showEditDialog('GioiTinh', _userInfo?['GioiTinh'] ?? ''),
+                              onEdit: () => _showEditDialog(
+                                  'GioiTinh', _userInfo?['GioiTinh'] ?? ''),
                             ),
                             InfoRow(
                               icon: Icons.date_range,
                               label: 'Ngày Sinh:',
                               value: _userInfo?['NgaySinh'] ?? 'Chưa cập nhật',
-                              onEdit: () => _showEditDialog('NgaySinh', _userInfo?['NgaySinh'] ?? ''),
+                              onEdit: () => _showEditDialog(
+                                  'NgaySinh', _userInfo?['NgaySinh'] ?? ''),
                             ),
                             InfoRow(
                               icon: Icons.location_on,
                               label: 'Địa chỉ:',
                               value: _userInfo?['DiaChi'] ?? 'Chưa cập nhật',
-                              onEdit: () => _showEditDialog('DiaChi', _userInfo?['DiaChi'] ?? ''),
+                              onEdit: () => _showEditDialog(
+                                  'DiaChi', _userInfo?['DiaChi'] ?? ''),
                             ),
                             InfoRow(
                               icon: Icons.phone,
                               label: 'Điện thoại:',
-                              value: _userInfo?['SoDienThoai'] ?? 'Chưa cập nhật',
-                              onEdit: () => _showEditDialog('SoDienThoai', _userInfo?['SoDienThoai'] ?? ''),
+                              value:
+                                  _userInfo?['SoDienThoai'] ?? 'Chưa cập nhật',
+                              onEdit: () => _showEditDialog('SoDienThoai',
+                                  _userInfo?['SoDienThoai'] ?? ''),
                             ),
                             InfoRow(
                               icon: Icons.mail,
                               label: 'Email:',
                               value: _userInfo?['Email'] ?? 'Chưa cập nhật',
-                              onEdit: () => _showEditDialog('Email', _userInfo?['Email'] ?? ''),
+                              onEdit: () => _showEditDialog(
+                                  'Email', _userInfo?['Email'] ?? ''),
                             ),
-                            
                           ],
                         ),
                       ),
@@ -185,8 +201,13 @@ class InfoRow extends StatelessWidget {
           const SizedBox(width: 8),
           Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
           const SizedBox(width: 8),
-          Expanded(child: Text(value, style: TextStyle(color: Colors.grey[700]), overflow: TextOverflow.ellipsis)),
-          IconButton(icon: const Icon(Icons.edit, color: Colors.blue), onPressed: onEdit),
+          Expanded(
+              child: Text(value,
+                  style: TextStyle(color: Colors.grey[700]),
+                  overflow: TextOverflow.ellipsis)),
+          IconButton(
+              icon: const Icon(Icons.edit, color: Colors.blue),
+              onPressed: onEdit),
         ],
       ),
     );

@@ -65,7 +65,6 @@ class _ProductListState extends State<ProductList> {
         final product = products[index];
         return GestureDetector(
           onTap: () {
-          
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -82,7 +81,6 @@ class _ProductListState extends State<ProductList> {
             );
           },
           child: Card(
-            
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8.0),
             ),
@@ -326,16 +324,17 @@ class _ProductDetailState extends State<ProductDetail> {
                       ),
                       child: Row(
                         children: [
-                           Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12.0),
-                      child:InkWell(
-                        onTap: () {
-                        TK_SanPham();
-                      },
-                      
-                        child:Icon(Icons.search, color: Colors.lightGreen,)), 
-                      
-                    ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 12.0),
+                            child: InkWell(
+                                onTap: () {
+                                  TK_SanPham();
+                                },
+                                child: Icon(
+                                  Icons.search,
+                                  color: Colors.lightGreen,
+                                )),
+                          ),
                           Expanded(
                             child: TextField(
                               controller: tk_sp,

@@ -1,10 +1,10 @@
-
 import 'package:doan_hk2/ThanhToan.dart';
 import 'package:doan_hk2/nutmau.dart';
 import 'package:flutter/material.dart';
 import 'api_service.dart';
-import 'khuyenmai.dart'; 
+import 'khuyenmai.dart';
 import 'product_item_model.dart';
+
 class KhuyenMai {
   final int id;
   final String tenKhuyenMai;
@@ -136,9 +136,7 @@ Widget showkmWidget(BuildContext context) {
     actions: [
       TextButton(
         onPressed: () {
-          
-             Navigator.of(context).pop(); // Đóng dialog
-            
+          Navigator.of(context).pop(); // Đóng dialog
         },
         child: Text('Đóng'),
       ),
@@ -176,18 +174,18 @@ class _PromotionDetailsScreenState extends State<PromotionDetailsScreen> {
 
   Future<void> _loadCartProducts() async {
     try {
-      List<ProductItemModel> loadedProducts = await cartService.fetchCartProducts();
+      List<ProductItemModel> loadedProducts =
+          await cartService.fetchCartProducts();
       setState(() {
         productsInCart = loadedProducts;
       });
-    } catch (e) {
-     
-    }
+    } catch (e) {}
   }
 
   @override
   Widget build(BuildContext context) {
-    final promotion = widget.promotion; // Sử dụng widget để truy cập đối tượng trong StatefulWidget
+    final promotion = widget
+        .promotion; // Sử dụng widget để truy cập đối tượng trong StatefulWidget
 
     return Scaffold(
       body: Padding(
@@ -236,34 +234,31 @@ class _PromotionDetailsScreenState extends State<PromotionDetailsScreen> {
                   child: CustomButton(
                     text: "Sử Dụng",
                     onPressed: () {
-                      if(productsInCart.length>0){
-                        int km=promotion.giamGiaPhanTram??0;
-                        Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder:( context)=> Thanhtoan(),
-                        settings: RouteSettings(arguments: km)
-                        )
+                      if (productsInCart.length > 0) {
+                        int km = promotion.giamGiaPhanTram ?? 0;
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Thanhtoan(),
+                                settings: RouteSettings(arguments: km)));
+                      } else {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text("Thông báo"),
+                              content: Text("Bạn Chưa Có Sản Phẩm"),
+                              actions: [
+                                TextButton(
+                                  child: Text("Ok"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop(); // Đóng dialog
+                                  },
+                                ),
+                              ],
+                            );
+                          },
                         );
-                      }
-                      else{
-                         showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text("Thông báo"),
-        content: Text("Bạn Chưa Có Sản Phẩm"),
-        actions: [
-          TextButton(
-            child: Text("Ok"),
-            onPressed: () {
-              Navigator.of(context).pop(); // Đóng dialog
-            },
-          ),
-         
-          
-        ],
-      );
-    },
-  );
                       }
                     },
                   ),

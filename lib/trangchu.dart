@@ -22,10 +22,10 @@ class Trangchu extends StatefulWidget {
 class _TrangchuState extends State<Trangchu> {
   //Tìm kiếm sản phẩm
   final TextEditingController tk_sp = TextEditingController();
-   LoginService cartService = LoginService();
+  LoginService cartService = LoginService();
   String? username;
-  
-   List<ProductItemModel> productsInCart = [];
+
+  List<ProductItemModel> productsInCart = [];
 
   @override
   void initState() {
@@ -44,45 +44,45 @@ class _TrangchuState extends State<Trangchu> {
 
   void _loadCartProducts() async {
     try {
-      List<ProductItemModel> loadedProducts = await cartService.fetchCartProducts();
+      List<ProductItemModel> loadedProducts =
+          await cartService.fetchCartProducts();
       setState(() {
         productsInCart = loadedProducts;
       });
-    } catch (e) {
-     
-    }
+    } catch (e) {}
   }
 
   // Hàm tìm kiếm sản phẩm
 
   //Hàm tìm kiếm sản phẩm
   void TK_SanPham() async {
-  final searchQuery = tk_sp.text.trim();
-  
-  if (searchQuery.isEmpty) {
-    // Nếu không có từ khóa tìm kiếm
-    return;
+    final searchQuery = tk_sp.text.trim();
+
+    if (searchQuery.isEmpty) {
+      // Nếu không có từ khóa tìm kiếm
+      return;
+    }
+
+    try {
+      // Gọi API để tìm kiếm sản phẩm theo tên
+      List<dynamic> searchResults = await LoginService().tkSanPham(searchQuery);
+
+      // Chuyển đến trang tìm kiếm kết quả
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => TrangTimKiem(searchResults: searchResults),
+        ),
+      );
+    } catch (e) {
+      // Xử lý lỗi nếu không tìm thấy hoặc có vấn đề khi gọi API
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Lỗi: $e")));
+    }
   }
 
-  try {
-    // Gọi API để tìm kiếm sản phẩm theo tên
-    List<dynamic> searchResults = await LoginService().tkSanPham(searchQuery);
-
-    // Chuyển đến trang tìm kiếm kết quả
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => TrangTimKiem(searchResults: searchResults),
-      ),
-    );
-  } catch (e) {
-    // Xử lý lỗi nếu không tìm thấy hoặc có vấn đề khi gọi API
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Lỗi: $e")));
-  }
-}
   final PageController _pageController = PageController();
-  
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -113,7 +113,8 @@ class _TrangchuState extends State<Trangchu> {
                   context: context,
                   isScrollControlled: true,
                   shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(16)),
                   ),
                   builder: (context) => DangNhap(),
                 );
@@ -139,158 +140,184 @@ class _TrangchuState extends State<Trangchu> {
           ),
         ],
       ),
-     body: Padding(
-  padding: const EdgeInsets.all(16.0),
-  child: SingleChildScrollView(
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            IconButton(
-              icon: const Icon(Icons.menu, color: Colors.lightGreen),
-              onPressed: () {
-                showModalBottomSheet(
-                  context: context,
-                  isScrollControlled: true,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-                  ),
-                  builder: (context) => buildMenu(),
-                );
-              },
-            ),
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(30),
-                  border: Border.all(color: Colors.lightGreen),
-                ),
-                child: Row(
-                  children: [
-                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12.0),
-                      child:InkWell(
-                        onTap: () {
-                        TK_SanPham();
-                      },
-                      
-                        child:Icon(Icons.search, color: Colors.lightGreen,)), 
-                      
-                    ),
-                    Expanded(
-                      child: TextField(
-                        controller: tk_sp,
-                        decoration: const InputDecoration(
-                          hintText: 'Tìm sản phẩm',
-                          border: InputBorder.none,
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.menu, color: Colors.lightGreen),
+                    onPressed: () {
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.vertical(top: Radius.circular(16)),
                         ),
-                        onSubmitted: (_) {
-                          TK_SanPham(); // Gọi hàm tìm kiếm khi nhấn Enter
+                        builder: (context) => buildMenu(),
+                      );
+                    },
+                  ),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(30),
+                        border: Border.all(color: Colors.lightGreen),
+                      ),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 12.0),
+                            child: InkWell(
+                                onTap: () {
+                                  TK_SanPham();
+                                },
+                                child: Icon(
+                                  Icons.search,
+                                  color: Colors.lightGreen,
+                                )),
+                          ),
+                          Expanded(
+                            child: TextField(
+                              controller: tk_sp,
+                              decoration: const InputDecoration(
+                                hintText: 'Tìm sản phẩm',
+                                border: InputBorder.none,
+                              ),
+                              onSubmitted: (_) {
+                                TK_SanPham(); // Gọi hàm tìm kiếm khi nhấn Enter
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Stack(
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.shopping_cart_outlined,
+                            color: Colors.lightGreen),
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Giohang(),
+                            ),
+                          );
                         },
                       ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Stack(
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.shopping_cart_outlined, color: Colors.lightGreen),
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Giohang(),
+                      Positioned(
+                        right: 0,
+                        top: -2,
+                        child: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: const BoxDecoration(
+                            color: Colors.red,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Text(
+                            '${productsInCart.fold(0, (sum, item) => sum + (item.quantity))}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
                       ),
-                    );
-                  },
-                ),
-                Positioned(
-                  right: 0,
-                  top: -2,
-                  child: Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: const BoxDecoration(
-                      color: Colors.red,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Text(
-                      '${productsInCart.fold(0, (sum, item) => sum + (item.quantity))}',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                      ),
-                    ),
+                    ],
                   ),
-                ),
-              ],
-            ),
-          ],
-        ),
-        const SizedBox(height: 10),
-        SizedBox(
-  height: 150,
-  child:AutoScrollCarouselView(),
-),
+                ],
+              ),
+              const SizedBox(height: 10),
+              SizedBox(
+                height: 150,
+                child: AutoScrollCarouselView(),
+              ),
 
 // Định nghĩa danh sách ảnh
 
-         const SizedBox(height: 10),
-        SizedBox(height: 120,child: PromotionsScreen() ,),
-       
-        const SizedBox(height: 16),
-         
-         Center(child: Text(
-          "Trái Cây Việt Nam",
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w100,color: Colors.lightGreen,),
-        ),),
-        const SizedBox(height: 8),
-        SizedBox(
-          height: 200,
-          child: ProductList(danhMucId: 1),
-        ),
-        const SizedBox(height: 16),
-        const  
-        Center(child:  Text(
-          "Trái Cây Nhiệt Đới",
-          style: TextStyle(fontSize: 18,fontWeight: FontWeight.w100,color: Colors.lightGreen,),
-        ),),
-        const SizedBox(height: 8),
-        SizedBox(
-          height: 200,
-          child: ProductList(danhMucId: 2),
-        ),
-        const SizedBox(height: 16),
-        Center(child:  Text(
-          "Trái Cây Thái Lan ",
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w100,color: Colors.lightGreen,),
-        ),),
-        const SizedBox(height: 8),
-        SizedBox(
-          height: 200,
-          child: ProductList(danhMucId: 3),
-        ),
-        const SizedBox(height: 16),
-         Center(child: Text(
-          "Trái Cây Trung Quốc",
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w100,color: Colors.lightGreen,),
-        ),),
-        const SizedBox(height: 8),
-        SizedBox(
-          height: 200,
-          child: ProductList(danhMucId: 6),
-        ),
-      ],
-    ),
-  ),
-),
+              const SizedBox(height: 10),
+              SizedBox(
+                height: 120,
+                child: PromotionsScreen(),
+              ),
 
+              const SizedBox(height: 16),
 
+              Center(
+                child: Text(
+                  "Trái Cây Việt Nam",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w100,
+                    color: Colors.lightGreen,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
+              SizedBox(
+                height: 200,
+                child: ProductList(danhMucId: 1),
+              ),
+              const SizedBox(height: 16),
+              const Center(
+                child: Text(
+                  "Trái Cây Nhiệt Đới",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w100,
+                    color: Colors.lightGreen,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
+              SizedBox(
+                height: 200,
+                child: ProductList(danhMucId: 2),
+              ),
+              const SizedBox(height: 16),
+              Center(
+                child: Text(
+                  "Trái Cây Thái Lan ",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w100,
+                    color: Colors.lightGreen,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
+              SizedBox(
+                height: 200,
+                child: ProductList(danhMucId: 3),
+              ),
+              const SizedBox(height: 16),
+              Center(
+                child: Text(
+                  "Trái Cây Trung Quốc",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w100,
+                    color: Colors.lightGreen,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
+              SizedBox(
+                height: 200,
+                child: ProductList(danhMucId: 6),
+              ),
+            ],
+          ),
+        ),
+      ),
       backgroundColor: Colors.white,
     );
   }
 }
-

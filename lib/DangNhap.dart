@@ -146,8 +146,8 @@ class DangNhapState extends State<DangNhap> {
                                 builder: (context) => const DangKy()),
                           );
                         },
-                        child:
-                            const Text("Bạn chưa có tài khoản? Đăng ký tại đây"),
+                        child: const Text(
+                            "Bạn chưa có tài khoản? Đăng ký tại đây"),
                       ),
                     ],
                   ),

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-
-
 class NoteBox extends StatelessWidget {
   final String hintText;
   final Function(String) onSaved;

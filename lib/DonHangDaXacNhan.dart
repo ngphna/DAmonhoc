@@ -66,14 +66,18 @@ class DonHangDaXacNhanState extends State<DonHangDaXacNhan> {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
-                    return Center(child: Text('Có lỗi xảy ra: ${snapshot.error}'));
+                    return Center(
+                        child: Text('Có lỗi xảy ra: ${snapshot.error}'));
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                     return Center(child: Text('Không có đơn hàng nào'));
                   } else {
                     final allOrders = snapshot.data!;
-                    final filteredOrders = _filterOrders(allOrders); // Lọc đơn hàng theo trạng thái
+                    final filteredOrders = _filterOrders(
+                        allOrders); // Lọc đơn hàng theo trạng thái
                     if (filteredOrders.isEmpty) {
-                      return Center(child: Text('Không có đơn hàng nào với trạng thái "Chờ xác nhận"'));
+                      return Center(
+                          child: Text(
+                              'Không có đơn hàng nào với trạng thái "Chờ xác nhận"'));
                     }
                     return ListView.builder(
                       itemCount: filteredOrders.length,

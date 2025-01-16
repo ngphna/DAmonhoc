@@ -13,12 +13,12 @@ class _AutoScrollCarouselViewState extends State<AutoScrollCarouselView> {
 
   // Danh sách ảnh
   final List<String> imgList = [
-   'assets/XoaiXanh.jpg',
-  'assets/OiHong.jpg',
-  'assets/Tao.jpg',
-  'assets/banane.jpg',
-  'assets/Cam.jpg',
-  'assets/TaoDo.jpg',
+    'assets/XoaiXanh.jpg',
+    'assets/OiHong.jpg',
+    'assets/Tao.jpg',
+    'assets/banane.jpg',
+    'assets/Cam.jpg',
+    'assets/TaoDo.jpg',
   ];
 
   @override
@@ -52,30 +52,29 @@ class _AutoScrollCarouselViewState extends State<AutoScrollCarouselView> {
 
   @override
   Widget build(BuildContext context) {
-    return  SizedBox(
-        height: 150,
-        child: PageView.builder(
-          controller: _pageController,
-          itemCount: imgList.length,
-          onPageChanged: (index) {
-            setState(() {
-              _currentIndex = index;
-            });
-          },
-          itemBuilder: (context, index) {
-            return Container(
-              margin: const EdgeInsets.symmetric(horizontal: 8.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                image: DecorationImage(
-                  image: AssetImage(imgList[index]),
-                  fit: BoxFit.fitHeight,
-                ),
+    return SizedBox(
+      height: 150,
+      child: PageView.builder(
+        controller: _pageController,
+        itemCount: imgList.length,
+        onPageChanged: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        itemBuilder: (context, index) {
+          return Container(
+            margin: const EdgeInsets.symmetric(horizontal: 8.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              image: DecorationImage(
+                image: AssetImage(imgList[index]),
+                fit: BoxFit.fitHeight,
               ),
-            );
-          },
-        ),
-      
+            ),
+          );
+        },
+      ),
     );
   }
 }

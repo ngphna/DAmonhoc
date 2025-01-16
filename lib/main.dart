@@ -9,6 +9,7 @@ import 'package:doan_hk2/Thongtincanhan.dart';
 import 'package:doan_hk2/trangchu.dart';
 
 import 'package:flutter/material.dart';
+
 void main() {
   runApp(const MainApp());
 }
@@ -19,10 +20,8 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner:  false,
+      debugShowCheckedModeBanner: false,
       home: DangNhap(),
-    
-    
     );
   }
 }
