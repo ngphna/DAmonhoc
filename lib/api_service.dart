@@ -367,4 +367,32 @@ Future<void> addAddress(Address address) async {
     }
   }
 
+// Hàm lấy dữ liệu đơn hàng theo trạng thái
+Future<List<Order>> fetchOrdersByStatus() async {
+  final response = await http.get(Uri.parse('${apiUrl}getdonhang.php'));
+
+  if (response.statusCode == 200) {
+    List<dynamic> data = json.decode(response.body);
+    return data.map((orderJson) => Order.fromJson(orderJson)).toList();
+  } else {
+    throw Exception('Failed to load orders');
+  }
+}
+//Hàm get don hang
+Future<List<Order>> getDonHang() async {
+  final response = await http.get(Uri.parse('${apiUrl}getdonhang.php'));
+
+  if (response.statusCode == 200) {
+    final data = json.decode(response.body);
+    if (data['success']) {
+      return (data['orders'] as List)
+          .map((orderJson) => Order.fromJson(orderJson))
+          .toList();
+    } else {
+      throw Exception(data['message']);
+    }
+  } else {
+    throw Exception('Failed to load orders');
+  }
+}
 }

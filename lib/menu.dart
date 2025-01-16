@@ -5,7 +5,7 @@ import 'package:doan_hk2/SoSanh.dart';
 import 'package:doan_hk2/danhsachtraicay.dart';
 import 'package:flutter/material.dart';
 import 'package:doan_hk2/api_service.dart';
-
+import 'khuyenmai.dart';
 Widget buildMenu() {
   final LoginService _loginService = LoginService();
   return Padding(

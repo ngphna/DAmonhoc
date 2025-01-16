@@ -82,6 +82,7 @@ class _ProductListState extends State<ProductList> {
             );
           },
           child: Card(
+            
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8.0),
             ),

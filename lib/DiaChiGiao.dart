@@ -87,7 +87,7 @@ class DiaChiGiaoState extends State<DiaChiGiao> {
                       ],
                     ),
                     onTap: () {
-                      // Truyền DiaChiGiaoID sang màn hình ThanhToan
+                      
                       String _ten = address.ten;
                       String _sdt = address.sdt;
                       String _diachi = address.diaChi;

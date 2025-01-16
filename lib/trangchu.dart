@@ -21,9 +21,10 @@ class Trangchu extends StatefulWidget {
 
 class _TrangchuState extends State<Trangchu> {
   //Tìm kiếm sản phẩm
+  final TextEditingController tk_sp = TextEditingController();
    LoginService cartService = LoginService();
   String? username;
-  final TextEditingController tk_sp = TextEditingController();
+  
    List<ProductItemModel> productsInCart = [];
 
   @override
@@ -48,10 +49,7 @@ class _TrangchuState extends State<Trangchu> {
         productsInCart = loadedProducts;
       });
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Lỗi khi tải giỏ hàng: $e"),
-        backgroundColor: Colors.red,
-      ));
+     
     }
   }
 

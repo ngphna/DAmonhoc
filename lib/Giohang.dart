@@ -51,10 +51,7 @@ class _GiohangState extends State<Giohang> {
         productsInCart = loadedProducts;
       });
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Lỗi khi tải giỏ hàng: $e"),
-        backgroundColor: Colors.red,
-      ));
+     
     }
   }
 
@@ -378,12 +375,32 @@ class _GiohangState extends State<Giohang> {
                               CustomButton(
                                 text: "Thanh toán",
                                 onPressed: () {
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => Thanhtoan(),
-                                    ),
-                                  );
+                      if(productsInCart.length>0){
+                        Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder:( context)=> Thanhtoan())
+                        );
+                      }
+                      else{
+                         showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text("Thông báo"),
+        content: Text("Bạn Chưa Có Sản Phẩm"),
+        actions: [
+          TextButton(
+            child: Text("Ok"),
+            onPressed: () {
+              Navigator.of(context).pop(); // Đóng dialog
+            },
+          ),
+         
+          
+        ],
+      );
+    },
+  );
+                      }
                                 },
                               ),
                             ],

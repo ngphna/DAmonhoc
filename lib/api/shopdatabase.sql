@@ -96,7 +96,6 @@ CREATE TABLE `donhang` (
 
   `DonHangID` int(11) NOT NULL PRIMARY KEY,
   `TenDangNhap` VARCHAR (50) NOT NULL,
-
   `KhuyenMaiID` int(11) DEFAULT NULL,
   `ThanhToanID` int(11) DEFAULT NULL,
   `DiaChiGiaoID` int(11) DEFAULT NULL,
