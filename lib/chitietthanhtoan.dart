@@ -1,28 +1,32 @@
+import 'dart:ffi';
+
 import 'package:doan_hk2/DiaChiGiao.dart';
 import 'package:doan_hk2/DonhangTT.dart';
 import 'package:doan_hk2/Giohang.dart';
+import 'package:doan_hk2/api_service.dart';
 import 'package:flutter/material.dart';
 import 'nutmau.dart';
 import 'khuyenmai.dart';
 import 'product_item_model.dart';
-import 'api_service.dart';
+import 'DonhangTT.dart';
 
-class Thanhtoan extends StatefulWidget {
-  const Thanhtoan({super.key});
+
+class Thanhtoanct extends StatefulWidget {
+  const Thanhtoanct({super.key});
 
   @override
-  State<StatefulWidget> createState() => ThanhtoanSate();
+  State<StatefulWidget> createState() => ThanhtoanctSate();
 }
 
-class ThanhtoanSate extends State<Thanhtoan> {
+class ThanhtoanctSate extends State<Thanhtoanct> {
   final TextEditingController tenController = TextEditingController();
   final TextEditingController sdtController = TextEditingController();
   final TextEditingController diachiController = TextEditingController();
   
   final LoginService cartService = LoginService();
+
   String? username;
   List<ProductItemModel> productsInCart = [];
-  int? globalDiscount;
 
   @override
   void initState() {
@@ -40,7 +44,8 @@ class ThanhtoanSate extends State<Thanhtoan> {
 
   Future<void> _loadCartProducts() async {
     try {
-      List<ProductItemModel> loadedProducts = await cartService.fetchCartProducts();
+      List<ProductItemModel> loadedProducts =
+          await cartService.fetchCartProducts();
       setState(() {
         productsInCart = loadedProducts;
       });
@@ -60,30 +65,27 @@ class ThanhtoanSate extends State<Thanhtoan> {
     );
   }
 
-  void updateDiscount(int newDiscount) {
-    setState(() {
-      globalDiscount = newDiscount;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final arguments = ModalRoute.of(context)?.settings.arguments;
+
     String ten = '';
     String sdt = '';
     String diachi = '';
-    
+    int km = 0;
+
     if (arguments != null && arguments is Map<String, dynamic>) {
       ten = arguments['ten'] ?? ten;
       sdt = arguments['sdt'] ?? sdt;
       diachi = arguments['diachi'] ?? diachi;
+      km = arguments['km'] is int
+          ? arguments['km']
+          : int.tryParse(arguments['km']?.toString() ?? '0') ?? 0;
     }
 
-    // Tính tổng tiền
-    int total = productsInCart.fold(0, (sum, item) => sum + (item.price * item.quantity));
-
-    // Tính tiền giảm giá
-    double tkm = (total * ((globalDiscount ?? 0) / 100));
+    int total = productsInCart.fold(
+        0, (sum, item) => sum + (item.price * item.quantity));
+    double tkm = (total * ((km ?? 0) / 100));
     double tienskm = total - tkm;
 
     tenController.text = ten;
@@ -123,26 +125,16 @@ class ThanhtoanSate extends State<Thanhtoan> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
+              _buildTextField('Tên Người Nhận', controller: tenController),
+              _buildTextField('Số điện Thoại', controller: sdtController),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   CustomButton(
-                    text: "Đơn hàng",
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DonhangTT(),
-                        ),
-                      );
-                    },
-                  ),
-                  SizedBox(width: 20,),
-                    CustomButton(
                     text: "Chọn địa chỉ",
                     onPressed: () {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder: (context) => DiaChiGiao(),
@@ -152,16 +144,8 @@ class ThanhtoanSate extends State<Thanhtoan> {
                   ),
                 ],
               ),
-              const SizedBox(height: 10),
-              _buildTextField('Tên Người Nhận', controller: tenController),
-              _buildTextField('Số điện Thoại', controller: sdtController),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                
-                ],
-              ),
-              _buildTextField('Địa Chỉ', maxLines: 3, controller: diachiController),
+              _buildTextField('Địa Chỉ',
+                  maxLines: 3, controller: diachiController),
               const SizedBox(height: 10),
               Container(
                 child: Padding(
@@ -170,8 +154,8 @@ class ThanhtoanSate extends State<Thanhtoan> {
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
-                        children: const [
-                          Text(
+                        children: [
+                          const Text(
                             'Phương Thức Thanh Toán',
                             style: TextStyle(fontSize: 20),
                           ),
@@ -212,15 +196,50 @@ class ThanhtoanSate extends State<Thanhtoan> {
                           ],
                         ),
                       ),
-                      SizedBox(
-                        height: 150,
-                        child: PromotionsScreens(
-                          onSelectPromotion: (int km) {
-                            setState(() {
-                              globalDiscount = km;
-                            });
-                          },
-                        ),
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          CustomButton(
+                            text: "Khuyến Mãi",
+                            onPressed: () {
+                              if (tenController.text.isEmpty ||
+                                  diachiController.text.isEmpty ||
+                                  sdtController.text.isEmpty) {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text("Thông báo"),
+                                      content: Text("Bạn Chưa Nhập Địa Chỉ!!!"),
+                                      actions: [
+                                        TextButton(
+                                          child: Text("Ok"),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              } else {
+                                showkm(context);
+                              }
+                            },
+                          ),
+                          CustomButton(
+                            text: "Đơn hàng",
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => DonhangTT(),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 20),
                       Row(
@@ -231,7 +250,9 @@ class ThanhtoanSate extends State<Thanhtoan> {
                               const SizedBox(height: 5),
                               Text("Tổng Tiền: $total đ"),
                               const SizedBox(height: 5),
-                              Text(tkm <= 0 ? "Giảm : 0 đ" : "Giảm: -${tkm.toStringAsFixed(0)} đ"),
+                              Text(tkm <= 0
+                                  ? "Giảm : 0 đ"
+                                  : "Giảm: -${tkm.toStringAsFixed(0)} đ"),
                               const SizedBox(height: 5),
                               Text(
                                 "Thành Tiền: ${tienskm.toStringAsFixed(0)} đ",
@@ -249,48 +270,7 @@ class ThanhtoanSate extends State<Thanhtoan> {
                       Center(
                         child: CustomButton(
                           text: "Thanh toán",
-                          onPressed: () {
-                            if(_selectedPaymentMethod =="Chuyển Khoản"){
-                               showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: Text("Chuyển Khoản"),
-                                          content: Image.asset('assets/thanhtoan.jpg'),
-                                          actions: [
-                                            TextButton(
-                                              child: Text("Ok"),
-                                              onPressed: () {
-                                                Navigator.of(context)
-                                                    .pop(); // Đóng dialog
-                                              },
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                            }
-                            else{
-                               showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: Text("Tiền Mặt "),
-                                          content: Text("Bạn Chưa Có Sản Phẩm"),
-                                          actions: [
-                                            TextButton(
-                                              child: Text("Ok"),
-                                              onPressed: () {
-                                                Navigator.of(context)
-                                                    .pop(); // Đóng dialog
-                                              },
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                            }
-                          },
+                          onPressed: () {},
                         ),
                       ),
                     ],
@@ -304,7 +284,8 @@ class ThanhtoanSate extends State<Thanhtoan> {
     );
   }
 
-  Widget _buildTextField(String hint, {int maxLines = 1, TextEditingController? controller}) {
+  Widget _buildTextField(String hint,
+      {int maxLines = 1, TextEditingController? controller}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: TextField(
