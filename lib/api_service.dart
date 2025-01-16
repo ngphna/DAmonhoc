@@ -225,6 +225,7 @@ Future<List<dynamic>> tkSanPham(String name) async {
             price: item['Gia'],
             quantity: item['SoLuong'],
             id:item['SanPhamID'],
+            
           );
         }).toList();
       } else {

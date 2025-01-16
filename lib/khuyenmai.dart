@@ -55,6 +55,7 @@ class PromotionsScreen extends StatelessWidget {
               final promotion = promotions[index];
               return GestureDetector(
                 onTap: () {
+                  
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -117,6 +118,87 @@ class PromotionsScreen extends StatelessWidget {
     );
   }
 }
+class PromotionsScreens extends StatelessWidget {
+  final LoginService loginService = LoginService();
+  final Function(int) onSelectPromotion; // Hàm callback
+
+  PromotionsScreens({required this.onSelectPromotion});
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<KhuyenMai>>(
+      future: loginService.fetchPromotions(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Lỗi: ${snapshot.error}'));
+        } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+          final promotions = snapshot.data!;
+          return ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: promotions.length,
+            itemBuilder: (context, index) {
+              final promotion = promotions[index];
+              return GestureDetector(
+                onTap: () {
+                  onSelectPromotion(promotion.giamGiaPhanTram); // Trả về giá trị
+                },
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  elevation: 3,
+                  color: Color.fromRGBO(117, 192, 234, 1),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.all(5.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                promotion.tenKhuyenMai,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                "${promotion.ngayBatDau} - ${promotion.ngayKetThuc}",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Text(
+                        "--------------------",
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                      Text(
+                        "Giảm giá: ${promotion.giamGiaPhanTram}%",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                            color: Colors.white),
+                      ),
+                      SizedBox(height: 10),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        } else {
+          return Center(child: Text("Không có khuyến mãi nào còn hiệu lực!"));
+        }
+      },
+    );
+  }
+}
+
+
 
 Widget showkmWidget(BuildContext context) {
   return AlertDialog(

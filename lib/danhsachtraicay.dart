@@ -77,6 +77,7 @@ class _ProductListState extends State<ProductList> {
                   mota: product['MoTa'] ?? 'Không có mô tả',
                   soluong: product['SoLuong'] ?? '1',
                   id: product['SanPhamID'],
+                  
                 ),
               ),
             );
@@ -135,13 +136,13 @@ class _ProductListState extends State<ProductList> {
 
 class ProductDetail extends StatefulWidget {
   final String name;
+  
   final int price;
   final String image;
   final String status;
   final String mota;
   final int soluong;
   final int id;
-  // final int donvi;
 
   const ProductDetail({
     super.key,
@@ -152,7 +153,6 @@ class ProductDetail extends StatefulWidget {
     required this.mota,
     required this.soluong,
     required this.id,
-    // required this.donvi
   });
 
   @override
@@ -455,7 +455,7 @@ class _ProductDetailState extends State<ProductDetail> {
                             icon: const Icon(Icons.remove),
                           ),
                           Text(
-                            '$currentQuantity', // Hiển thị số lượng hiện tại
+                            '$currentQuantity ', // Hiển thị số lượng hiện tại
                             style: const TextStyle(fontSize: 16),
                           ),
                           IconButton(

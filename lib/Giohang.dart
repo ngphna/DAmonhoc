@@ -392,7 +392,7 @@ class _GiohangState extends State<Giohang> {
                                 text: "Thanh toán",
                                 onPressed: () {
                                   if (productsInCart.length > 0) {
-                                    Navigator.pushReplacement(
+                                    Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => Thanhtoan()));

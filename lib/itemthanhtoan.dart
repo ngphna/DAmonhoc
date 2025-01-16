@@ -136,6 +136,7 @@ class _ProductItemState extends State<ProductItem> {
                 ),
                 Text('${widget.product.quantity}',
                     style: const TextStyle(fontSize: 16)),
+                Text(widget.product.donvi),
                 IconButton(
                   onPressed: _increaseQuantity,
                   icon: const Icon(Icons.add),
@@ -237,7 +238,7 @@ class _ProductItemsState extends State<ProductItems> {
             Row(
               children: [
                 Text(
-                  '${widget.product.quantity}',
+                  ' ${widget.product.donvi}',
                   style: const TextStyle(fontSize: 16),
                 ),
               ],

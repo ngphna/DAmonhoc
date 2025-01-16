@@ -38,6 +38,7 @@ class TrangTimKiem extends StatelessWidget {
                           status: product['TrangThai'] ?? 'Còn hàng',
                           mota: product['MoTa'] ?? 'Không có mô tả',
                           soluong: product['SoLuong'] ?? '1',
+                          
                         ),
                       ),
                     );
