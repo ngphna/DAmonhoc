@@ -5,11 +5,14 @@ class ProductItemModel {
   final int price;
   int quantity;
   int id;
+   String donvi;
 
   ProductItemModel(
       {required this.imageUrl,
       required this.productName,
       required this.price,
       this.quantity = 1,
-      this.id = 0});
+      this.id = 0,
+     this.donvi='',
+      });
 }
