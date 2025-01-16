@@ -309,6 +309,18 @@ Future<List<KhuyenMai>> fetchPromotions() async {
     throw Exception("Failed to load addresses");
   }
 }
+//Hàm lấy địa chỉ giao
+  Future<List<Address>> layDiaChiID(int id) async {
+  final response = await http.get(Uri.parse('${apiUrl}diachigiao.php?id=$id'));
+
+  if (response.statusCode == 200) {
+    print("JSON từ API: ${response.body}"); // Debug JSON trả về
+    List<dynamic> data = jsonDecode(response.body);
+    return data.map((json) => Address.fromJson(json)).toList();
+  } else {
+    throw Exception("Failed to load addresses");
+  }
+}
 //Hàm post diachigiao
 Future<void> addAddress(Address address) async {
   final url = Uri.parse('${apiUrl}themdiachigiao.php'); // Địa chỉ API của bạn
@@ -357,11 +369,28 @@ Future<void> addAddress(Address address) async {
 
 // Hàm lấy dữ liệu đơn hàng theo trạng thái
 Future<List<Order>> fetchOrdersByStatus() async {
-  final response = await http.get(Uri.parse('${apiUrl}loaddonadmin.php'));
+  final response = await http.get(Uri.parse('${apiUrl}getdonhang.php'));
 
   if (response.statusCode == 200) {
     List<dynamic> data = json.decode(response.body);
     return data.map((orderJson) => Order.fromJson(orderJson)).toList();
+  } else {
+    throw Exception('Failed to load orders');
+  }
+}
+//Hàm get don hang
+Future<List<Order>> getDonHang() async {
+  final response = await http.get(Uri.parse('${apiUrl}getdonhang.php'));
+
+  if (response.statusCode == 200) {
+    final data = json.decode(response.body);
+    if (data['success']) {
+      return (data['orders'] as List)
+          .map((orderJson) => Order.fromJson(orderJson))
+          .toList();
+    } else {
+      throw Exception(data['message']);
+    }
   } else {
     throw Exception('Failed to load orders');
   }

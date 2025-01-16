@@ -10,7 +10,7 @@ class DiaChiGiao extends StatefulWidget {
 }
 
 class DiaChiGiaoState extends State<DiaChiGiao> {
-  late Future<List<Address>> addresses;
+  Future<List<Address>>? addresses; // Đổi 'late' thành '?'
   String? tenDangNhap;
 
   final LoginService service = LoginService();
@@ -26,8 +26,12 @@ class DiaChiGiaoState extends State<DiaChiGiao> {
     String? username = await getUsername();
     setState(() {
       tenDangNhap = username;
-      // Nếu có tên đăng nhập, bạn có thể gọi lại fetchAddresses với giá trị mới
-      addresses = LoginService().fetchAddresses(tenDangNhap ?? '');
+      if (tenDangNhap != null && tenDangNhap!.isNotEmpty) {
+        // Khởi tạo lại addresses với fetchAddresses sau khi lấy tenDangNhap
+        addresses = service.fetchAddresses(tenDangNhap!);
+      } else {
+        addresses = Future.value([]); // Nếu không có tenDangNhap, trả về danh sách trống
+      }
     });
   }
 
@@ -82,6 +86,26 @@ class DiaChiGiaoState extends State<DiaChiGiao> {
                         Text("Địa chỉ: ${address.diaChi}"),
                       ],
                     ),
+                    onTap: () {
+                      
+                      String _ten = address.ten;
+                      String _sdt = address.sdt;
+                      String _diachi = address.diaChi;
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Thanhtoan(),
+                          settings: RouteSettings(
+                            arguments: {
+                              'ten': _ten,
+                              'sdt': _sdt,
+                              'diachi': _diachi,
+                            },
+                          ),
+                        ),
+                      );
+                    }
                   ),
                 );
               },
@@ -102,7 +126,6 @@ class DiaChiGiaoState extends State<DiaChiGiao> {
 
   // Hàm thêm địa chỉ
   Future<void> _addAddress(String ten, String sdt, String diaChi) async {
-    // Kiểm tra xem tenDangNhap có sẵn không
     if (tenDangNhap == null || tenDangNhap!.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Vui lòng đăng nhập để thêm địa chỉ.')),
@@ -111,7 +134,10 @@ class DiaChiGiaoState extends State<DiaChiGiao> {
     }
 
     Address newAddress = Address(
-      diaChiGiaoID: 0, // Có thể để là 0, ID tự động tăng sẽ được cấp từ server
+
+
+      diaChiGiaoID: 0,  // Để ID tự động cấp từ server
+
       tenDangNhap: tenDangNhap!,
       ten: ten,
       sdt: sdt,
@@ -119,7 +145,6 @@ class DiaChiGiaoState extends State<DiaChiGiao> {
     );
 
     try {
-      // Gọi hàm để thêm địa chỉ vào server
       await service.addAddress(newAddress);
       setState(() {
         // Cập nhật lại danh sách địa chỉ
@@ -195,13 +220,12 @@ class DiaChiGiaoState extends State<DiaChiGiao> {
             TextButton(
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
-                  // Gửi yêu cầu thêm địa chỉ
                   await _addAddress(
                     tenController.text,
                     sdtController.text,
                     diaChiController.text,
                   );
-                  Navigator.of(context).pop(); // Đóng dialog
+                  Navigator.of(context).pop();
                 }
               },
               child: Text('Thêm'),

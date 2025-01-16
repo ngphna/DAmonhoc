@@ -21,7 +21,7 @@ class _AdminDonHangChoXacNhanState extends State<AdminDonHangChoXacNhan> {
   // Hàm tải đơn hàng từ API và lọc theo trạng thái
   void _loadOrders() {
     setState(() {
-      orders = orderService.fetchOrdersByStatus(); // Gọi API lấy đơn hàng trạng thái "ChoXacNhan"
+      orders = orderService.getDonHang(); // Gọi API lấy đơn hàng trạng thái "ChoXacNhan"
     });
   }
 

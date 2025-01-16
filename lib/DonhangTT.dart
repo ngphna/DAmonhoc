@@ -1,6 +1,5 @@
 import 'package:doan_hk2/DangNhap.dart';
-import 'package:doan_hk2/DonHangChoXacNhan.dart';
-import 'package:doan_hk2/DonHangDaXacNhan.dart';
+
 import 'package:doan_hk2/Thongtincanhan.dart';
 import 'package:doan_hk2/itemdamua.dart';
 import 'package:doan_hk2/ThanhToan.dart';
@@ -54,9 +53,7 @@ class _DonhangTTState extends State<DonhangTT> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Scaffold(
+    return  Scaffold(
         appBar: AppBar(
           title: Text("Chi tiết đơn hàng"),
         ),
@@ -72,7 +69,7 @@ class _DonhangTTState extends State<DonhangTT> {
             },
           ),
         ),
-      ),
+      
     );
   }
 }

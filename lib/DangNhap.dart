@@ -39,7 +39,7 @@ class DangNhapState extends State<DangNhap> {
 
       // Kiểm tra tên đăng nhập
       if (_usernameController.text.trim() == "Nam") {
-        // Chuyển đến trang duyetdon nếu tên đăng nhập là "thuc"
+        
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const DuyetDon()),

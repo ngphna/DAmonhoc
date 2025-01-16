@@ -17,8 +17,8 @@ class Address {
   return Address(
     diaChiGiaoID: int.parse(json['DiaChiGiaoID'].toString()),
     tenDangNhap: json['TenDangNhap'].toString(),
-    ten: json['Ten'].toString(), // Đổi SDT thành Ten
-    sdt: json['SDT'].toString(), // Đổi Ten thành SDT
+    ten: json['Ten'].toString(), 
+    sdt: json['SDT'].toString(), 
     diaChi: json['DiaChi'].toString(),
   );
 }

@@ -22,7 +22,6 @@ class KhuyenMai {
     required this.ngayKetThuc,
   });
 
-  // Phương thức chuyển từ JSON sang đối tượng KhuyenMai
   factory KhuyenMai.fromJson(Map<String, dynamic> json) {
     return KhuyenMai(
       id: json['KhuyenMaiID'],
@@ -34,7 +33,6 @@ class KhuyenMai {
     );
   }
 }
-// Import đúng model KhuyenMai
 
 class PromotionsScreen extends StatelessWidget {
   final LoginService loginService = LoginService();
@@ -130,13 +128,13 @@ Widget showkmWidget(BuildContext context) {
       width: double.maxFinite,
       child: SizedBox(
         height: 200,
-        child: PromotionsScreen(), // Widget chứa nội dung khuyến mãi
+        child: PromotionsScreen(),
       ),
     ),
     actions: [
       TextButton(
         onPressed: () {
-          Navigator.of(context).pop(); // Đóng dialog
+          Navigator.of(context).pop();
         },
         child: Text('Đóng'),
       ),
@@ -184,8 +182,7 @@ class _PromotionDetailsScreenState extends State<PromotionDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final promotion = widget
-        .promotion; // Sử dụng widget để truy cập đối tượng trong StatefulWidget
+    final promotion = widget.promotion;
 
     return Scaffold(
       body: Padding(
@@ -234,25 +231,27 @@ class _PromotionDetailsScreenState extends State<PromotionDetailsScreen> {
                   child: CustomButton(
                     text: "Sử Dụng",
                     onPressed: () {
-                      if (productsInCart.length > 0) {
-                        int km = promotion.giamGiaPhanTram ?? 0;
+                      if (productsInCart.isNotEmpty) {
+                        int km = promotion.giamGiaPhanTram;
                         Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Thanhtoan(),
-                                settings: RouteSettings(arguments: km)));
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Thanhtoan(),
+                            settings: RouteSettings(arguments: {'km': km}),
+                          ),
+                        );
                       } else {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
                               title: Text("Thông báo"),
-                              content: Text("Bạn Chưa Có Sản Phẩm"),
+                              content: Text("Bạn chưa có sản phẩm"),
                               actions: [
                                 TextButton(
                                   child: Text("Ok"),
                                   onPressed: () {
-                                    Navigator.of(context).pop(); // Đóng dialog
+                                    Navigator.of(context).pop();
                                   },
                                 ),
                               ],
