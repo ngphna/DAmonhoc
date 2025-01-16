@@ -46,6 +46,7 @@ class DonHangDaMuaState extends State<DonHangDaMua> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Danh sách đơn hàng'),
+        automaticallyImplyLeading: false, // Bỏ nút back
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

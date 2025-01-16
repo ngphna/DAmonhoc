@@ -41,11 +41,31 @@ class DonHangChoXacNhanState extends State<DonHangChoXacNhan> {
     return orders.where((order) => order.trangThai == "ChoXacNhan").toList();
   }
 
+  // Hàm hủy đơn hàng
+  void _cancelOrder(int orderId) async {
+    final result = await orderService.cancelOrder(orderId); // Gọi API hủy đơn hàng
+
+    if (result['success']) {
+      // Hiển thị thông báo thành công
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Đơn hàng #$orderId đã được hủy thành công!')),
+      );
+      // Tải lại danh sách đơn hàng
+      _loadOrders();
+    } else {
+      // Hiển thị lỗi
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Lỗi: ${result['message']}')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Danh sách đơn hàng'),
+        automaticallyImplyLeading: false, // Bỏ nút back
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -86,9 +106,37 @@ class DonHangChoXacNhanState extends State<DonHangChoXacNhan> {
                             children: [
                               Text('Ngày đặt: ${order.ngayDat.toLocal()}'),
                               Text('Trạng thái: ${order.trangThai}'),
+                              Text('${order.tongTien} VND'),
                             ],
                           ),
-                          trailing: Text('${order.tongTien} VND'),
+                          trailing: IconButton(
+                            icon: const Icon(Icons.cancel),
+                            onPressed: () async {
+                              final confirm = await showDialog<bool>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text('Xác nhận'),
+                                    content: Text('Bạn có chắc chắn muốn hủy đơn hàng #${order.donHangID}?'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => Navigator.of(context).pop(false),
+                                        child: Text('Không'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () => Navigator.of(context).pop(true),
+                                        child: Text('Có'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+
+                              if (confirm == true) {
+                                _cancelOrder(order.donHangID);
+                              }
+                            },
+                          ),
                         );
                       },
                     );

@@ -1,5 +1,7 @@
 import 'package:doan_hk2/DangKy.dart';
 import 'package:doan_hk2/DangNhap.dart';
+import 'package:doan_hk2/model/chitietdonhang_model.dart';
+import 'package:doan_hk2/view/ChiTietDonHang.dart';
 import 'package:doan_hk2/view/DonHangChoXacNhan.dart';
 
 import 'package:doan_hk2/DuyetDon.dart';
@@ -19,7 +21,7 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: DangNhap(),
     );

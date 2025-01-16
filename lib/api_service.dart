@@ -1,3 +1,4 @@
+import 'package:doan_hk2/model/chitietdonhang_model.dart';
 import 'package:doan_hk2/model/diachi_model.dart';
 import 'package:doan_hk2/model/donhang_model.dart';
 import 'package:http/http.dart' as http;
@@ -367,17 +368,7 @@ Future<void> addAddress(Address address) async {
     }
   }
 
-// Hàm lấy dữ liệu đơn hàng theo trạng thái
-Future<List<Order>> fetchOrdersByStatus() async {
-  final response = await http.get(Uri.parse('${apiUrl}getdonhang.php'));
 
-  if (response.statusCode == 200) {
-    List<dynamic> data = json.decode(response.body);
-    return data.map((orderJson) => Order.fromJson(orderJson)).toList();
-  } else {
-    throw Exception('Failed to load orders');
-  }
-}
 //Hàm get don hang
 Future<List<Order>> getDonHang() async {
   final response = await http.get(Uri.parse('${apiUrl}getdonhang.php'));
@@ -393,6 +384,91 @@ Future<List<Order>> getDonHang() async {
     }
   } else {
     throw Exception('Failed to load orders');
+  }
+}
+//Hàm hiện chi tiết đơn hàng
+Future<List<ChiTietDH>> fetchCartItems(String tenDangNhap, int donHangID) async {
+    final response = await http.get(
+      Uri.parse('${apiUrl}chitietdonhang.php?TenDangNhap=$tenDangNhap&DonHangID=$donHangID'),
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = json.decode(response.body);
+
+      // Kiểm tra nếu trường 'orderDetails' tồn tại và không phải null
+      if (data['orderDetails'] != null) {
+        // Phân tích danh sách chi tiết đơn hàng
+        List<dynamic> orderDetails = data['orderDetails'];
+        return orderDetails.map((item) => ChiTietDH.fromJson(item)).toList();
+      } else {
+        throw Exception('Không có chi tiết đơn hàng.');
+      }
+    } else {
+      throw Exception('Không thể tải dữ liệu.');
+    }
+  }
+  //Hàm hủy đơn hàng
+  Future<Map<String, dynamic>> cancelOrder(int orderId) async {
+    final url = Uri.parse('${apiUrl}/huydonhang.php');
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'orderID': orderId}),
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return data; // Phản hồi từ API
+      } else {
+        return {
+          'success': false,
+          'message': 'Lỗi HTTP: ${response.statusCode}'
+        };
+      }
+    } catch (e) {
+      return {
+        'success': false,
+        'message': 'Lỗi kết nối: $e',
+      };
+    }
+  }
+  Future<List<Order>> fetchOrders() async {
+  final response = await http.get(Uri.parse('${apiUrl}admindonhang.php'));
+
+  if (response.statusCode == 200) {
+    // Parse JSON thành Map
+    Map<String, dynamic> responseData = json.decode(response.body);
+    
+    // Kiểm tra key "orders" tồn tại
+    if (responseData.containsKey('data')) {
+      List<dynamic> ordersData = responseData['data'];
+      
+      // Convert mỗi phần tử trong danh sách thành đối tượng Order
+      return ordersData.map((orderJson) => Order.fromJson(orderJson)).toList();
+    } else {
+      throw Exception('Key "orders" not found in the response');
+    }
+  } else {
+    throw Exception('Failed to load orders with status code ${response.statusCode}');
+  }
+}
+
+  //Hàm đổi trạng thái đơn hàng
+  Future<bool> updateOrderStatus(int donHangID, String newStatus) async {
+  final response = await http.post(
+    Uri.parse('${apiUrl}updateOrderStatus.php'),
+    body: {
+      'DonHangID': donHangID.toString(),
+      'TrangThai': newStatus,
+    },
+  );
+
+  if (response.statusCode == 200) {
+    final data = json.decode(response.body);
+    return data['success'] == true;
+  } else {
+    throw Exception('Failed to update order status.');
   }
 }
 }

@@ -30,6 +30,7 @@ class TrangTimKiem extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => ProductDetail(
+                          // donvi: product['DonVi'],
                           name: product['TenSanPham'],
                           id: product['SanPhamID'],
                           price: product['Gia'],

@@ -1,10 +1,13 @@
 <?php
+header("Content-Type: application/json");
+header("Access-Control-Allow-Origin: *");
 
-require 'config.php';
-header('Content-Type: application/json');
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET');
-header('Access-Control-Allow-Headers: Content-Type');
+// Kết nối đến database
+$conn = new mysqli("localhost", "root", "", "ten_database");
+
+if ($conn->connect_error) {
+    die(json_encode(["success" => false, "message" => "Kết nối thất bại: " . $conn->connect_error]));
+}
 
 // Lấy danh sách đơn hàng kèm thông tin chi tiết
 $sql = "

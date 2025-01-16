@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:doan_hk2/TrangTimKiem.dart';
 import 'package:doan_hk2/api_service.dart';
+import 'package:doan_hk2/view/DanhSachDonHang.dart';
 import 'package:flutter/material.dart';
 import 'package:doan_hk2/DangNhap.dart';
 import 'package:doan_hk2/Giohang.dart';
@@ -125,6 +126,13 @@ class _TrangchuState extends State<Trangchu> {
                     builder: (context) => const Thongtincanhan(),
                   ),
                 );
+              }else if (value == "DonHang") {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DanhSachDonHang(),
+                  ),
+                );
               }
             },
             itemBuilder: (BuildContext context) => [
@@ -135,6 +143,10 @@ class _TrangchuState extends State<Trangchu> {
               const PopupMenuItem(
                 value: "Thongtin",
                 child: Text("Thông tin cá nhân"),
+              ),
+              const PopupMenuItem(
+                value: "DonHang",
+                child: Text("Danh sách đơn hàng của bạn"),
               ),
             ],
           ),

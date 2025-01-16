@@ -1,4 +1,5 @@
 import 'package:doan_hk2/DangNhap.dart';
+import 'package:doan_hk2/view/DanhSachDonHang.dart';
 import 'package:doan_hk2/view/DonHangChoXacNhan.dart';
 import 'package:doan_hk2/view/DonHangDaMua.dart';
 import 'package:doan_hk2/view/DonHangDaXacNhan.dart';
@@ -150,7 +151,14 @@ class _GiohangState extends State<Giohang> {
                       builder: (context) => const Thongtincanhan(),
                     ),
                   );
-                }
+                }else if (value == "DonHang") {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DanhSachDonHang(),
+                  ),
+                );
+              }
               },
               itemBuilder: (BuildContext context) => [
                 const PopupMenuItem(
@@ -161,6 +169,10 @@ class _GiohangState extends State<Giohang> {
                   value: "Thongtin",
                   child: Text("Thông tin cá nhân"),
                 ),
+                const PopupMenuItem(
+                value: "DonHang",
+                child: Text("Danh sách đơn hàng của bạn"),
+              ),
               ],
             ),
           ],

@@ -1,14 +1,17 @@
 import 'package:doan_hk2/api_service.dart';
+import 'package:doan_hk2/model/chitietdonhang_model.dart';
 import 'package:doan_hk2/model/donhang_model.dart';
+import 'package:doan_hk2/trangchu.dart';
+import 'package:doan_hk2/view/ChiTietDonHang.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class DonHangDangGiao extends StatefulWidget {
+class DanhSachDonHang extends StatefulWidget {
   @override
-  DonHangDangGiaoState createState() => DonHangDangGiaoState();
+  DanhSachDonHangState createState() => DanhSachDonHangState();
 }
 
-class DonHangDangGiaoState extends State<DonHangDangGiao> {
+class DanhSachDonHangState extends State<DanhSachDonHang> {
   late Future<List<Order>> orders = Future.value([]); // Giá trị mặc định
   final LoginService orderService = LoginService();
   String? tenDangNhap;
@@ -36,17 +39,26 @@ class DonHangDangGiaoState extends State<DonHangDangGiao> {
     }
   }
 
-  // Hàm lọc đơn hàng theo trạng thái
-  List<Order> _filterOrders(List<Order> orders) {
-    return orders.where((order) => order.trangThai == "DangGiao").toList();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Danh sách đơn hàng'),
-        automaticallyImplyLeading: false, // Bỏ nút back
+        automaticallyImplyLeading: false,// Bỏ nút back
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: (){
+              Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const Trangchu(),
+              ),
+            );
+            }, 
+            
+          )
+        ], 
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -72,14 +84,10 @@ class DonHangDangGiaoState extends State<DonHangDangGiao> {
                     return Center(child: Text('Không có đơn hàng nào'));
                   } else {
                     final allOrders = snapshot.data!;
-                    final filteredOrders = _filterOrders(allOrders); // Lọc đơn hàng theo trạng thái
-                    if (filteredOrders.isEmpty) {
-                      return Center(child: Text('Không có đơn hàng nào với trạng thái "Chờ xác nhận"'));
-                    }
                     return ListView.builder(
-                      itemCount: filteredOrders.length,
+                      itemCount: allOrders.length, // Hiển thị tất cả đơn hàng
                       itemBuilder: (context, index) {
-                        final order = filteredOrders[index];
+                        final order = allOrders[index];
                         return ListTile(
                           title: Text('Đơn hàng #${order.donHangID}'),
                           subtitle: Column(
@@ -90,6 +98,15 @@ class DonHangDangGiaoState extends State<DonHangDangGiao> {
                             ],
                           ),
                           trailing: Text('${order.tongTien} VND'),
+                          onTap: (){
+                            // Chuyển đến trang chi tiết đơn hàng
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CartPage(tenDangNhap:'$tenDangNhap',donHangID: order.donHangID,),
+                              ),
+                            );
+                          },
                         );
                       },
                     );

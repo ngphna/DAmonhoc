@@ -42,7 +42,7 @@ class DangNhapState extends State<DangNhap> {
         
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const DuyetDon()),
+          MaterialPageRoute(builder: (context) => DuyetDon()),
         );
       } else {
         // Chuyển đến trang chính nếu không phải "thuc"

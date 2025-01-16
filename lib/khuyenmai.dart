@@ -233,7 +233,7 @@ class _PromotionDetailsScreenState extends State<PromotionDetailsScreen> {
                     onPressed: () {
                       if (productsInCart.isNotEmpty) {
                         int km = promotion.giamGiaPhanTram;
-                        Navigator.pushReplacement(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => Thanhtoan(),

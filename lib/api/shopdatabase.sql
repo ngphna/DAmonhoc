@@ -105,7 +105,11 @@ CREATE TABLE `donhang` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
-
+INSERT INTO `donhang`(`DonHangID`, `TenDangNhap`, `KhuyenMaiID`, `ThanhToanID`, `DiaChiGiaoID`, `NgayDat`, `TongTien`, `TrangThai`) VALUES 
+(1,'thuc',1,1,1,DEFAULT,100000,'ChoXacNhan'),
+(2,'thuc',1,1,1,DEFAULT,200000,'DaXacNhan'),
+(3,'thuc',1,1,1,DEFAULT,300000,'DangGiao'),
+(4,'thuc',1,1,1,DEFAULT,400000,'DaGiao');
 --
 -- Cấu trúc bảng cho bảng `giohang`
 --
@@ -277,7 +281,11 @@ ALTER TABLE `diachigiao`
 -- Chỉ mục cho bảng `donhang`
 --
 ALTER TABLE `donhang`
-  ADD KEY `TenDangNhap` (`TenDangNhap`);
+  
+  ADD KEY `TenDangNhap` (`TenDangNhap`),
+  ADD KEY `KhuyenMaiID` (`KhuyenMaiID`),
+  ADD KEY `DiaChiGiaoID` (`DiaChiGiaoID`),
+  ADD KEY `ThanhToanID` (`ThanhToanID`);
 
 --
 -- Chỉ mục cho bảng `giohang`
@@ -389,10 +397,13 @@ ALTER TABLE `diachigiao`
   ADD CONSTRAINT `diachigiao_ibfk_1` FOREIGN KEY (`TenDangNhap`) REFERENCES `taikhoan` (`TenDangNhap`) ON DELETE CASCADE;
 
 --
--- Các ràng buộc cho bảng `donhang`
+-- Các ràng buộc cho bảng `donhang`S
 --
 ALTER TABLE `donhang`
-  ADD CONSTRAINT `donhang_ibfk_1` FOREIGN KEY (`TenDangNhap`) REFERENCES `taikhoan` (`TenDangNhap`) ON DELETE CASCADE;
+  ADD CONSTRAINT `donhang_ibfk_1` FOREIGN KEY (`TenDangNhap`) REFERENCES `taikhoan` (`TenDangNhap`) ON DELETE CASCADE,
+  ADD CONSTRAINT `donhang_ibfk_2` FOREIGN KEY (`KhuyenMaiID`) REFERENCES `khuyenmai` (`KhuyenMaiID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `donhang_ibfk_3` FOREIGN KEY (`ThanhToanID`) REFERENCES `thanhtoan` (`ThanhToanID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `donhang_ibfk_4` FOREIGN KEY (`DiaChiGiaoID`) REFERENCES `diachigiao` (`DiaChiGiaoID`) ON DELETE CASCADE;
 
 --
 -- Các ràng buộc cho bảng `giohang`

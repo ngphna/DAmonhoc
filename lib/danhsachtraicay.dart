@@ -69,6 +69,7 @@ class _ProductListState extends State<ProductList> {
               context,
               MaterialPageRoute(
                 builder: (context) => ProductDetail(
+                  // donvi: product['DonVi'],
                   name: product['TenSanPham'],
                   price: product['Gia'],
                   image: product['Image'],
@@ -140,6 +141,7 @@ class ProductDetail extends StatefulWidget {
   final String mota;
   final int soluong;
   final int id;
+  // final int donvi;
 
   const ProductDetail({
     super.key,
@@ -150,6 +152,7 @@ class ProductDetail extends StatefulWidget {
     required this.mota,
     required this.soluong,
     required this.id,
+    // required this.donvi
   });
 
   @override
@@ -466,6 +469,10 @@ class _ProductDetailState extends State<ProductDetail> {
                   ),
                 ],
               ),
+              // Text(
+              //   "Đơn vị: ${widget.donvi}", // Hiển thị giá tổng
+              //   style: const TextStyle(fontSize: 20, color: Colors.red),
+              // ),
               const SizedBox(height: 20),
               Text(
                 "Tổng giá: $totalPrice đ", // Hiển thị giá tổng
