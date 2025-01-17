@@ -1,6 +1,7 @@
 import 'package:doan_hk2/DiaChiGiao.dart';
 import 'package:doan_hk2/DonhangTT.dart';
 import 'package:doan_hk2/Giohang.dart';
+import 'package:doan_hk2/trangchu.dart';
 import 'package:flutter/material.dart';
 import 'nutmau.dart';
 import 'khuyenmai.dart';
@@ -258,6 +259,16 @@ class ThanhtoanSate extends State<Thanhtoan> {
                                           title: Text("Chuyển Khoản"),
                                           content: Image.asset('assets/thanhtoan.jpg'),
                                           actions: [
+                                             TextButton(
+                                              child: Text("Hoàn Tất Thanh Toán"),
+                                              onPressed: () {
+                                                Navigator.pushReplacement(
+                                                  context
+                                                  , MaterialPageRoute(builder: (context)=>Trangchu()));
+                                                
+                                                // Đóng dialog
+                                              },
+                                            ),
                                             TextButton(
                                               child: Text("Ok"),
                                               onPressed: () {
@@ -276,8 +287,28 @@ class ThanhtoanSate extends State<Thanhtoan> {
                                       builder: (BuildContext context) {
                                         return AlertDialog(
                                           title: Text("Tiền Mặt "),
-                                          content: Text("Bạn Chưa Có Sản Phẩm"),
+                                          content: Text("Thanh Toán Bằng Tiền Mặt"),
                                           actions: [
+                                             TextButton(
+                                              child: Text("Hoàn Tất Thanh Toán"),
+                                              onPressed: () {
+                                                Navigator.pushReplacement(
+                                                  context
+                                                  , MaterialPageRoute(builder: (context)=>Trangchu()));
+                                                
+                                                // Đóng dialog
+                                              },
+                                            ),
+                                            TextButton(
+                                              child: Text("Hoàn Tất Thanh Toán"),
+                                              onPressed: () {
+                                                Navigator.pushReplacement(
+                                                  context
+                                                  , MaterialPageRoute(builder: (context)=>Trangchu()));
+                                                
+                                                // Đóng dialog
+                                              },
+                                            ),
                                             TextButton(
                                               child: Text("Ok"),
                                               onPressed: () {
