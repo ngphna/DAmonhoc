@@ -650,10 +650,7 @@ class _ProductListStates extends State<ProductLists> {
                                     ),
                                   ),
                                   const SizedBox(height: 5),
-                                  Text(
-                                    "Đơn Vị Tính: 1/${product['DonVi']}",
-                                    style: const TextStyle(fontSize: 12),
-                                  ),
+                                 
                                 ],
                               ),
                             ),
