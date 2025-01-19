@@ -120,7 +120,7 @@ class PromotionsScreen extends StatelessWidget {
 }
 class PromotionsScreens extends StatefulWidget {
   final LoginService loginService = LoginService();
-  final Function(int) onSelectPromotion; // Hàm callback
+  final Function(int?) onSelectPromotion; // Hàm callback
 
   PromotionsScreens({required this.onSelectPromotion});
 
@@ -151,9 +151,16 @@ class _PromotionsScreensState extends State<PromotionsScreens> {
               return GestureDetector(
                 onTap: () {
                   setState(() {
-                    selectedIndex = index; // Cập nhật chỉ số đang được chọn
+                    if (selectedIndex == index) {
+                      // Nếu mục đang được chọn thì bỏ chọn
+                      selectedIndex = null;
+                      widget.onSelectPromotion(null);
+                    } else {
+                      // Nếu mục khác được chọn thì cập nhật
+                      selectedIndex = index;
+                      widget.onSelectPromotion(promotion.giamGiaPhanTram);
+                    }
                   });
-                  widget.onSelectPromotion(promotion.giamGiaPhanTram);
                 },
                 child: Card(
                   shape: RoundedRectangleBorder(

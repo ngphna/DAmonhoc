@@ -216,7 +216,7 @@ class ThanhtoanSate extends State<Thanhtoan> {
                       SizedBox(
                         height: 150,
                         child: PromotionsScreens(
-                          onSelectPromotion: (int km) {
+                          onSelectPromotion: (int? km) {
                             setState(() {
                               globalDiscount = km;
                             });

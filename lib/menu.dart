@@ -36,7 +36,7 @@ Widget buildMenu() {
                     color: Colors.green),
               ),
               const Divider(color: Colors.green),
-              for (var category in categories) buildMenuItem(category, context),
+              for (var category in categories) buildMenuItem(category, context, categories), // Truyền thêm categories
             ],
           );
         }
@@ -45,17 +45,16 @@ Widget buildMenu() {
   );
 }
 
-Widget buildMenuItem(String title, BuildContext context) {
+Widget buildMenuItem(String title, BuildContext context, List<String> categories) {
   return InkWell(
     onTap: () {
-      int danhmucid = Sosanh(title);
+      int danhmucid = Sosanh(title, categories); // Sử dụng danh mục từ API
       Navigator.pop(context);
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => ProductLists(
             danhMucId: danhmucid,
-            
           ),
         ),
       );

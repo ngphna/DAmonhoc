@@ -21,25 +21,25 @@ class Trangchu extends StatefulWidget {
 }
 
 class _TrangchuState extends State<Trangchu> {
-  //Tìm kiếm sản phẩm
   final TextEditingController tk_sp = TextEditingController();
   LoginService cartService = LoginService();
   String? username;
 
   List<ProductItemModel> productsInCart = [];
+  List<String> categories = []; // Danh sách các danh mục
 
   @override
   void initState() {
     super.initState();
     _loadCartProducts();
     _loadUsername();
+    _loadCategories(); // Tải danh mục từ API
   }
 
   Future<void> _loadUsername() async {
-    // Lấy tên đăng nhập
     String? loadedUsername = await cartService.getUsername();
     setState(() {
-      username = loadedUsername; // Cập nhật lại state với tên đăng nhập
+      username = loadedUsername;
     });
   }
 
@@ -53,22 +53,28 @@ class _TrangchuState extends State<Trangchu> {
     } catch (e) {}
   }
 
-  // Hàm tìm kiếm sản phẩm
+  // Tải danh mục từ API
+  Future<void> _loadCategories() async {
+    try {
+      List<String> loadedCategories = await cartService.fetchCategories();
+      setState(() {
+        categories = loadedCategories;
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Lỗi: $e")),
+      );
+    }
+  }
 
-  //Hàm tìm kiếm sản phẩm
+  // Hàm tìm kiếm sản phẩm
   void TK_SanPham() async {
     final searchQuery = tk_sp.text.trim();
-
     if (searchQuery.isEmpty) {
-      // Nếu không có từ khóa tìm kiếm
       return;
     }
-
     try {
-      // Gọi API để tìm kiếm sản phẩm theo tên
       List<dynamic> searchResults = await LoginService().tkSanPham(searchQuery);
-
-      // Chuyển đến trang tìm kiếm kết quả
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -76,9 +82,7 @@ class _TrangchuState extends State<Trangchu> {
         ),
       );
     } catch (e) {
-      // Xử lý lỗi nếu không tìm thấy hoặc có vấn đề khi gọi API
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Lỗi: $e")));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Lỗi: $e")));
     }
   }
 
@@ -126,7 +130,7 @@ class _TrangchuState extends State<Trangchu> {
                     builder: (context) => const Thongtincanhan(),
                   ),
                 );
-              }else if (value == "DonHang") {
+              } else if (value == "DonHang") {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
@@ -184,7 +188,7 @@ class _TrangchuState extends State<Trangchu> {
                       child: Row(
                         children: [
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 12.0),
+                            padding: const EdgeInsets.symmetric(horizontal: 12.0),
                             child: InkWell(
                                 onTap: () {
                                   TK_SanPham();
@@ -202,7 +206,7 @@ class _TrangchuState extends State<Trangchu> {
                                 border: InputBorder.none,
                               ),
                               onSubmitted: (_) {
-                                TK_SanPham(); // Gọi hàm tìm kiếm khi nhấn Enter
+                                TK_SanPham();
                               },
                             ),
                           ),
@@ -251,80 +255,33 @@ class _TrangchuState extends State<Trangchu> {
                 height: 150,
                 child: AutoScrollCarouselView(),
               ),
-
-// Định nghĩa danh sách ảnh
-
               const SizedBox(height: 10),
               SizedBox(
                 height: 120,
                 child: PromotionsScreen(),
               ),
-
               const SizedBox(height: 16),
 
-              Center(
-                child: Text(
-                  "Trái Cây Việt Nam",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w100,
-                    color: Colors.lightGreen,
+              // Lặp qua danh sách danh mục và hiển thị sản phẩm tương ứng
+              if (categories.isNotEmpty)
+                for (int i = 0; i < categories.length; i++) ...[
+                  Center(
+                    child: Text(
+                      categories[i],
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w100,
+                        color: Colors.lightGreen,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              const SizedBox(height: 8),
-              SizedBox(
-                height: 200,
-                child: ProductList(danhMucId: 1),
-              ),
-              const SizedBox(height: 16),
-              const Center(
-                child: Text(
-                  "Trái Cây Nhiệt Đới",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w100,
-                    color: Colors.lightGreen,
+                  const SizedBox(height: 8),
+                  SizedBox(
+                    height: 200,
+                    child: ProductList(danhMucId: i + 1), // Truyền id danh mục tương ứng
                   ),
-                ),
-              ),
-              const SizedBox(height: 8),
-              SizedBox(
-                height: 200,
-                child: ProductList(danhMucId: 2),
-              ),
-              const SizedBox(height: 16),
-              Center(
-                child: Text(
-                  "Trái Cây Thái Lan ",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w100,
-                    color: Colors.lightGreen,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 8),
-              SizedBox(
-                height: 200,
-                child: ProductList(danhMucId: 3),
-              ),
-              const SizedBox(height: 16),
-              Center(
-                child: Text(
-                  "Trái Cây Trung Quốc",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w100,
-                    color: Colors.lightGreen,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 8),
-              SizedBox(
-                height: 200,
-                child: ProductList(danhMucId: 6),
-              ),
+                  const SizedBox(height: 16),
+                ],
             ],
           ),
         ),
