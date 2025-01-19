@@ -238,7 +238,7 @@ class _ProductItemsState extends State<ProductItems> {
             Row(
               children: [
                 Text(
-                  ' ${widget.product.donvi}',
+                  ' ${widget.product.quantity}',
                   style: const TextStyle(fontSize: 16),
                 ),
               ],

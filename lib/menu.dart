@@ -5,6 +5,9 @@ import 'package:doan_hk2/danhsachtraicay.dart';
 import 'package:flutter/material.dart';
 import 'package:doan_hk2/api_service.dart';
 import 'khuyenmai.dart';
+import 'dart:math';
+
+
 
 Widget buildMenu() {
   final LoginService _loginService = LoginService();
@@ -46,31 +49,15 @@ Widget buildMenuItem(String title, BuildContext context) {
   return InkWell(
     onTap: () {
       int danhmucid = Sosanh(title);
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              title,
-              style: TextStyle(color: Colors.lightGreen),
-            ),
-            content: Container(
-              width: double.maxFinite,
-              child: SizedBox(
-                height: 200,
-                child: ProductList(danhMucId: danhmucid),
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(); // Đóng dialog
-                },
-                child: Text('Đóng'),
-              ),
-            ],
-          );
-        },
+      Navigator.pop(context);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ProductLists(
+            danhMucId: danhmucid,
+            
+          ),
+        ),
       );
     },
     child: Padding(

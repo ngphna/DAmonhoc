@@ -270,7 +270,7 @@ class ThanhtoanSate extends State<Thanhtoan> {
                                               },
                                             ),
                                             TextButton(
-                                              child: Text("Ok"),
+                                              child: Text("Hủy"),
                                               onPressed: () {
                                                 Navigator.of(context)
                                                     .pop(); // Đóng dialog
@@ -299,7 +299,15 @@ class ThanhtoanSate extends State<Thanhtoan> {
                                                 // Đóng dialog
                                               },
                                             ),
+                                           
                                             TextButton(
+                                              child: Text("Hủy"),
+                                              onPressed: () {
+                                                Navigator.of(context)
+                                                    .pop(); // Đóng dialog
+                                              },
+                                            ),
+                                             TextButton(
                                               child: Text("Hoàn Tất Thanh Toán"),
                                               onPressed: () {
                                                 Navigator.pushReplacement(
@@ -307,13 +315,6 @@ class ThanhtoanSate extends State<Thanhtoan> {
                                                   , MaterialPageRoute(builder: (context)=>Trangchu()));
                                                 
                                                 // Đóng dialog
-                                              },
-                                            ),
-                                            TextButton(
-                                              child: Text("Ok"),
-                                              onPressed: () {
-                                                Navigator.of(context)
-                                                    .pop(); // Đóng dialog
                                               },
                                             ),
                                           ],

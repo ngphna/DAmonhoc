@@ -118,16 +118,23 @@ class PromotionsScreen extends StatelessWidget {
     );
   }
 }
-class PromotionsScreens extends StatelessWidget {
+class PromotionsScreens extends StatefulWidget {
   final LoginService loginService = LoginService();
   final Function(int) onSelectPromotion; // Hàm callback
 
   PromotionsScreens({required this.onSelectPromotion});
 
   @override
+  _PromotionsScreensState createState() => _PromotionsScreensState();
+}
+
+class _PromotionsScreensState extends State<PromotionsScreens> {
+  int? selectedIndex; // Theo dõi chỉ số đang được chọn
+
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<KhuyenMai>>(
-      future: loginService.fetchPromotions(),
+      future: widget.loginService.fetchPromotions(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
@@ -140,16 +147,22 @@ class PromotionsScreens extends StatelessWidget {
             itemCount: promotions.length,
             itemBuilder: (context, index) {
               final promotion = promotions[index];
+              final isSelected = selectedIndex == index; // Kiểm tra trạng thái
               return GestureDetector(
                 onTap: () {
-                  onSelectPromotion(promotion.giamGiaPhanTram); // Trả về giá trị
+                  setState(() {
+                    selectedIndex = index; // Cập nhật chỉ số đang được chọn
+                  });
+                  widget.onSelectPromotion(promotion.giamGiaPhanTram);
                 },
                 child: Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                   elevation: 3,
-                  color: Color.fromRGBO(117, 192, 234, 1),
+                  color: isSelected
+                      ? Colors.blue // Màu khi được chọn
+                      : Color.fromRGBO(117, 192, 234, 1), // Màu mặc định
                   child: Column(
                     children: [
                       Expanded(

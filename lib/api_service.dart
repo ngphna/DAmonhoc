@@ -110,6 +110,8 @@ class LoginService {
       return false;
     }
   }
+  
+  
   //Danh mục
   Future<List<String>> fetchCategories() async {
     final response = await http.get(Uri.parse("${apiUrl}danhmuc.php"));

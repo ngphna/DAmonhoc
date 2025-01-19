@@ -38,7 +38,7 @@ class DangNhapState extends State<DangNhap> {
       if (!mounted) return;
 
       // Kiểm tra tên đăng nhập
-      if (_usernameController.text.trim() == "Nam") {
+      if (_usernameController.text.trim() == "thuc") {
         
         Navigator.pushReplacement(
           context,

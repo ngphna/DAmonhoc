@@ -69,7 +69,7 @@ class _ProductListState extends State<ProductList> {
               context,
               MaterialPageRoute(
                 builder: (context) => ProductDetail(
-                  // donvi: product['DonVi'],
+                  donvi: product['DonVi'],
                   name: product['TenSanPham'],
                   price: product['Gia'],
                   image: product['Image'],
@@ -77,57 +77,66 @@ class _ProductListState extends State<ProductList> {
                   mota: product['MoTa'] ?? 'Không có mô tả',
                   soluong: product['SoLuong'] ?? '1',
                   id: product['SanPhamID'],
-                  
                 ),
               ),
             );
           },
-          child: Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            elevation: 4,
-            child: Column(
-              children: [
-                Expanded(
-                  child: ClipRRect(
-                    borderRadius:
-                        const BorderRadius.vertical(top: Radius.circular(8.0)),
-                    child: Image.asset(
-                      product['Image']!,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    product['TenSanPham']!,
-                    style: TextStyle(fontWeight: FontWeight.w100, fontSize: 20),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                Row(
-                  children: [
-                    Text(
-                      product['Gia']!.toString(),
-                      style: TextStyle(color: Colors.orange, fontSize: 20),
-                    ),
-                    SizedBox(
-                      width: 2,
-                    ),
-                    Text(
-                      "đ",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w100,
-                          color: Colors.orange,
-                          fontSize: 20),
-                    ),
-                  ],
-                )
-              ],
-            ),
+          child:
+            Container(
+  decoration: BoxDecoration(
+    border: Border.all(
+      color: Colors.grey, // Màu viền
+      width: 0.5, // Độ dày của viền
+    ),
+    borderRadius: BorderRadius.circular(8.0), // Bo góc cho viền
+  ),child:  Card(
+            color: Colors.white,
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(8.0),
+    
+  ),
+  elevation: 4,
+  child: SizedBox(
+    width: 200, // Đặt chiều rộng cố định cho Card
+    height: 300, // Đặt chiều cao cố định cho Card
+    
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center, // Canh giữa nội dung
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Image.asset(
+          product['Image'] ?? 'assets/default_image.png',
+          height: 100,
+          width: 100,
+          fit: BoxFit.cover, // Ảnh tự điều chỉnh để không bị méo
+        ),
+        const SizedBox(height: 8), // Khoảng cách giữa ảnh và tên sản phẩm
+        Text(
+          product['TenSanPham'] ?? 'Tên không có sẵn',
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
           ),
+          textAlign: TextAlign.center, // Canh giữa văn bản
+        ),
+        const SizedBox(height: 5),
+        Text(
+          "Đơn Vị Tính: 1/${product['DonVi'] ?? 'ĐVT'}",
+          style: const TextStyle(fontSize: 12),
+        ),
+        const SizedBox(height: 5),
+        Text(
+          "${product['Gia'] ?? 0} đ",
+          style: const TextStyle(
+            color: Colors.orange,
+            fontSize: 14,
+          ),
+        ),
+      ],
+    ),
+  ),
+)
+            )
         );
       },
     );
@@ -136,13 +145,14 @@ class _ProductListState extends State<ProductList> {
 
 class ProductDetail extends StatefulWidget {
   final String name;
-  
+
   final int price;
   final String image;
   final String status;
   final String mota;
   final int soluong;
   final int id;
+  final String donvi;
 
   const ProductDetail({
     super.key,
@@ -153,6 +163,7 @@ class ProductDetail extends StatefulWidget {
     required this.mota,
     required this.soluong,
     required this.id,
+    required this.donvi,
   });
 
   @override
@@ -419,9 +430,10 @@ class _ProductDetailState extends State<ProductDetail> {
               ),
               const SizedBox(height: 20),
               Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    "Trạng thái: ${trangthai(widget.status)}",
+                    "Đơn vị tính: 1/${widget.donvi}",
                     style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -429,6 +441,7 @@ class _ProductDetailState extends State<ProductDetail> {
                   ),
                 ],
               ),
+
               const SizedBox(height: 20),
               const Text(
                 'Số lượng:',
@@ -520,6 +533,136 @@ class _ProductDetailState extends State<ProductDetail> {
         ),
       ),
       backgroundColor: Colors.white,
+    );
+  }
+}
+
+// sản phẩm danh mụcmục
+class ProductLists extends StatefulWidget {
+  final int danhMucId;
+
+  const ProductLists({super.key, required this.danhMucId});
+
+  @override
+  _ProductListStates createState() => _ProductListStates();
+}
+
+class _ProductListStates extends State<ProductLists> {
+  List<dynamic> products = [];
+  bool isLoading = true;
+  final loginService = LoginService();
+
+  @override
+  void initState() {
+    super.initState();
+    fetchProducts(widget.danhMucId);
+  }
+
+  Future<void> fetchProducts(int danhMucId) async {
+    try {
+      final fetchedProducts = await loginService.fetchProducts(danhMucId);
+
+      setState(() {
+        products = fetchedProducts.isNotEmpty ? fetchedProducts : [];
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Lỗi tải dữ liệu: $e")),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Danh sách sản phẩm"),
+      ),
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : products.isEmpty
+              ? const Center(child: Text("Không có sản phẩm nào!"))
+              : ListView.builder(
+                  padding: const EdgeInsets.all(8.0),
+                  itemCount: products.length,
+                  itemBuilder: (context, index) {
+                    final product = products[index];
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProductDetail(
+                              name: product['TenSanPham'] ?? 'Tên không có sẵn',
+                              price: product['Gia'] ?? 0,
+                              image: product['Image'] ?? '',
+                              status: product['TrangThai'] ?? 'Còn hàng',
+                              mota: product['MoTa'] ?? 'Không có mô tả',
+                              soluong: product['SoLuong'] ?? '1',
+                              id: product['SanPhamID'] ?? 0,
+                              donvi: product['DonVi'] ?? 'kg',
+                            ),
+                          ),
+                        );
+                      },
+                      child:
+                    
+                       Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        elevation: 4,
+                        margin: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Row(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: Image.asset(
+                                product['Image'] ?? 'assets/default_image.png',
+                                height: 100,
+                                width: 100,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    product['TenSanPham'] ?? 'Tên không có sẵn',
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text("Đơn Vị Tính: 1/${product['DonVi']}"),
+                                  const SizedBox(height: 5),
+                                  Text(
+                                    "${product['Gia'] ?? 0} đ",
+                                    style: const TextStyle(
+                                      color: Colors.orange,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 5),
+                                  Text(
+                                    "Đơn Vị Tính: 1/${product['DonVi']}",
+                                    style: const TextStyle(fontSize: 12),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
     );
   }
 }
